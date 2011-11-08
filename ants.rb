@@ -45,6 +45,10 @@ class Ant
   		return @owner == object.owner && @alive = object.alive? && row == object.row && col == object.col
   		
 	end
+	
+	def printCoordinates
+		return [row, col].inspect
+	end
 end
 
 # Represent a single field of the map.
@@ -94,7 +98,8 @@ class Square
 	end
 	
 	def is_unoccupied?
-			!@water && !@food && !@ant && !ai.orders.include? self
+			puts "checking occupied = " + [row, col].inspect + @ai.orders.value?(self).to_s
+			return !@water && !@food && !@ant && !@ai.orders.value?(self)
 	end
 	
 	def eql? (object)
@@ -301,11 +306,11 @@ class AI
 
 	def order ant, direction
 		# Write to standard out
-		ant, direction = a, b
+	#	ant, direction = a, b
 		@stdout.puts "o #{ant.row} #{ant.col} #{direction.to_s.upcase}"
 		
-		orders[ant] = ant.square.neighbour direction
-
+		orders[ant] = ant.square.neighbor(direction)
+		puts ant.printCoordinates + " --> " + [ant.square.neighbor(direction).row, ant.square.neighbor(direction).col].inspect
 	end 
 
 	
