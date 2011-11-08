@@ -34,6 +34,17 @@ class Ant
 	def order direction
 		@ai.order self, direction
 	end
+	
+	def eql? (object)
+		if object.equal?(self)
+			return true 
+		elsif !self.class.equal?(object.class)
+  			 return false
+  		end
+  		
+  		return @owner == object.owner && @alive = object.alive? && row == object.row && col == object.col
+  		
+	end
 end
 
 # Represent a single field of the map.
@@ -81,6 +92,20 @@ class Square
 		
 		return @ai.map[row][col]
 	end
+	
+	def is_unoccupied?
+			!@water && !@food && !@ant && !ai.orders.include? self
+	end
+	
+	def eql? (object)
+		if object.equal?(self)
+			return true 
+		elsif !self.class.equal?(object.class)
+  			 return false
+  		end
+  		
+  		return row == object.row && col == object.col
+	end
 end
 
 class AI
@@ -98,6 +123,9 @@ class AI
 	attr_accessor :players
 	# Array of scores of players (you are player 0). Available only after game's over.
 	attr_accessor :score
+	
+	#Hash of ant => Square
+	attr_accessor :orders
 
 	# Initialize a new AI object. Arguments are streams this AI will read from and write to.
 	def initialize stdin=$stdin, stdout=$stdout
@@ -110,6 +138,8 @@ class AI
 		@enemy_ants=[]
 		
 		@did_setup=false
+		
+		@orders = Hash.new()
 	end
 	
 	# Returns a read-only hash of all settings.
@@ -259,15 +289,25 @@ class AI
 	#   order(row, col, direction)
 	#
 	# Give orders to an ant, or to whatever happens to be in the given square (and it better be an ant).
-	def order a, b, c=nil
-		if !c # assume two-argument form: ant, direction
-			ant, direction = a, b
-			@stdout.puts "o #{ant.row} #{ant.col} #{direction.to_s.upcase}"
-		else # assume three-argument form: row, col, direction
-			col, row, direction = a, b, c
-			@stdout.puts "o #{row} #{col} #{direction.to_s.upcase}"
-		end
-	end
+#	def order a, b, c=nil
+#		if !c # assume two-argument form: ant, direction
+#			ant, direction = a, b
+#			@stdout.puts "o #{ant.row} #{ant.col} #{direction.to_s.upcase}"
+#		else # assume three-argument form: row, col, direction
+#			col, row, direction = a, b, c
+#			@stdout.puts "o #{row} #{col} #{direction.to_s.upcase}"
+#		end
+#	end 
+
+	def order ant, direction
+		# Write to standard out
+		ant, direction = a, b
+		@stdout.puts "o #{ant.row} #{ant.col} #{direction.to_s.upcase}"
+		
+		orders[ant] = ant.square.neighbour direction
+
+	end 
+
 	
 	
 	
