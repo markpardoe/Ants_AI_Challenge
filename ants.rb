@@ -46,8 +46,8 @@ class Ant
   		
 	end
 	
-	def printCoordinates
-		return [row, col].inspect
+	def to_s
+		return 'Ant' + [row, col].inspect
 	end
 	
 	def location
@@ -118,6 +118,22 @@ class Square
   		end
   		
   		return row == object.row && col == object.col
+	end
+	
+	def to_s
+		if (@water)
+			code = "W"
+		elsif (@hill)
+			code = "H"
+		elsif (@food)
+			code = "F"
+		elsif (ant?)
+			code = "A"
+		else
+			code = "-"
+		end
+		
+		return location.inspect + " - " 
 	end
 end
 

@@ -198,7 +198,7 @@ class AI
 		@stdout.puts "o #{ant.row} #{ant.col} #{direction.to_s.upcase}"
 		
 		orders[ant] = ant.square.neighbor(direction)
-		puts ant.printCoordinates + " --> " + [ant.square.neighbor(direction).row, ant.square.neighbor(direction).col].inspect
+	#	puts ant.printCoordinates + " --> " + [ant.square.neighbor(direction).row, ant.square.neighbor(direction).col].inspect
 	end 
 
 	

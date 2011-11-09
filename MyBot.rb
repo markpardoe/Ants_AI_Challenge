@@ -12,10 +12,7 @@ ai.run do |ai|
 	# your turn code here
 
 	ai.orders.clear
-	x = 0
-	puts " ------------------------"
 	ai.my_ants.each do |ant|
-		puts "Ant " + x.to_s + ": "+ ant.printCoordinates
 		x = x+1
 		# try to go north, if possible; otherwise try east, south, west.
 		[:N, :E, :S, :W].each do |dir|
