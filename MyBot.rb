@@ -1,6 +1,7 @@
 $:.unshift File.dirname($0)
 require 'ants.rb'
 require 'AI.rb'
+require 'Tile.rb'
 
 ai=AI.new
 
@@ -16,7 +17,7 @@ ai.run do |ai|
 
 		# try to go north, if possible; otherwise try east, south, west.
 		[:N, :E, :S, :W].each do |dir|
-			if ant.square.neighbor(dir).is_unoccupied?
+			if ant.tile.neighbor(dir).is_passable?
 				ant.order dir
 				break
 			end
