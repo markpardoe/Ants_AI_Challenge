@@ -11,7 +11,7 @@ end
 
 ai.run do |ai|
 	# your turn code here
-
+		
 	ai.orders.clear
 	ai.my_ants.each do |ant|
 

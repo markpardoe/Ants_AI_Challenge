@@ -138,23 +138,27 @@ class AI
 		@my_ants=[]
 		@enemy_ants=[]
 		
+		# reset the map data
+		@map.each do |row|
+			row.each do |square|
+				square.food=false
+				square.ant=nil
+				square.hill=false
+			end
+		end
+		
 		until((rd=@stdin.gets.strip)=='go')
 			_, type, row, col, owner = *rd.match(/(w|f|h|a|d) (\d+) (\d+)(?: (\d+)|)/)
 			row, col = row.to_i, col.to_i
 			owner = owner.to_i if owner
 			
 			tile = @map[row][col]
-						
-			if (tile.nil?)
-				tile = Tile.new row, col, self
-				@map[row][col] = tile
-			end
-			
+									
 			# Food, ant and hills are transitory - so clear and repopulate if needed
 			# Allows historical data to be retained, but if the tile is visible, updates with new values
-			tile.food = false
-			tile.hill = false
-			tile.ant = nil
+		#	tile.food = false
+		#	tile.hill = false
+		#	tile.ant = nil
 			
 			case type
 				when 'w'

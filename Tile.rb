@@ -93,6 +93,12 @@ class Tile
 		
 		return location.inspect + " - " 
 	end
+	
+	# Expects a 2 element array [row, col]
+	def distance_from_point(point)
+		(@row - point[0])**2  + (@column - point[1])**2 
+	end
+	
 end
 
 
