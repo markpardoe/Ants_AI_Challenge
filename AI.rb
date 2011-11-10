@@ -60,8 +60,7 @@ class AI
 		@stdout.puts 'go'
 		@stdout.flush
 		
-		# Default value is Unknown
-		@map= Hash.new (nil)
+		@map=Array.new(@rows){|row| Array.new(@cols){|col| Tile.new row, col, self } }
 		@did_setup=true
 	end
 	
@@ -107,6 +106,12 @@ class AI
 		@spawnradius=Math.sqrt @spawnradius2
 	end
 	
+	
+		
+	
+	
+	
+	
 	# Internal; reads turn input (map state).
 	def read_turn
 		ret=false
@@ -138,11 +143,11 @@ class AI
 			row, col = row.to_i, col.to_i
 			owner = owner.to_i if owner
 			
-			tile = @map[[row,col]]
-			
+			tile = @map[row][col]
+						
 			if (tile.nil?)
 				tile = Tile.new row, col, self
-				@map[[row,col]] = tile
+				@map[row][col] = tile
 			end
 			
 			# Food, ant and hills are transitory - so clear and repopulate if needed
@@ -157,11 +162,6 @@ class AI
 				when 'f'
 					tile.food = true
 				when 'h'
-					#if (owner) == 0
-				#		@map[[row,col]] = :Home
-				#	else
-				#		@map[[row,col]] = :Hill
-				#	end
 					tile.hill = true
 				when 'a'
 					a=Ant.new true, owner, tile, self
@@ -172,6 +172,7 @@ class AI
 						enemy_ants.push a
 					end
 				when 'd'	# Ignore dead ants for now
+					tile.ant = nil
 				when 'r'
 					# pass
 				else
@@ -193,10 +194,10 @@ class AI
 		# Write to standard out
 	#	ant, direction = a, b
 		@stdout.puts "o #{ant.row} #{ant.col} #{direction.to_s.upcase}"
-		dest = neighbour(ant.location, direction)
+		dest = ant.tile.neighbor(direction)
 		orders[ant] = dest
 		ant.target = dest
-	#	puts ant.printCoordinates + " --> " + [ant.square.neighbor(direction).row, ant.square.neighbor(direction).col].inspect
+	#	@stdout.puts ant.printCoordinates + " --> " + [ant.square.neighbor(direction).row, ant.square.neighbor(direction).col].inspect
 	end 
 	
 	

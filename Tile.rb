@@ -54,18 +54,14 @@ class Tile
 		else
 			raise 'incorrect direction'
 		end
-		
-		tile = @ai.map[[row, col]]
-		if (tile.nil?)
-			tile = Tile.new(row,col,@ai)
-			@ai.map[[row,col]] = tile
-		end
-		
-		return tile
+	#	puts "Neightbout: " + direction.to_s + " -" + [row,col].inspect
+		return @ai.map[row][col]
 	end
 	
 	def is_passable?
-		return !@water && !@food && ant_moved?  && @ai.orders.has_value?(self)
+	#	puts self.to_s + " -- Water = " + @water.to_s + " -- Food: " + @food.to_s + " -- Moved: " + ant_moved?.to_s + " -- OrderFound: " + @ai.orders.has_value?(self).to_s
+
+		return !@water && !@food && ant_moved? && !@ai.orders.has_value?(self)
 	end
 	
 	def location
