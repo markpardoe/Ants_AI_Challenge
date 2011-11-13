@@ -9,12 +9,15 @@ class Tile
 	attr_accessor :col
 	
 	# Boolean values (except AI!)
-	attr_accessor :water, :food, :hill, :ai
+	attr_accessor :water, :food, :hill
 	
-	attr_accessor :target
-	
-	def initialize row, col, ai
-		@water, @food, @hill, @ant, @row, @col, @ai = false, false, false, nil, row, col, ai
+	def initialize row, col
+		@water = false
+		@food = false
+		@hill = false
+		@ant = nil
+		@row = row
+		@col = col
 	end
 	
 	# Returns true if this square is not water. Square is passable if it's not water, it doesn't contain alive ants and it doesn't contain food.
@@ -28,44 +31,20 @@ class Tile
 	# Returns true if this square has an alive ant.
 	def ant?; @ant and @ant.alive?; end;
 	
-	#Checks if an ant on this square has moved off....
-	# Returns true if no ant to indicate the square is free
-	def ant_moved?
-		if @ant
-			ant.moved?
-		else
-			true
-		end
-	end
 	
-	# Returns a square neighboring this one in given direction.
-	def neighbor direction
-		direction=direction.to_s.upcase.to_sym # canonical: :N, :E, :S, :W
-	
-		case direction
-		when :N
-			row, col = @ai.normalize @row-1, @col
-		when :E
-			row, col = @ai.normalize @row, @col+1
-		when :S
-			row, col = @ai.normalize @row+1, @col
-		when :W
-			row, col = @ai.normalize @row, @col-1
-		else
-			raise 'incorrect direction'
-		end
-	#	puts "Neightbout: " + direction.to_s + " -" + [row,col].inspect
-		return @ai.map[row][col]
-	end
+	#  Tile[0] = row
+	#  Tile[1] = column
+	def [](index)
+		location[index]
+ 	end
 	
 	def is_passable?
-	#	puts self.to_s + " -- Water = " + @water.to_s + " -- Food: " + @food.to_s + " -- Moved: " + ant_moved?.to_s + " -- OrderFound: " + @ai.orders.has_value?(self).to_s
-
-		return !@water && !@food && ant_moved? && !@ai.orders.has_value?(self)
+	#	Can't move to a square containing water, food or an ant.
+		return !@water && !@food && !@ant
 	end
 	
 	def location
-		return [row, col]
+		return [@row, @col]
 	end 
 	
 	def eql? (object)
@@ -75,7 +54,7 @@ class Tile
   			 return false
   		end
   		
-  		return row == object.row && col == object.col
+  		return @row == object.row && @col == object.col
 	end
 	
 	def to_s
@@ -94,10 +73,7 @@ class Tile
 		return location.inspect + " - " 
 	end
 	
-	# Expects a 2 element array [row, col]
-	def distance_from_point(point)
-		(@row - point[0])**2  + (@column - point[1])**2 
-	end
+
 	
 end
 

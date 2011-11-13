@@ -1,7 +1,6 @@
 
 class AI
-	# Map, as a hash of co-ordinates to Tiles
-	attr_accessor :map
+
 	
 	# Number of current turn. If it's 0, we're in setup turn. If it's :game_over, you don't need to give any orders; instead, you can find out the number of players and their scores in this game.
 	attr_accessor	:turn_number
@@ -16,23 +15,20 @@ class AI
 	# Array of scores of players (you are player 0). Available only after game's over.
 	attr_accessor :score
 	
-	#Hash of ant => Location [Row,column] array
-	attr_accessor :orders
+	attr_accessor :map
+	
+	
+	
 
 	# Initialize a new AI object. Arguments are streams this AI will read from and write to.
 	def initialize stdin=$stdin, stdout=$stdout
 		@stdin, @stdout = stdin, stdout
-
-		@map=nil
 		@turn_number=0
-		
-		@my_ants=[]
-		@enemy_ants=[]
-		
 		@did_setup=false
-		
-		@orders = Hash.new()
+				
 	end
+	
+	
 	
 	# Returns a read-only hash of all settings.
 	def settings
@@ -59,8 +55,7 @@ class AI
 		
 		@stdout.puts 'go'
 		@stdout.flush
-		
-		@map=Array.new(@rows){|row| Array.new(@cols){|col| Tile.new row, col, self } }
+		@map = Map.new(@rows, @cols, self)
 		@did_setup=true
 	end
 	
@@ -107,11 +102,6 @@ class AI
 	end
 	
 	
-		
-	
-	
-	
-	
 	# Internal; reads turn input (map state).
 	def read_turn
 		ret=false
@@ -134,18 +124,8 @@ class AI
 			@turn_number=num.to_i
 		end
 	
+		@map.reset
 		
-		@my_ants=[]
-		@enemy_ants=[]
-		
-		# reset the map data
-		@map.each do |row|
-			row.each do |square|
-				square.food=false
-				square.ant=nil
-				square.hill=false
-			end
-		end
 		
 		until((rd=@stdin.gets.strip)=='go')
 			_, type, row, col, owner = *rd.match(/(w|f|h|a|d) (\d+) (\d+)(?: (\d+)|)/)
@@ -153,13 +133,7 @@ class AI
 			owner = owner.to_i if owner
 			
 			tile = @map[row][col]
-									
-			# Food, ant and hills are transitory - so clear and repopulate if needed
-			# Allows historical data to be retained, but if the tile is visible, updates with new values
-		#	tile.food = false
-		#	tile.hill = false
-		#	tile.ant = nil
-			
+												
 			case type
 				when 'w'
 					tile.water = true
@@ -168,13 +142,10 @@ class AI
 				when 'h'
 					tile.hill = true
 				when 'a'
-					a=Ant.new true, owner, tile, self
-					tile.ant = a
-					if owner==0
-						my_ants.push a
-					else
-						enemy_ants.push a
-					end
+					ant = Ant.new true, owner, tile, @map
+					tile.ant = ant
+					@map.add_ant ant
+					
 				when 'd'	# Ignore dead ants for now
 					tile.ant = nil
 				when 'r'
@@ -187,36 +158,12 @@ class AI
 		return ret
 	end
 	
-
-	#Values: Ant => Ant Square 
-	#Values: Enemy => Enemy ant Square 
-	#Values: Hill => Enemy Hill Square 
-	#Values: Home	=> My Hill(s)
-	
-	
-	def order ant, direction
+	# Point can be an ant, a tile or a location
+	def order point, direction
 		# Write to standard out
 	#	ant, direction = a, b
-		@stdout.puts "o #{ant.row} #{ant.col} #{direction.to_s.upcase}"
-		dest = ant.tile.neighbor(direction)
-		orders[ant] = dest
-		ant.target = dest
-	#	@stdout.puts ant.printCoordinates + " --> " + [ant.square.neighbor(direction).row, ant.square.neighbor(direction).col].inspect
+		@stdout.puts "o #{point[0]} #{point[1]} #{direction.to_s.upcase}"
 	end 
 	
-	
-	# Returns an array of your alive ants on the gamefield.
-	def my_ants; @my_ants; end
-	# Returns an array of alive enemy ants on the gamefield.
-	def enemy_ants; @enemy_ants; end
-	
-	# If row or col are greater than or equal map width/height, makes them fit the map.
-	#
-	# Handles negative values correctly (it may return a negative value, but always one that is a correct index).
-	#
-	# Returns [row, col].
-	def normalize row, col
-		[row % @rows, col % @cols]
-	end
 	
 end

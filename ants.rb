@@ -9,11 +9,11 @@ class Ant
 	# Square this ant sits on.
 	attr_accessor :tile
 	
-	attr_accessor :alive, :ai
+	attr_accessor :alive, :Map
 	attr_accessor :target
 	
-	def initialize alive, owner, tile, ai
-		@alive, @owner, @tile, @ai = alive, owner, tile, ai
+	def initialize alive, owner, tile, map
+		@alive, @owner, @tile, @map = alive, owner, tile, map
 		@target = nil
 	end
 	
@@ -27,7 +27,7 @@ class Ant
 	# Equivalent to ant.owner!=0.
 	def enemy?; owner!=0; end
 	
-	#Equivalent to ant.moved==0
+	#Equivalent to !ant.target.nil?
 	def moved?; @target; end
 	
 	# Returns the row of square this ant is standing at.
@@ -36,10 +36,11 @@ class Ant
 	def col; @tile.location[1]; end
 	
 	# Order this ant to go in given direction. Equivalent to ai.order ant, direction.
-	def order direction
-		@ai.order self, direction
+	def move_direction direction
+		@map.move_ant self, direction
 	end
 	
+
 	def eql? (object)
 		if object.equal?(self)
 			return true 
@@ -61,6 +62,10 @@ class Ant
 	def location
 		return @tile.location
 	end 
+	
+	def [](index)
+		location[index]
+ 	end
 end
 
 
