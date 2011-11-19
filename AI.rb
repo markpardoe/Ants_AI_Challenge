@@ -131,23 +131,18 @@ class AI
 			_, type, row, col, owner = *rd.match(/(w|f|h|a|d) (\d+) (\d+)(?: (\d+)|)/)
 			row, col = row.to_i, col.to_i
 			owner = owner.to_i if owner
-			
-			tile = @map[row][col]
 												
 			case type
 				when 'w'
-					tile.water = true
+					@map.add_water row, col
 				when 'f'
-					tile.food = true
+					@map.add_food row, col
 				when 'h'
-					tile.hill = true
+					@map.add_hill row, col, owner
 				when 'a'
-					ant = Ant.new true, owner, tile, @map
-					tile.ant = ant
-					@map.add_ant ant
-					
+					@map.add_ant row, col, owner
 				when 'd'	# Ignore dead ants for now
-					tile.ant = nil
+					# do nothing
 				when 'r'
 					# pass
 				else

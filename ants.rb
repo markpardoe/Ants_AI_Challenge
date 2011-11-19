@@ -10,11 +10,11 @@ class Ant
 	attr_accessor :tile
 	
 	attr_accessor :alive, :Map
-	attr_accessor :target
+	attr_accessor :moved
 	
 	def initialize alive, owner, tile, map
 		@alive, @owner, @tile, @map = alive, owner, tile, map
-		@target = nil
+		@moved = false
 	end
 	
 	# True if ant is alive.
@@ -27,8 +27,8 @@ class Ant
 	# Equivalent to ant.owner!=0.
 	def enemy?; owner!=0; end
 	
-	#Equivalent to !ant.target.nil?
-	def moved?; @target; end
+	#Equivalent to !ant.moved?
+	def moved?; @moved; end
 	
 	# Returns the row of square this ant is standing at.
 	def row; @tile.location[0]; end
@@ -47,7 +47,6 @@ class Ant
 		elsif !self.class.equal?(object.class)
   			 return false
   		end
-  		
   		return @owner == object.owner && @alive = object.alive? && row == object.row && col == object.col	
 	end
 	
@@ -66,6 +65,7 @@ class Ant
 	def [](index)
 		location[index]
  	end
+ 	
 end
 
 
