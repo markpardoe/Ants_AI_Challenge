@@ -2,6 +2,7 @@ $:.unshift File.dirname($0)
 require 'ants.rb'
 require 'AI.rb'
 require 'Tile.rb'
+require 'MapController.rb'
 require 'Map.rb'
 require 'InfluenceMap.rb'
 
@@ -14,9 +15,9 @@ end
 
 ai.run do |ai|
 	# your turn code here
-	@map = ai.map	
+	@mapController = ai.mapController	
 
-	@map.my_ants.each do |ant|
+	@mapController.my_ants.each do |ant|
 
 		# try to go north, if possible; otherwise try east, south, west.
 		#[:N, :E, :S, :W].each do |dir|
@@ -25,8 +26,12 @@ ai.run do |ai|
 	#			break
 	#		end
 	#	end
-		ant.move_direction @map.get_best_direction(ant)
-	
+	#	puts ant.location.inspect
+		bestDir = @mapController.get_best_direction(ant)
+		
+		
+		@mapController.move_ant ant, bestDir if (!bestDir.nil?)
+
 	end
 	
 end

@@ -12,8 +12,8 @@ class Ant
 	attr_accessor :alive, :Map
 	attr_accessor :moved
 	
-	def initialize alive, owner, tile, map
-		@alive, @owner, @tile, @map = alive, owner, tile, map
+	def initialize alive, owner, tile, mapController, map
+		@alive, @owner, @tile, @mapController, @map = alive, owner, tile, mapController, map
 		@moved = false
 	end
 	
@@ -34,11 +34,11 @@ class Ant
 	def row; @tile.location[0]; end
 	# Returns the column of square this ant is standing at.
 	def col; @tile.location[1]; end
-	
-	# Order this ant to go in given direction. Equivalent to ai.order ant, direction.
-	def move_direction direction
-		@map.move_ant self, direction
-	end
+	# 
+	# # Order this ant to go in given direction. Equivalent to ai.order ant, direction.
+	# def move_direction direction
+	# 	@map.move_ant self, direction
+	# end
 	
 
 	def eql? (object)

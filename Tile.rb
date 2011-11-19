@@ -19,7 +19,9 @@ class Tile
 	# Boolean values (except AI!)
 	attr_accessor :water, :food, :hill
 	
-	def initialize row, col
+	attr_reader :index
+	
+	def initialize row, col, index
 		@water = false
 		@food = false
 		@hill = false
@@ -28,6 +30,7 @@ class Tile
 		@col = col
 		@scout_value = 0
 		@food_influence = 0.0
+		@index = index
 	end
 	
 	def reset
@@ -35,7 +38,7 @@ class Tile
 		@ant=nil
 		@hill=false
 		@scout_value +=1
-		@food_influence = 0#@food_influence / 3.0 if !@water
+		@food_influence = 0  #@food_influence / 3.0 if !@water
 	end
 	
 	def scout_value
@@ -45,6 +48,7 @@ class Tile
 			0 # water always counts as scouted...
 		end
 	end
+
 	
 	# Returns true if this square is not water. Square is passable if it's not water, it doesn't contain alive ants and it doesn't contain food.
 	def land?; !@water; end
@@ -60,12 +64,6 @@ class Tile
 	def viewed?(gameLength)
 		return (@scout_value < gameLength)
 	end
-	
-	#  Tile[0] = row
-	#  Tile[1] = column
-	def [](index)
-		location[index]
- 	end
 	
  	
 	def is_passable?
@@ -84,7 +82,7 @@ class Tile
   			 return false
   		end
   		
-  		return @row == object.row && @col == object.col
+  		return @index == object.index
 	end
 	
 	def to_s

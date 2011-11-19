@@ -15,7 +15,7 @@ class AI
 	# Array of scores of players (you are player 0). Available only after game's over.
 	attr_accessor :score
 	
-	attr_accessor :map
+	attr_accessor :mapController
 	
 	
 	
@@ -55,7 +55,7 @@ class AI
 		
 		@stdout.puts 'go'
 		@stdout.flush
-		@map = Map.new(@rows, @cols, self)
+		@mapController = MapController.new(@rows, @cols, self)
 		@did_setup=true
 	end
 	
@@ -124,7 +124,7 @@ class AI
 			@turn_number=num.to_i
 		end
 	
-		@map.reset
+		@mapController.reset
 		
 		
 		until((rd=@stdin.gets.strip)=='go')
@@ -134,13 +134,13 @@ class AI
 												
 			case type
 				when 'w'
-					@map.add_water row, col
+					@mapController.add_water row, col
 				when 'f'
-					@map.add_food row, col
+					@mapController.add_food row, col
 				when 'h'
-					@map.add_hill row, col, owner
+					@mapController.add_hill row, col, owner
 				when 'a'
-					@map.add_ant row, col, owner
+					@mapController.add_ant row, col, owner
 				when 'd'	# Ignore dead ants for now
 					# do nothing
 				when 'r'
