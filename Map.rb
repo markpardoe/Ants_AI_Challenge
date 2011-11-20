@@ -3,9 +3,21 @@ class Map
 
 #columns = x
 #rows = y
- attr_accessor @scoutvalues
- attr_accessor @foodvalues
- attr_accessor @isLand
+
+	# How many turns since this square was last seen.
+	# Can be used to allow scouting of unspotted squares
+	# To get the value, call tile.scount_value
+	# This allows us to take account of water squares which will always be zero
+ 	attr_accessor :scoutValues
+ 	
+ 	# Food influence map
+ 	attr_accessor :foodValues
+ 
+ 	# 0 = land
+ 	# 1 = water
+ 	# 2 = ant (temp block)
+ 	# 3 = food (temp block)
+ 	attr_accessor :isPassable
  
 
 	#Creates the new map object of the given size
@@ -15,24 +27,37 @@ class Map
 		@tilemap= Array.new(@rows){|row| Array.new(@cols){|col| Tile.new(row,col, col + (row * @cols)) } }
 		@tilemap = @tilemap.flatten
 		
-		@scoutvalues = Array.new(rows*columns,0)
-		@foodvalues = Array.new(rows*columns,0)
-		@isLand  = Array.new(rows*columns,true)
+		@scoutValues = Array.new(rows*columns,0)
+		@foodValues = Array.new(rows*columns,0)
+		@isPassable  = Array.new(rows*columns,0)
+	end
+
+	def reset() 
+		# propegate all influence values
+		# Update visible squares
+		@scoutValues.map! {|x| x+1 }
+		
+		# Regenerate food values
+		@foodValues = Array.new(@rows*@cols,0)
 	end
 	
 	 def each
 	 	 @tilemap.each{|tile|yield tile}
 	 end
 	
+	 def calculateIndex(row,col)
+	 	row = row % @rows if (row >= @rows or row<0)
+		col =col % @cols if (col >= @cols or col<0)
+		return (col + (row * @cols))
+ 	end
+	 
 	def getTileAtIndex(ix)
 		return @tilemap[ix]
 	end
 	
 	# Get the tile from the tileMap
 	def getTile(row, col)
-		row = row % @rows if (row >= @rows or row<0)
-		col =col % @cols if (col >= @cols or col<0)
-		return @tilemap[col + (row * @cols)]
+		return @tilemap[calculateIndex(row,col)]
 	end
 	
 	def getTileAtPoint(point) 
@@ -41,13 +66,6 @@ class Map
 	
 	def [](row,col)
 		return getTile(row,col)
-	end
-	
-	# If row or col are greater than or equal map width/height, makes them fit the map.
-	# Handles negative values correctly (it may return a negative value, but always one that is a correct index).
-	# Returns [row, col].
-	def normalize row, col
-		[row % @rows, col % @columns]
 	end
 	
 	
@@ -106,19 +124,135 @@ class Map
 		 	(startVal..endVal).each do |x|
 		 		x = x % @rows if (x >= @rows or x<0)	# normalise if value on edges of square
 
-		 		@tilemap[x + row].scout_value = 0
+		 		@scoutValues[x + row] = 0
+		 		# Clear the food value for this square as it is visible.
+		 		@foodValues[x+row] = 0
 		 	end
 		 end
+	end
+	
+	def addPoint (row, col, pointType)
+		ix= calculateIndex(row,col)
+		case pointType
+		when :food
+			@isPassable[ix] = 3
+			@foodValues[ix] = 5000
+		when :water
+			@isPassable[ix] = 1
+		when :ant
+			@isPassable[ix] = 2
+			update_view_range([row,col])
+		else
+			raise 'Invalid Point Added'
+		end	
 	end
 	
 	def to_s
 		s = ""
 		@rows.times do |row|
-			s << @tilemap[row*@cols, @cols].inspect << "\n"
+			s = s<< @foodValues[row*@cols, @cols].join(" ") << "\n"
 		end
 		s
 	end
+	
+
+	
+	def blur(radius)
+		tmpVals = Array.new(@rows*@cols, 0)
+		blur_horizontal(@foodValues, tmpVals,radius)
+		blur_vertical(tmpVals, @foodValues,radius)
+	end
+	
+	def blur_horizontal(source, dest,radius)
+		(0..@rows-1).each do |y|
+			total = 0
+			count = 0
+				
+			 # Process entire window for first pixel on left
+			(-radius..radius).each do |kx|	
+				nIx = calculateIndex(kx, y )
+				if (@isPassable[nIx] != 1)
+					total += source[nIx]
+					count +=1
+				end
+			end
+			dest[calculateIndex(0,y)] =  (total >0) ? (total / count) * 0.9 : 0
+			
+			# Subsequent pixels just update window total		
+		    (1..@cols-1).each do |x|
+	
+		        #  Subtract pixel leaving window
+		        oldIx = calculateIndex(x - radius - 1,y)
+				if (@isPassable[oldIx] != 1)
+					total -= source[oldIx]
+					count -= 1
+				end
+				# Add new pixel entering window
+				nIx = calculateIndex(x + radius,y)
+				if (@isPassable[nIx] != 1)
+					total += source[nIx]
+					count += 1
+				end
+				
+				dest[calculateIndex(x,y)] =  (total >0) ? (total / count) * 0.9 : 0
+			end	
+		end
+	end
+	
+	def blur_vertical(source, dest,radius)
+	    (0..@cols-1).each do |x|
+	    	total = 0
+			count = 0
+			
+	    	 # Process entire window for first pixel on left
+			(-radius..radius).each do |ky|	
+				nIx = calculateIndex(x, ky )
+				if (@isPassable[nIx] != 1)
+					total += source[nIx]
+					count +=1
+				end
+			end
+			dest[calculateIndex(x,0)]=  (total >0) ? (total / count) * 0.9 : 0
+	    	
+			# Subsequent pixels just update window total		
+		    (1..@rows-1).each do |y|
+	
+		        #  Subtract pixel leaving window
+		        oldIx = calculateIndex(x,y - radius - 1)
+				if (@isPassable[oldIx] != 1)
+					total -= source[oldIx]
+					count -= 1
+				end
+				# Add new pixel entering window
+				nIx = calculateIndex(x, y + radius)
+				if (@isPassable[nIx] != 1)
+					total += source[nIx]
+					count += 1
+				end
+				
+				dest[calculateIndex(x,y)] =  (total >0) ? (total / count) * 0.9 : 0
+			end	
+		end
+	end
+	
+	def food_value(ix)
+		@foodValues[ix]
+	end
 end
 
+puts "-----------------------------------"
+m = Map.new(43,39)
+m.addPoint(28,17,:food)
+m.addPoint(26,19,:food)
+m.addPoint(28,21,:food)
+m.addPoint(35,19,:food)
+beginning = Time.now
+m.blur(4)
+m.blur(4)
 
+puts "home = #{m.food_value(m.calculateIndex(28,19))}"
+puts "N = #{m.food_value(m.calculateIndex(27,19))}"
+puts "S = #{m.food_value(m.calculateIndex(29,19))}"
+puts m.to_s
+puts "Time elapsed for Blur2: #{Time.now - beginning} seconds"
 

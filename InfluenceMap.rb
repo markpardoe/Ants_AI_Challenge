@@ -1,61 +1,33 @@
 
-foodValue = 100
-foodDecay = 6.0
-distance = 0
-beginning = Time.now
+class InfluenceMap < Array
 
-	map = Array.new()
-	(0..199).each do |x|
-		map[x] = Array.new(200, x**2)
+	def initialize(rows, columns, defaultValue)
+		super(rows*columns, defaultValue)
+		@rows = rows
+		@cols = columns
 	end
-		map[4][4] = 200
-(1...5).each do |x|
 
-	map.each do |row|
-		row.each do |val|
-			val = val *2
-		end
+	def calculateIndex(row,col)
+	 	row = row % @rows if (row >= @rows or row<0)
+		col =col % @cols if (col >= @cols or col<0)
+		return (col + (row * @cols))
+ 	end
+
+	def increment(value) 
+		self.each_with_index {|x, i| self[i] = x + value}
 	end
+	
+	def getValue(row, col)
+		return self[calculateIndex(row,col)]
+	end
+	
 end
 
+m = Array.new(5, Integer(5))
+m[2] = 4
 
-
-	
-# code block
-puts "Time elapsed #{Time.now - beginning} seconds"
-
-
-# 
-# def propagateInfluence()
-# 	maxInf = 0.0
-# 	
-# 	#map.each_with_index do |rowMap, row |
-# 	#	rowMap.each_with_index do |val, col|
-# 	#		connections = [[row, col-1], [row, col+1], [row-1, col], [row+1, col], [row+1,col+1], [row-1,col-1]]]
-# 			
-# 	#		connections.each do |connect|
-# 	#			inf = 	
-# 	#		end
-# 	#	end
-# 	#end
-# end
-	
-
-
-# 	void InfluenceMap::propagateInfluence()
-# {
-#   for (size_t i = 0; i < m_pAreaGraph->getSize(); ++i)
-#   {
-	# 	float maxInf = 0.0f;
-	# 	Connections& connections = m_pAreaGraph->getEdgeIndices(i);
-	# 	for (Connections::const_iterator it = connections.begin();
-	#  		it != connections.end(); ++it)
-	# 	 { 
-	#   	const AreaConnection& c = m_pAreaGraph->getEdge(*it);
-	#   	float inf = m_Influences[c.neighbor] * expf(-c.dist * m_fDecay);
-	#    	maxInf = std::max(inf, maxInf);
-	#  	 }
-	# 
-	# 	m_Influences[i] = lerp(m_Influences[i], maxInf, m_fMomentum);
-#   }
-# }
+c = m.dup
+c[2] = 6
+puts m.inspect
+puts ""
+puts c.inspect

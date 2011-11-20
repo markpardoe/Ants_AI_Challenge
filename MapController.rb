@@ -10,22 +10,15 @@ class MapController
 	def initialize(rows, columns, ai)	
 
 		@map = Map.new(rows, columns)
-		@rows = rows
-		@columns = columns
-		@map = Map.new(rows, columns)
 		@map.generate_view_area(ai.viewradius2)
 
 		@ai = ai
 		@my_ants=[]
 		@enemy_ants=[]
-		
-		@foodValue = 100
-		 @foodDecay = 6.0
+		@food = []
 	end
 	
-	
 
-	
 	
 	def reset 
 		@my_ants=[]
@@ -33,8 +26,19 @@ class MapController
 		@map.each do |tile|
 			tile.reset
 		end
+		@food = []
+		@map.reset
+		
 	end
 	
+	def map_created() 
+		@food.each do |ix|
+			@map.addPoint(ix[0], ix[1], :food)
+		end
+		
+		@map.blur(4)
+		@map.blur(4)
+	end
 
 
 	# Expects two 2 element arrays [x, y], [x1,y1]
@@ -90,15 +94,14 @@ class MapController
 
 	#Add a food source to the map
 	def add_food x, y
-		@map[x,y].food = true
-		@map[x,y].food_influence = [@map[x,y].food_influence + 85,100].max
+		@food.push([x,y])
 	end
 	
 	# Add a water tile to the map
 	def add_water x, y
 		t = @map[x,y]
 		t.water = true
-		t.food_influence = nil
+		@map.addPoint(x,y, :water)
 	end
 	
 	# Add a hill tile to the map
@@ -110,6 +113,8 @@ class MapController
 	def add_ant row, col, owner
 		ant = Ant.new true, owner, @map[row,col], self, @map
 		@map[row,col].ant = ant
+		@map.addPoint(row, col, :ant)
+		
 		if ant.owner==0
 			@my_ants.push ant
 			@map.update_view_range(ant.location)
@@ -119,7 +124,7 @@ class MapController
 	end
 	
 
-	def get_best_direction(point)
+	def get_best_direction(tile)
 	#		try to go north, if possible; otherwise try east, south, west.
 		# [:N, :E, :S, :W].each do |dir|
 		# 	if neighbor(ant, dir).is_passable?
@@ -127,37 +132,20 @@ class MapController
 		# 		break
 		# 	end
 		# end
-		maxVal = -0.1
-		maxDir = nil
+		maxVal =  0
+		maxDir =  nil
+		
 		[:N, :E, :S, :W].each do |dir|
-			t = neighbor(point, dir)
-			puts "#{t.location.inspect} is passable: #{t.is_passable?}  Value = #{t.food_influence}"
-			if (t.is_passable? && t.food_influence > maxVal) 
+			t = neighbor(tile, dir)
+			val = @map.food_value(t.index)
+			puts "#{t.location.inspect} is passable: #{t.is_passable?}  Value = #{val}"
+			if (t.is_passable? && val > maxVal) 
 				
 				maxDir = dir
-				maxVal = t.food_influence
+				maxVal = val
 			end
 		end
 		
 		return maxDir
 	end
-		# 
-		# 
-		# def value_in_direction x, y, direction
-		# 	case direction
-		# 	when :N
-		# 		return @map[x,y-1].food_value ||=0 
-		# 	when :E
-		# 		return @map[x+1,y].food_value ||=0 
-		# 	when :S
-		# 		return @map[x,y+1].food_value ||=0 
-		# 	when :W
-		# 		return @map[x-1,y].food_value ||=0 
-		# 	else
-		# 		raise 'incorrect direction'
-		# 		return 0
-		# 	end
-		# 	return 0
-		# 	
-		# end
 end

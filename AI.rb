@@ -149,7 +149,7 @@ class AI
 					warn "unexpected: #{rd}"
 			end
 		end
-
+			@mapController.map_created
 		return ret
 	end
 	

@@ -8,14 +8,6 @@ class Tile
 	# Which column this square belongs to.
 	attr_accessor :col
 	
-	attr_accessor :food_influence
-	
-	# How many turns since this square was last seen.
-	# Can be used to allow scouting of unspotted squares
-	# To get the value, call tile.scount_value
-	# This allows us to take account of water squares which will always be zero
-	attr_writer  :scout_value
-	
 	# Boolean values (except AI!)
 	attr_accessor :water, :food, :hill
 	
@@ -28,8 +20,6 @@ class Tile
 		@ant = nil
 		@row = row
 		@col = col
-		@scout_value = 0
-		@food_influence = 0.0
 		@index = index
 	end
 	
@@ -37,16 +27,6 @@ class Tile
 		@food=false
 		@ant=nil
 		@hill=false
-		@scout_value +=1
-		@food_influence = 0  #@food_influence / 3.0 if !@water
-	end
-	
-	def scout_value
-		if land?
-			@scout_value
-		else
-			0 # water always counts as scouted...
-		end
 	end
 
 	
@@ -101,7 +81,9 @@ class Tile
 		return location.inspect + " - " 
 	end
 	
-
+	def [](index)
+		location[index]
+ 	end
 	
 end
 

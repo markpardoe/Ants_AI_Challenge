@@ -27,7 +27,7 @@ ai.run do |ai|
 	#		end
 	#	end
 	#	puts ant.location.inspect
-		bestDir = @mapController.get_best_direction(ant)
+		bestDir = @mapController.get_best_direction(ant.tile)
 		
 		
 		@mapController.move_ant ant, bestDir if (!bestDir.nil?)
