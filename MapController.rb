@@ -36,20 +36,12 @@ class MapController
 			@map.addPoint(ix[0], ix[1], :food)
 		end
 		
-		@map.blur(4)
-		@map.blur(4)
+	#	@map.blur(4)
+	#	@map.blur(4)
 	end
 
 
-	# Expects two 2 element arrays [x, y], [x1,y1]
-	# Or two tiles
- 	# Or two ant
- 	# Or any combination of the above...
-	def move_distance(point1, point2)
-		#http://en.wikipedia.org/wiki/Taxicab_geometry
-		(point1[0] - point2[0]).abs + (point1[1]-point2[1]).abs
-	end
-	
+
 	def move_ant ant, direction
 		# Write to standard out
 	#	ant, direction = a, b
@@ -85,12 +77,6 @@ class MapController
 		return @map[x,y]
 	end
 	
-	# def all_neighbours(point)
-	# 	x = point[0]
-	# 	y = point[1]
-	# 	return [@map[x,y-1], @map[x,y+1], @map[x-1,y],@map[x+1,y]] #.select {|tile| tile.is_passable?}	
-	# end
-
 
 	#Add a food source to the map
 	def add_food x, y
@@ -113,13 +99,14 @@ class MapController
 	def add_ant row, col, owner
 		ant = Ant.new true, owner, @map[row,col], self, @map
 		@map[row,col].ant = ant
-		@map.addPoint(row, col, :ant)
+
 		
 		if ant.owner==0
 			@my_ants.push ant
-			@map.update_view_range(ant.location)
+			@map.addPoint(row, col, :ant)
 		else
 			@enemy_ants.push ant
+			@map.addPoint(row, col, :enemy)
 		end
 	end
 	

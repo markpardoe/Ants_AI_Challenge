@@ -12,6 +12,8 @@ class Map
  	
  	# Food influence map
  	attr_accessor :foodValues
+ 	attr_accessor :myInfluence
+ 	attr_accessor :enemyInfluence
  
  	# 0 = land
  	# 1 = water
@@ -29,6 +31,8 @@ class Map
 		
 		@scoutValues = Array.new(rows*columns,0)
 		@foodValues = Array.new(rows*columns,0)
+		@enemyInfluence = Array.new(rows*columns,0)
+		@myInfluence = Array.new(rows*columns,0)
 		@isPassable  = Array.new(rows*columns,0)
 	end
 
@@ -39,6 +43,8 @@ class Map
 		
 		# Regenerate food values
 		@foodValues = Array.new(@rows*@cols,0)
+		@enemyInfluence = Array.new(@rows*@cols,0)
+		@myInfluence = Array.new(@rows*@cols,0)
 	end
 	
 	 def each
@@ -68,6 +74,14 @@ class Map
 		return getTile(row,col)
 	end
 	
+		# Expects two 2 element arrays [x, y], [x1,y1]
+	# Or two tiles
+ 	# Or two ant
+ 	# Or any combination of the above...
+	def move_distance(point1, point2)
+		#http://en.wikipedia.org/wiki/Taxicab_geometry
+		(point1[0] - point2[0]).abs + (point1[1]-point2[1]).abs
+	end
 	
 	# Generates an array holding the view radius of a ant
 	# Array made up of pairs [xOffset, yOffset]
@@ -126,7 +140,6 @@ class Map
 
 		 		@scoutValues[x + row] = 0
 		 		# Clear the food value for this square as it is visible.
-		 		@foodValues[x+row] = 0
 		 	end
 		 end
 	end
@@ -136,15 +149,32 @@ class Map
 		case pointType
 		when :food
 			@isPassable[ix] = 3
-			@foodValues[ix] = 5000
+			#@foodValues[ix] = 5000
+			add_influence(row, col, 500,10, @foodValues)
 		when :water
 			@isPassable[ix] = 1
 		when :ant
 			@isPassable[ix] = 2
 			update_view_range([row,col])
+			add_influence(row, col, 1000,10, @myInfluence)
+		when :enemy
+			@isPassable[ix] = 2
+			add_influence(row, col, 1000,10, @enemyInfluence)
 		else
 			raise 'Invalid Point Added'
 		end	
+	end
+	
+	def base_influence(index)
+		return @myInfluence[index] - @enemyInfluence[index]
+	end
+	
+	def tension(index)
+		return  @myInfluence[index] + @enemyInfluence[index]
+	end
+	
+	def vunerability(index)
+		return tension(index) - base_influence(index).abs
 	end
 	
 	def to_s
@@ -155,8 +185,22 @@ class Map
 		s
 	end
 	
-
+	def add_influence(row, col, val, radius, map)
+		(-radius..radius).each do |kx|	
+			x = row + kx
+			(-radius..radius).each do |ky|	
+				
+				y = col + ky
+				distance = move_distance([x,y], [row, col]).to_f
+				ix = calculateIndex(x,y)
+				
+				map[ix] = map[ix] + (val * 1/(radius/(radius - distance))) if (distance < radius)
+			end
+		end
+	end
 	
+	
+	# Depricated - use add_inflence method instead
 	def blur(radius)
 		tmpVals = Array.new(@rows*@cols, 0)
 		blur_horizontal(@foodValues, tmpVals,radius)
