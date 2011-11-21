@@ -36,6 +36,22 @@ class Map
 		@isPassable  = Array.new(rows*columns,0)
 	end
 
+	def base_influence(index)
+		return @myInfluence[index] - @enemyInfluence[index]
+	end
+	
+	def total_influence(index)
+		return base_influence(index) + @foodValues[index] + @scoutValues[index]
+	end
+	
+	def tension(index)
+		return  @myInfluence[index] + @enemyInfluence[index]
+	end
+	
+	def vunerability(index)
+		return tension(index) - base_influence(index).abs
+	end
+	
 	def reset() 
 		# propegate all influence values
 		# Update visible squares
@@ -149,14 +165,13 @@ class Map
 		case pointType
 		when :food
 			@isPassable[ix] = 3
-			#@foodValues[ix] = 5000
 			add_influence(row, col, 500,10, @foodValues)
 		when :water
 			@isPassable[ix] = 1
 		when :ant
 			@isPassable[ix] = 2
 			update_view_range([row,col])
-			add_influence(row, col, 1000,10, @myInfluence)
+			add_influence(row, col, 1000,7, @myInfluence)
 		when :enemy
 			@isPassable[ix] = 2
 			add_influence(row, col, 1000,10, @enemyInfluence)
@@ -165,17 +180,7 @@ class Map
 		end	
 	end
 	
-	def base_influence(index)
-		return @myInfluence[index] - @enemyInfluence[index]
-	end
 	
-	def tension(index)
-		return  @myInfluence[index] + @enemyInfluence[index]
-	end
-	
-	def vunerability(index)
-		return tension(index) - base_influence(index).abs
-	end
 	
 	def to_s
 		s = ""
@@ -185,16 +190,26 @@ class Map
 		s
 	end
 	
+	# Propegate influence within range of the point...	
+	#TODO: Use flood fill to flow around obstacles
 	def add_influence(row, col, val, radius, map)
-		(-radius..radius).each do |kx|	
-			x = row + kx
-			(-radius..radius).each do |ky|	
+		axis = radius -1
+		(-axis..axis).each do |ky|	
+			
+			kRow = row + ky
+			kRow = kRow % @rows if (kRow >= @rows or kRow<0)
+			ix = kRow * @cols
+			
+			# For each column...
+			(-axis..axis).each do |kx|	
+				kCol = col + kx
+				kCol = kCol % @cols if (kCol >= @cols or kCol<0)
+				distance = (ky.abs + kx.abs)
 				
-				y = col + ky
-				distance = move_distance([x,y], [row, col]).to_f
-				ix = calculateIndex(x,y)
-				
-				map[ix] = map[ix] + (val * 1/(radius/(radius - distance))) if (distance < radius)
+				if (distance < radius)
+					ix2 = ix + kCol
+					map[ix2] = map[ix2] + (val * (radius - distance))/radius 
+				end
 			end
 		end
 	end
@@ -286,6 +301,7 @@ end
 
 puts "-----------------------------------"
 m = Map.new(43,39)
+.generate_view_area(77)
 m.addPoint(28,17,:food)
 m.addPoint(26,19,:food)
 m.addPoint(28,21,:food)
