@@ -15,29 +15,28 @@ class Map
  	attr_accessor :myInfluence
  	attr_accessor :enemyInfluence
  
+ 	# -1 = Enemy Hill
  	# 0 = land
  	# 1 = water
  	# 2 = ant (temp block)
  	# 3 = food (temp block)
- 	attr_accessor :isPassable
+ 	attr_accessor :tile_map
  
 
 	#Creates the new map object of the given size
 	def initialize(rows, columns)	
 		@rows = rows
 		@cols = columns
-		@tilemap= Array.new(@rows){|row| Array.new(@cols){|col| Tile.new(row,col, col + (row * @cols)) } }
-		@tilemap = @tilemap.flatten
-		
+
 		@scoutValues = Array.new(rows*columns,0)
 		@foodValues = Array.new(rows*columns,0)
 		@enemyInfluence = Array.new(rows*columns,0)
 		@myInfluence = Array.new(rows*columns,0)
-		@isPassable  = Array.new(rows*columns,0)
+		@tile_map  = Array.new(rows*columns,0)
 	end
 
 	def base_influence(index)
-		return @myInfluence[index] - @enemyInfluence[index]
+		return  @enemyInfluence[index] - @myInfluence[index]
 	end
 	
 	def total_influence(index)
@@ -63,42 +62,10 @@ class Map
 		@myInfluence = Array.new(@rows*@cols,0)
 	end
 	
-	 def each
-	 	 @tilemap.each{|tile|yield tile}
-	 end
-	
-	 def calculateIndex(row,col)
-	 	row = row % @rows if (row >= @rows or row<0)
-		col =col % @cols if (col >= @cols or col<0)
-		return (col + (row * @cols))
- 	end
-	 
-	def getTileAtIndex(ix)
-		return @tilemap[ix]
+	def size()
+		return [@rows, @cols]
 	end
-	
-	# Get the tile from the tileMap
-	def getTile(row, col)
-		return @tilemap[calculateIndex(row,col)]
-	end
-	
-	def getTileAtPoint(point) 
-		return getTile(point[0], point[1])
-	end
-	
-	def [](row,col)
-		return getTile(row,col)
-	end
-	
-		# Expects two 2 element arrays [x, y], [x1,y1]
-	# Or two tiles
- 	# Or two ant
- 	# Or any combination of the above...
-	def move_distance(point1, point2)
-		#http://en.wikipedia.org/wiki/Taxicab_geometry
-		(point1[0] - point2[0]).abs + (point1[1]-point2[1]).abs
-	end
-	
+
 	# Generates an array holding the view radius of a ant
 	# Array made up of pairs [xOffset, yOffset]
 	# xOffset = squares horizontal from center
@@ -129,13 +96,6 @@ class Map
 		@viewRadius =  viewRadius
 	end
 		
-	 	# Expects two 2 element arrays [row, col], [row1,col1]
- 	# Or two tiles
- 	# Or two ant
- 	# Or any combination of the above...
-	def eculidean_distance(point1, point2)
-		(point1[0] - point2[0])**2  + (point1[1] - point2[1])**2 
-	end
 	
 		#Updates every square that the ant can see....
 	# Sets tile.scout_value = 0
@@ -164,23 +124,24 @@ class Map
 		ix= calculateIndex(row,col)
 		case pointType
 		when :food
-			@isPassable[ix] = 3
-			add_influence(row, col, 500,10, @foodValues)
+			@tile_map[ix] = 3
+			add_influence(row, col, 1000,10, @foodValues)
 		when :water
-			@isPassable[ix] = 1
+			@tile_map[ix] = 1
 		when :ant
-			@isPassable[ix] = 2
+			@tile_map[ix] = 2
 			update_view_range([row,col])
 			add_influence(row, col, 1000,7, @myInfluence)
 		when :enemy
-			@isPassable[ix] = 2
-			add_influence(row, col, 1000,10, @enemyInfluence)
+			@tile_map[ix] = 2
+			add_influence(row, col, 2000,7, @enemyInfluence)
+		when :hill
+			@tile_map[ix] = -1
+			add_influence(row, col, 10000,20, @enemyInfluence)
 		else
 			raise 'Invalid Point Added'
 		end	
 	end
-	
-	
 	
 	def to_s
 		s = ""
@@ -213,6 +174,7 @@ class Map
 			end
 		end
 	end
+	
 	
 	
 	# Depricated - use add_inflence method instead
@@ -297,22 +259,63 @@ class Map
 	def food_value(ix)
 		@foodValues[ix]
 	end
+	
+	
+	 def calculateIndex(row,col)
+	 	row = row % @rows if (row >= @rows or row<0)
+		col =col % @cols if (col >= @cols or col<0)
+		return (col + (row * @cols))
+ 	end
+ 	
+ 	# Expects two 2 element arrays [row, col], [row1,col1]
+ 	# Or two tiles
+ 	# Or two ant
+ 	# Or any combination of the above...
+	def eculidean_distance(point1, point2)
+		(point1[0] - point2[0])**2  + (point1[1] - point2[1])**2 
+	end
+		
+	 	
+	# Expects two 2 element arrays [x, y], [x1,y1]
+	# Or two tiles
+ 	# Or two ant
+ 	# Or any combination of the above...
+	def move_distance(point1, point2)
+		#http://en.wikipedia.org/wiki/Taxicab_geometry
+		(point1[0] - point2[0]).abs + (point1[1]-point2[1]).abs
+	end
+	
+		# If row or col are greater than or equal map width/height, makes them fit the map.
+	#
+	# Handles negative values correctly (it may return a negative value, but always one that is a correct index).
+	#
+	# Returns [row, col].
+	def normalize row, col
+		[row % @rows, col % @cols]
+	end
 end
-
-puts "-----------------------------------"
-m = Map.new(43,39)
-.generate_view_area(77)
-m.addPoint(28,17,:food)
-m.addPoint(26,19,:food)
-m.addPoint(28,21,:food)
-m.addPoint(35,19,:food)
-beginning = Time.now
-m.blur(4)
-m.blur(4)
-
-puts "home = #{m.food_value(m.calculateIndex(28,19))}"
-puts "N = #{m.food_value(m.calculateIndex(27,19))}"
-puts "S = #{m.food_value(m.calculateIndex(29,19))}"
-puts m.to_s
-puts "Time elapsed for Blur2: #{Time.now - beginning} seconds"
-
+# 
+# puts "-----------------------------------"
+# m = Map.new(43,39)
+# .generate_view_area(77)
+# m.addPoint(28,17,:food)
+# m.addPoint(26,19,:food)
+# m.addPoint(28,21,:food)
+# m.addPoint(35,19,:food)
+# beginning = Time.now
+# 
+# uts "-----------------------------------"
+# m = Map.new(200,200)
+# #m.foodValues.each_with_index() {|v, i| m.foodValues[i] = i}
+# m.generate_view_area(77)
+# beginning = Time.now
+# 
+# 1000.times do
+# 	m.addPoint(1,1,:food)
+# end
+# 
+# #puts m.inspect
+# 
+# #puts  1/(6.0/5)
+# #puts 5/6.0
+# puts "Time elapsed for Blur2: #{Time.now - beginning} seconds"

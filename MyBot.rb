@@ -1,10 +1,8 @@
 $:.unshift File.dirname($0)
 require 'ants.rb'
 require 'AI.rb'
-require 'Tile.rb'
 require 'MapController.rb'
 require 'Map.rb'
-require 'InfluenceMap.rb'
 
 ai=AI.new
 
@@ -27,7 +25,7 @@ ai.run do |ai|
 	#		end
 	#	end
 	#	puts ant.location.inspect
-		bestDir = @mapController.get_best_direction(ant.tile)
+		bestDir = @mapController.get_best_direction(ant)
 		
 		
 		@mapController.move_ant ant, bestDir if (!bestDir.nil?)
