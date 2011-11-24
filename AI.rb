@@ -15,7 +15,7 @@ class AI
 	# Array of scores of players (you are player 0). Available only after game's over.
 	attr_accessor :score
 	
-	attr_accessor :mapController
+	attr_accessor :map
 	
 	
 	
@@ -55,7 +55,7 @@ class AI
 		
 		@stdout.puts 'go'
 		@stdout.flush
-		@mapController = MapController.new(@rows, @cols, self)
+		@map = Map.new(@rows, @cols, self)
 		@did_setup=true
 	end
 	
@@ -124,7 +124,7 @@ class AI
 			@turn_number=num.to_i
 		end
 	
-		@mapController.reset
+		@map.reset
 		
 		
 		until((rd=@stdin.gets.strip)=='go')
@@ -134,13 +134,13 @@ class AI
 												
 			case type
 				when 'w'
-					@mapController.add_water row, col
+					@map.addPoint row, col, :water
 				when 'f'
-					@mapController.add_food row, col
+					@map.addPoint row, col, :food
 				when 'h'
-					@mapController.add_hill row, col, owner
+					@map.addPoint row, col, :hill, owner
 				when 'a'
-					@mapController.add_ant row, col, owner
+					@map.addPoint row, col, :ant,  owner
 				when 'd'	# Ignore dead ants for now
 					# do nothing
 				when 'r'
@@ -155,8 +155,9 @@ class AI
 	# Point can be an ant, a tile or a location
 	def order point, direction
 		# Write to standard out
-	#	ant, direction = a, b
+
 		@stdout.puts "o #{point[0]} #{point[1]} #{direction.to_s.upcase}"
+	#	puts "Moving Ant: #{point.location.inspect} -> #{direction}"
 	end 
 	
 	

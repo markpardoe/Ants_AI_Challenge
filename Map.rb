@@ -22,9 +22,15 @@ class Map
  	# 3 = food (temp block)
  	attr_accessor :tile_map
  
+ 	attr_accessor :my_ants
+	attr_accessor :enemy_ants
+	
+	attr_accessor :rows
+ 	attr_accessor :cols
+ 	
 
 	#Creates the new map object of the given size
-	def initialize(rows, columns)	
+	def initialize(rows, columns, ai)	
 		@rows = rows
 		@cols = columns
 
@@ -33,8 +39,21 @@ class Map
 		@enemyInfluence = Array.new(rows*columns,0)
 		@myInfluence = Array.new(rows*columns,0)
 		@tile_map  = Array.new(rows*columns,0)
+		
+		@rows = rows
+		@cols = columns
+
+		generate_view_area(ai.viewradius2)
+		@ai = ai
+		@my_ants=[]
+		@enemy_ants=[]
+		@ant_locations = Hash.new(false)
 	end
 
+	def food_value(ix)
+		@foodValues[ix]
+	end
+	
 	def base_influence(index)
 		return  @enemyInfluence[index] - @myInfluence[index]
 	end
@@ -52,6 +71,10 @@ class Map
 	end
 	
 	def reset() 
+		@my_ants=[]
+		@enemy_ants=[]
+		@ant_locations = Hash.new(false)
+		
 		# propegate all influence values
 		# Update visible squares
 		@scoutValues.map! {|x| x+1 }
@@ -60,6 +83,7 @@ class Map
 		@foodValues = Array.new(@rows*@cols,0)
 		@enemyInfluence = Array.new(@rows*@cols,0)
 		@myInfluence = Array.new(@rows*@cols,0)
+		@tile_map.map! {|x| x > 1 ? 0 : x}
 	end
 	
 	def size()
@@ -97,7 +121,7 @@ class Map
 	end
 		
 	
-		#Updates every square that the ant can see....
+	# Updates every square that the ant can see....
 	# Sets tile.scout_value = 0
 	def update_view_range(antLocation)
 		 antRow = antLocation[0]
@@ -120,7 +144,7 @@ class Map
 		 end
 	end
 	
-	def addPoint (row, col, pointType)
+	def addPoint (row, col, pointType, owner = 0)
 		ix= calculateIndex(row,col)
 		case pointType
 		when :food
@@ -130,14 +154,23 @@ class Map
 			@tile_map[ix] = 1
 		when :ant
 			@tile_map[ix] = 2
-			update_view_range([row,col])
-			add_influence(row, col, 1000,7, @myInfluence)
-		when :enemy
-			@tile_map[ix] = 2
-			add_influence(row, col, 2000,7, @enemyInfluence)
+
+			ant = Ant.new row, col, true, owner,  self
+			@ant_locations[ant.index] = true
+			
+			if ant.owner==0
+				@my_ants.push ant
+				update_view_range([row,col])
+				add_influence(row, col, 1000,7, @myInfluence)
+			else
+				@enemy_ants.push ant
+				add_influence(row, col, 2000,7, @enemyInfluence)
+			end
+			
 		when :hill
 			@tile_map[ix] = -1
-			add_influence(row, col, 10000,20, @enemyInfluence)
+			add_influence(row, col, 10000,20, @foodValues) if (owner != 0) 
+
 		else
 			raise 'Invalid Point Added'
 		end	
@@ -175,8 +208,7 @@ class Map
 		end
 	end
 	
-	
-	
+	#----------------------------------------------------------
 	# Depricated - use add_inflence method instead
 	def blur(radius)
 		tmpVals = Array.new(@rows*@cols, 0)
@@ -255,12 +287,90 @@ class Map
 			end	
 		end
 	end
-	
-	def food_value(ix)
-		@foodValues[ix]
+	#----------------------------------------------------------
+
+
+	def get_best_direction(tile)
+	#		try to go north, if possible; otherwise try east, south, west.
+		# [:N, :E, :S, :W].each do |dir|
+		# 	if neighbor(ant, dir).is_passable?
+		# 		return dir
+		# 		break
+		# 	end
+		# end
+		maxVal = 0-999999
+		maxDir =  nil
+		
+		if (tile[0] == 28 && tile[1] == 19)
+			ix = calculateIndex(tile[0]-1, tile[1])
+			ix = calculateIndex(tile[0]+1, tile[1])
+			ix = calculateIndex(tile[0], tile[1]+1)
+			ix = calculateIndex(tile[0], tile[1]-1)
+		end
+		[:N, :E, :S, :W].each do |dir|
+			n = neighbor(tile, dir)
+			ix = calculateIndex(n[0], n[1])
+			val = total_influence(ix)
+			
+			if (tile_map[ix] < 1 && val > maxVal) 
+				maxDir = dir
+				maxVal = val
+			end
+		end
+		return maxDir
 	end
 	
+	def ant_dir_to_target ant
+		# Write to standard out
+	#	ant, direction = a, b
+		dirs = ant.dirs_to_target
+		
+		dirs.each do |d|
+			n = neighbor(ant, d)
+			ix = calculateIndex(n[0], n[1])
+			if (@tile_map <1)
+				puts "Ant #{ant.location.inspect}.  Best dir = #{d}"
+				return d
+			end
+		end
+		
+		return get_best_direction(ant)
+	end
+		
 	
+	
+	
+	def move_ant ant, direction
+		# Write to standard out
+	#	ant, direction = a, b
+		@ai.order ant, direction
+		# Moves the ant to the new tile.
+		dest = neighbor(ant, direction)
+
+		ant.update_location(dest[0], dest[1])
+	end 
+	
+ 	# Returns a square neighboring this one in given direction.
+ 	# Point can be a tile, and or 2d location array ([x, y])
+	def neighbor point, direction
+		direction=direction.to_s.upcase.to_sym # canonical: :N, :E, :S, :W
+
+		case direction
+		when :N
+			x, y = point[0]-1, point[1]
+		when :E
+			x, y = point[0],  point[1]+1
+		when :S
+			x, y = point[0]+1, point[1]
+		when :W
+			x, y = point[0],  point[1]-1
+		else
+			raise 'incorrect direction'
+		end
+		return normalize(x,y)
+	end
+
+	# System Calculations
 	 def calculateIndex(row,col)
 	 	row = row % @rows if (row >= @rows or row<0)
 		col =col % @cols if (col >= @cols or col<0)
@@ -280,9 +390,15 @@ class Map
 	# Or two tiles
  	# Or two ant
  	# Or any combination of the above...
+ 	#http://en.wikipedia.org/wiki/Taxicab_geometry
 	def move_distance(point1, point2)
-		#http://en.wikipedia.org/wiki/Taxicab_geometry
-		(point1[0] - point2[0]).abs + (point1[1]-point2[1]).abs
+		dR = (point1[0] - point2[0]).abs
+		dC = (point1[1]-point2[1]).abs
+		# Deal with wraparound map
+		dR = @rows - dR if (dR*2 > @rows)
+		dC = @cols - dC if (dC*2 > @cols)
+
+		return dR + dC
 	end
 	
 		# If row or col are greater than or equal map width/height, makes them fit the map.
@@ -294,7 +410,9 @@ class Map
 		[row % @rows, col % @cols]
 	end
 end
-# 
+
+
+
 # puts "-----------------------------------"
 # m = Map.new(43,39)
 # .generate_view_area(77)

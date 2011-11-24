@@ -1,35 +1,49 @@
 $:.unshift File.dirname($0)
 require 'ants.rb'
 require 'AI.rb'
-require 'MapController.rb'
 require 'Map.rb'
 
 ai=AI.new
 
 ai.setup do |ai|
 	# your setup code here, if any
-	
+	@enemyThreshold = 1000
 end
 
 ai.run do |ai|
 	# your turn code here
-	@mapController = ai.mapController	
+	@mapController = ai.map	
 
-	@mapController.my_ants.each do |ant|
-
-		# try to go north, if possible; otherwise try east, south, west.
-		#[:N, :E, :S, :W].each do |dir|
-	#		if @map.neighbor(ant, dir).is_passable?
-	#			ant.move_direction dir
-	#			break
-	#		end
-	#	end
-	#	puts ant.location.inspect
-		bestDir = @mapController.get_best_direction(ant)
 		
+	maxRow = @mapController.rows
+	maxCol = @mapController.cols
+	myAnts = @mapController.my_ants
 		
-		@mapController.move_ant ant, bestDir if (!bestDir.nil?)
-
+	(0..maxRow-1).each do |row|
+			
+		rowIx = row * maxCol
+		(0..maxCol-1).each do |col|
+			ix = rowIx + col
+			if @mapController.tile_map[ix] < 1	# is the square passable...
+					if @mapController.base_influence(ix) < @enemyThreshold
+							val = @mapController.total_influence(ix)
+							
+							myAnts.each do |ant|
+								ant.check_max_value(row, col, val)
+							end
+					end
+			end
+		end	
 	end
-	
+		
+		# puts "total ants = #{myAnts.length}" ------------------------
+		  @mapController.my_ants.each do |ants| 		
+		 		d = @mapController.ant_dir_to_target(ants)
+				@mapController.move_ant(ants, d )
+		 end
 end
+	
+	
+	#   row = row % @rows if (row >= @rows or row<0)
+	#	col =col % @cols if (col >= @cols or col<0)
+	#	return (col + (row * @cols))

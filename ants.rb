@@ -13,12 +13,18 @@ class Ant
 	attr_accessor :alive, :Map
 	attr_accessor :moved
 
-	def initialize row, col, alive, owner, mapController, map
-		@alive, @owner, @mapController, @map = alive, owner, mapController, map
+	attr_accessor :targetValue
+	attr_accessor :targetRow
+	attr_accessor :targetCol
+	
+	def initialize row, col, alive, owner, map
+		@alive, @owner, @map = alive, owner, map
 		@row, @col = row, col
 		@moved = false
 		@index = @map.calculateIndex(row, col)
-		puts "Max Size of grid: #{[@rows, @cols].inspect}"
+		@targetValue = 0
+		@targetRow = nil
+		
 	end
 	
 	# True if ant is alive.
@@ -68,6 +74,41 @@ class Ant
 		location[index]
 	end
  	
+	def check_max_value(row2, col2, value)
+		dR = (row - row2).abs
+		dC = (col-col2).abs
+		# Deal with wraparound map
+		dR = @map.rows - dR if (dR*2 > @map.rows)
+		dC = @map.cols - dC if (dC*2 > @map.cols)
+		
+		if (dR + dC) != 0
+		
+			eval = value / (dR + dC)
+			if (eval > @targetValue)
+				@targetValue = eval
+				targetRow = row2
+				targetCol = col2
+			end
+		end
+	end
+	
+	def dirs_to_target()
+		return [] if !@targetRow
+		dirs = []
+		
+		if (@row > @targetRow)
+			dirs.push[:N]
+		elsif (@row < @targetRow)
+			dirs.push[:S]
+		end
+		
+		if (@col > @targetCol)
+			dirs.push[:W]
+		elsif (@col < @targetCol)
+			dirs.push[:E]
+		end
+		dirs
+	end
 
 end
 
