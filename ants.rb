@@ -21,7 +21,6 @@ class Ant
 		@alive, @owner, @map = alive, owner, map
 		@row, @col = row, col
 		@moved = false
-		@index = @map.calculateIndex(row, col)
 		@targetValue = 0
 		@targetRow = nil
 		
@@ -45,11 +44,8 @@ class Ant
 	# Returns the column of square this ant is standing at.
 	def col; @col; end
 
-	def index; @index; end
-	
 	def update_location(row, col)
 		@row, @col = row, col
-		@index = @map.calculateIndex(row, col)
 		@moved = true
 	end
 

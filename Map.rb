@@ -1,3 +1,7 @@
+#!/usr/bin/env ruby
+require 'logger'
+
+
 class Map
 		include Enumerable
 
@@ -28,62 +32,70 @@ class Map
 	attr_accessor :rows
  	attr_accessor :cols
  	
-
 	#Creates the new map object of the given size
 	def initialize(rows, columns, ai)	
 		@rows = rows
 		@cols = columns
-
-		@scoutValues = Array.new(rows*columns,0)
-		@foodValues = Array.new(rows*columns,0)
-		@enemyInfluence = Array.new(rows*columns,0)
-		@myInfluence = Array.new(rows*columns,0)
-		@tile_map  = Array.new(rows*columns,0)
+		@log = Logger.new('log.txt')
+		@scoutValues = Array.new(@rows){|row| Array.new(@cols,0)}
+		@foodValues = Array.new(@rows){|row| Array.new(@cols,0)}
+		@enemyInfluence = Array.new(@rows){|row| Array.new(@cols,0)}
+		@myInfluence = Array.new(@rows){|row| Array.new(@cols,0)}
+		@tile_map  = Array.new(@rows){|row| Array.new(@cols,0)}
 		
-		@rows = rows
-		@cols = columns
-
 		generate_view_area(ai.viewradius2)
 		@ai = ai
 		@my_ants=[]
 		@enemy_ants=[]
-		@ant_locations = Hash.new(false)
 	end
+	
+	
 
-	def food_value(ix)
-		@foodValues[ix]
+	def food_value(row,col)
+		@foodValues[row][col]
 	end
 	
-	def base_influence(index)
-		return  @enemyInfluence[index] - @myInfluence[index]
+	def base_influence(row,col)
+		return  @enemyInfluence[row][col] - @myInfluence[row][col]
 	end
 	
-	def total_influence(index)
-		return base_influence(index) + @foodValues[index] + @scoutValues[index]
+	def total_influence(row,col)
+		return base_influence(row,col) + food_value(row, col)  + @scoutValues[row][col]
 	end
 	
-	def tension(index)
-		return  @myInfluence[index] + @enemyInfluence[index]
+	def tension(row,col)
+		return  @myInfluence[row][col] + @enemyInfluence[row][col]
 	end
 	
-	def vunerability(index)
-		return tension(index) - base_influence(index).abs
+	def tile_value(row,col)
+		return @tile_map[row][col]
 	end
+	
+	def vunerability(row,col)
+		return tension(row,col) - base_influence(row,col).abs
+	end
+	
 	
 	def reset() 
 		@my_ants=[]
 		@enemy_ants=[]
-		@ant_locations = Hash.new(false)
 		
 		# propegate all influence values
 		# Update visible squares
-		@scoutValues.map! {|x| x+1 }
+		@log.debug "Resetting scoutValues: #{@ai.turn_number}"
+		@scoutValues.each do |row|
+			row.map! {|y| y+1 }
+		end
 		
 		# Regenerate food values
-		@foodValues = Array.new(@rows*@cols,0)
-		@enemyInfluence = Array.new(@rows*@cols,0)
-		@myInfluence = Array.new(@rows*@cols,0)
-		@tile_map.map! {|x| x > 1 ? 0 : x}
+		@foodValues = Array.new(@rows){|row| Array.new(@cols,0)}
+		@enemyInfluence = Array.new(@rows){|row| Array.new(@cols,0)}
+		@myInfluence = Array.new(@rows){|row| Array.new(@cols,0)}
+	
+		# Remove temporary objects from tilemap
+		@tile_map.each do |row|
+			row.map! {|x| x > 1 ? 0 : x}
+		end
 	end
 	
 	def size()
@@ -123,44 +135,43 @@ class Map
 	
 	# Updates every square that the ant can see....
 	# Sets tile.scout_value = 0
-	def update_view_range(antLocation)
-		 antRow = antLocation[0]
-		 antCol = antLocation[1]
+	def update_view_range(row, col)
+		 antRow = row
+		 antCol = col
 		 
 		 @viewRadius.each do |viewPair|
 		 	row = viewPair[0] + antRow
-		 	row = row % @cols if (row >= @cols or row <0)	# normalise the y value if needed
-		 	row = row * @cols
+		 	row = row % @rows if (row >= @rows or row <0)	# normalise the y value if needed
+		 #	row = row * @cols
 		 	
 		 	startVal = antCol - viewPair[1]	#start index
 		 	endVal = antCol + viewPair[1]
 
-		 	(startVal..endVal).each do |x|
-		 		x = x % @rows if (x >= @rows or x<0)	# normalise if value on edges of square
+		 	(startVal..endVal).each do |col|
+		 		col = col % @cols if (col >= @cols or col<0)	# normalise if value on edges of square
 
-		 		@scoutValues[x + row] = 0
+		 		@scoutValues[row][col] = 0
 		 		# Clear the food value for this square as it is visible.
 		 	end
 		 end
 	end
 	
 	def addPoint (row, col, pointType, owner = 0)
-		ix= calculateIndex(row,col)
+
 		case pointType
 		when :food
-			@tile_map[ix] = 3
+			@tile_map[row][col] = 3
 			add_influence(row, col, 1000,10, @foodValues)
 		when :water
-			@tile_map[ix] = 1
+			@tile_map[row][col] = 1
 		when :ant
-			@tile_map[ix] = 2
+			@tile_map[row][col] = 2
 
 			ant = Ant.new row, col, true, owner,  self
-			@ant_locations[ant.index] = true
-			
+
 			if ant.owner==0
 				@my_ants.push ant
-				update_view_range([row,col])
+				update_view_range(row,col)
 				add_influence(row, col, 1000,7, @myInfluence)
 			else
 				@enemy_ants.push ant
@@ -168,7 +179,7 @@ class Map
 			end
 			
 		when :hill
-			@tile_map[ix] = -1
+			@tile_map[row][col] = -1
 			add_influence(row, col, 10000,20, @foodValues) if (owner != 0) 
 
 		else
@@ -176,13 +187,13 @@ class Map
 		end	
 	end
 	
-	def to_s
-		s = ""
-		@rows.times do |row|
-			s = s<< @foodValues[row*@cols, @cols].join(" ") << "\n"
-		end
-		s
-	end
+	# def to_s
+	# 	s = ""
+	# 	@rows.times do |row|
+	# 		s = s<< @foodValues[row*@cols, @cols].join(" ") << "\n"
+	# 	end
+	# 	s
+	# end
 	
 	# Propegate influence within range of the point...	
 	#TODO: Use flood fill to flow around obstacles
@@ -191,103 +202,21 @@ class Map
 		(-axis..axis).each do |ky|	
 			
 			kRow = row + ky
-			kRow = kRow % @rows if (kRow >= @rows or kRow<0)
-			ix = kRow * @cols
-			
+			kRow = kRow % @rows if (kRow >= @rows or kRow<0)	# normalise the row
+
 			# For each column...
 			(-axis..axis).each do |kx|	
 				kCol = col + kx
-				kCol = kCol % @cols if (kCol >= @cols or kCol<0)
+				kCol = kCol % @cols if (kCol >= @cols or kCol<0)	# normalise the column
 				distance = (ky.abs + kx.abs)
 				
 				if (distance < radius)
-					ix2 = ix + kCol
-					map[ix2] = map[ix2] + (val * (radius - distance))/radius 
+					map[kRow][kCol] = map[kRow][kCol] + (val * (radius - distance))/radius 
 				end
 			end
 		end
 	end
 	
-	#----------------------------------------------------------
-	# Depricated - use add_inflence method instead
-	def blur(radius)
-		tmpVals = Array.new(@rows*@cols, 0)
-		blur_horizontal(@foodValues, tmpVals,radius)
-		blur_vertical(tmpVals, @foodValues,radius)
-	end
-	
-	def blur_horizontal(source, dest,radius)
-		(0..@rows-1).each do |y|
-			total = 0
-			count = 0
-				
-			 # Process entire window for first pixel on left
-			(-radius..radius).each do |kx|	
-				nIx = calculateIndex(kx, y )
-				if (@isPassable[nIx] != 1)
-					total += source[nIx]
-					count +=1
-				end
-			end
-			dest[calculateIndex(0,y)] =  (total >0) ? (total / count) * 0.9 : 0
-			
-			# Subsequent pixels just update window total		
-		    (1..@cols-1).each do |x|
-	
-		        #  Subtract pixel leaving window
-		        oldIx = calculateIndex(x - radius - 1,y)
-				if (@isPassable[oldIx] != 1)
-					total -= source[oldIx]
-					count -= 1
-				end
-				# Add new pixel entering window
-				nIx = calculateIndex(x + radius,y)
-				if (@isPassable[nIx] != 1)
-					total += source[nIx]
-					count += 1
-				end
-				
-				dest[calculateIndex(x,y)] =  (total >0) ? (total / count) * 0.9 : 0
-			end	
-		end
-	end
-	
-	def blur_vertical(source, dest,radius)
-	    (0..@cols-1).each do |x|
-	    	total = 0
-			count = 0
-			
-	    	 # Process entire window for first pixel on left
-			(-radius..radius).each do |ky|	
-				nIx = calculateIndex(x, ky )
-				if (@isPassable[nIx] != 1)
-					total += source[nIx]
-					count +=1
-				end
-			end
-			dest[calculateIndex(x,0)]=  (total >0) ? (total / count) * 0.9 : 0
-	    	
-			# Subsequent pixels just update window total		
-		    (1..@rows-1).each do |y|
-	
-		        #  Subtract pixel leaving window
-		        oldIx = calculateIndex(x,y - radius - 1)
-				if (@isPassable[oldIx] != 1)
-					total -= source[oldIx]
-					count -= 1
-				end
-				# Add new pixel entering window
-				nIx = calculateIndex(x, y + radius)
-				if (@isPassable[nIx] != 1)
-					total += source[nIx]
-					count += 1
-				end
-				
-				dest[calculateIndex(x,y)] =  (total >0) ? (total / count) * 0.9 : 0
-			end	
-		end
-	end
-	#----------------------------------------------------------
 
 
 	def get_best_direction(tile)
@@ -301,18 +230,10 @@ class Map
 		maxVal = 0-999999
 		maxDir =  nil
 		
-		if (tile[0] == 28 && tile[1] == 19)
-			ix = calculateIndex(tile[0]-1, tile[1])
-			ix = calculateIndex(tile[0]+1, tile[1])
-			ix = calculateIndex(tile[0], tile[1]+1)
-			ix = calculateIndex(tile[0], tile[1]-1)
-		end
 		[:N, :E, :S, :W].each do |dir|
 			n = neighbor(tile, dir)
-			ix = calculateIndex(n[0], n[1])
-			val = total_influence(ix)
-			
-			if (tile_map[ix] < 1 && val > maxVal) 
+			val = total_influence(n[0], n[1])
+			if (tile_value(n[0], n[1]) < 1 && val > maxVal) 
 				maxDir = dir
 				maxVal = val
 			end
@@ -327,8 +248,7 @@ class Map
 		
 		dirs.each do |d|
 			n = neighbor(ant, d)
-			ix = calculateIndex(n[0], n[1])
-			if (@tile_map <1)
+			if (@tile_map[n[0]][n[1]] <1)
 				puts "Ant #{ant.location.inspect}.  Best dir = #{d}"
 				return d
 			end
@@ -337,9 +257,6 @@ class Map
 		return get_best_direction(ant)
 	end
 		
-	
-	
-	
 	def move_ant ant, direction
 		# Write to standard out
 	#	ant, direction = a, b
@@ -351,7 +268,7 @@ class Map
 	end 
 	
  	# Returns a square neighboring this one in given direction.
- 	# Point can be a tile, and or 2d location array ([x, y])
+ 	# Point can be a ant, and or 2d location array ([x, y])
 	def neighbor point, direction
 		direction=direction.to_s.upcase.to_sym # canonical: :N, :E, :S, :W
 
@@ -370,13 +287,6 @@ class Map
 		return normalize(x,y)
 	end
 
-	# System Calculations
-	 def calculateIndex(row,col)
-	 	row = row % @rows if (row >= @rows or row<0)
-		col =col % @cols if (col >= @cols or col<0)
-		return (col + (row * @cols))
- 	end
- 	
  	# Expects two 2 element arrays [row, col], [row1,col1]
  	# Or two tiles
  	# Or two ant
@@ -401,7 +311,7 @@ class Map
 		return dR + dC
 	end
 	
-		# If row or col are greater than or equal map width/height, makes them fit the map.
+	# If row or col are greater than or equal map width/height, makes them fit the map.
 	#
 	# Handles negative values correctly (it may return a negative value, but always one that is a correct index).
 	#
@@ -409,31 +319,14 @@ class Map
 	def normalize row, col
 		[row % @rows, col % @cols]
 	end
+	
+	# System Calculations
+	 def calculateIndex(row,col)
+	 	row = row % @rows if (row >= @rows or row<0)
+		col =col % @cols if (col >= @cols or col<0)
+		return (col + (row * @cols))
+ 	end
 end
 
 
 
-# puts "-----------------------------------"
-# m = Map.new(43,39)
-# .generate_view_area(77)
-# m.addPoint(28,17,:food)
-# m.addPoint(26,19,:food)
-# m.addPoint(28,21,:food)
-# m.addPoint(35,19,:food)
-# beginning = Time.now
-# 
-# uts "-----------------------------------"
-# m = Map.new(200,200)
-# #m.foodValues.each_with_index() {|v, i| m.foodValues[i] = i}
-# m.generate_view_area(77)
-# beginning = Time.now
-# 
-# 1000.times do
-# 	m.addPoint(1,1,:food)
-# end
-# 
-# #puts m.inspect
-# 
-# #puts  1/(6.0/5)
-# #puts 5/6.0
-# puts "Time elapsed for Blur2: #{Time.now - beginning} seconds"
