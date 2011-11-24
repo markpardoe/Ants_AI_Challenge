@@ -78,7 +78,7 @@ class Map
 	def reset() 
 		@my_ants=[]
 		@enemy_ants=[]
-		
+		fill_holes
 		# propegate all influence values
 		# Update visible squares
 		@scoutValues.each do |row|
@@ -94,6 +94,7 @@ class Map
 		@tile_map.each do |row|
 			row.map! {|x| x > 1 ? 0 : x}
 		end
+		
 	end
 	
 	def size()
@@ -159,7 +160,7 @@ class Map
 		case pointType
 		when :food
 			@tile_map[row,col] = 3
-			 add_influence(row, col, 1000,7, @foodValues)
+			 add_influence(row, col, 3000,7, @foodValues)
 			#flood_influence(row, col, 1000, 7, @foodValues)
 		when :water
 			@tile_map[row,col] = 1
@@ -172,7 +173,7 @@ class Map
 				@my_ants.push ant
 				update_view_range(row,col)
 			#	flood_influence(row, col, 1000, 7, @myInfluence)
-				add_influence(row, col, 1000,7, @myInfluence)
+				add_influence(row, col, 1000,3, @myInfluence)
 			else
 				@enemy_ants.push ant
 				add_influence(row, col, 2000,7, @enemyInfluence)
@@ -211,6 +212,27 @@ class Map
 	# 	end
 	# end
 	
+	def fill_holes
+		puts "Filling holes!"
+		(0..@rows-1).each do |row|
+			(0..@cols-1).each do |col|
+				# Only check visible squares
+				puts "23,19 checked: #{@scoutValues[row,col]}.  Tile = #{@tile_map[row,col]}" if (row == 23 && col == 19)
+				if (@scoutValues[row,col] == 0 && @tile_map[row,col] != 1)
+					count = 0
+					count +=1 if @tile_map[row-1,col] == 1
+					count +=1 if @tile_map[row+1,col] == 1
+					count +=1 if @tile_map[row,col-1] == 1
+					count +=1 if @tile_map[row,col+1] == 1
+
+					if (count >= 3)
+						@tile_map[row, col] = 1
+						puts "Filled hole: #{[row, col].inspect}"
+					end
+				end
+			end
+		end
+	end
 
 	def get_best_direction(tile)
 	#		try to go north, if possible; otherwise try east, south, west.
@@ -238,7 +260,7 @@ class Map
 		# Write to standard out
 	#	ant, direction = a, b
 		dirs = ant.dirs_to_target
-		
+		puts dirs.inspect
 		dirs.each do |d|
 			n = neighbor(ant, d)
 			if (@tile_map[n[0],n[1]] <1)
@@ -252,12 +274,14 @@ class Map
 		
 	def move_ant ant, direction
 		# Write to standard out
-	#	ant, direction = a, b
-		@ai.order ant, direction
-		# Moves the ant to the new tile.
-		dest = neighbor(ant, direction)
 
-		ant.update_location(dest[0], dest[1])
+		if !direction.nil?
+			@ai.order ant, direction
+			# Moves the ant to the new tile.
+			dest = neighbor(ant, direction)
+	
+			ant.update_location(dest[0], dest[1])
+		end
 	end 
 	
  	# Returns a square neighboring this one in given direction.
@@ -275,7 +299,7 @@ class Map
 		when :W
 			x, y = point[0],  point[1]-1
 		else
-			raise 'incorrect direction'
+			raise "incorrect direction: #{direction}"
 		end
 		return normalize(x,y)
 	end
@@ -402,11 +426,12 @@ end
 	# puts "Time elapsed for flood2  = #{Time.now - beginning} seconds"
 	# 
 	# puts "-------------------------"
-	# beginning = Time.now
-	# m = Map.new(200,200, nil)
-	# 100.times do
-	# 	m.flood_influence3 5,7, 1000,7, m.foodValues
-	# end
-	# #puts m.map_to_s(m.foodValues)
-	# puts "Time elapsed for flood3  = #{Time.now - beginning} seconds"
+	# 	beginning = Time.now
+	# 	m = Map.new(200,200, nil)
+	# 	m.fill_holes
+	#	100.times do
+	#		m.flood_influence3 5,7, 1000,7, m.foodValues
+	#	end
+		#puts m.map_to_s(m.foodValues)
+		#puts "Time elapsed for flood3  = #{Time.now - beginning} seconds"
 	

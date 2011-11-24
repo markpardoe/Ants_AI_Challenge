@@ -42,8 +42,8 @@ class Array2D
   end
 end
 
-m = Array2D.new(3,3,0)
-m[0,0] = 3
-m[0,0] += 1
-puts m[4,4]
-
+# m = Array2D.new(3,3,0)
+# m[0,0] = 3
+# m[0,0] += 1
+# puts m[4,4]
+# 

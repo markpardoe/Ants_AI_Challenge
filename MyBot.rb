@@ -13,7 +13,6 @@ end
 ai.run do |ai|
 	# your turn code here
 	@mapController = ai.map	
-
 		
 	maxRow = @mapController.rows
 	maxCol = @mapController.cols
@@ -29,6 +28,7 @@ ai.run do |ai|
 							
 							myAnts.each do |ant|
 								ant.check_max_value(row, col, val)
+								
 							end
 					end
 			end
@@ -38,7 +38,8 @@ ai.run do |ai|
 		# puts "total ants = #{myAnts.length}" ------------------------
 		  @mapController.my_ants.each do |ants| 		
 		 		d = @mapController.ant_dir_to_target(ants)
-				@mapController.move_ant(ants, d )
+		 		
+				@mapController.move_ant(ants, d ) if (!d.nil?)
 		 end
 end
 	

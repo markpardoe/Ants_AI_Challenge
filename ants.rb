@@ -82,8 +82,8 @@ class Ant
 			eval = value / (dR + dC)
 			if (eval > @targetValue)
 				@targetValue = eval
-				targetRow = row2
-				targetCol = col2
+				@targetRow = row2
+				@targetCol = col2
 			end
 		end
 	end
@@ -93,15 +93,15 @@ class Ant
 		dirs = []
 		
 		if (@row > @targetRow)
-			dirs.push[:N]
+			dirs.push(:N)
 		elsif (@row < @targetRow)
-			dirs.push[:S]
+			dirs.push(:S)
 		end
 		
 		if (@col > @targetCol)
-			dirs.push[:W]
+			dirs.push(:W)
 		elsif (@col < @targetCol)
-			dirs.push[:E]
+			dirs.push(:E)
 		end
 		dirs
 	end
