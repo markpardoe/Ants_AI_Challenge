@@ -23,7 +23,7 @@ ai.run do |ai|
 			
 		rowIx = row * maxCol
 		(0..maxCol-1).each do |col|
-			if @mapController.tile_map[row][col] < 1	# is the square passable...
+			if @mapController.tile_map[row,col] < 1	# is the square passable...
 					if @mapController.base_influence(row,col) < @enemyThreshold
 							val = @mapController.total_influence(row,col)
 							

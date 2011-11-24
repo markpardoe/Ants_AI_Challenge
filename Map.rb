@@ -1,9 +1,7 @@
-#!/usr/bin/env ruby
-require 'logger'
-
+$:.unshift File.dirname($0)
+require 'Array2D.rb'
 
 class Map
-		include Enumerable
 
 #columns = x
 #rows = y
@@ -36,15 +34,16 @@ class Map
 	def initialize(rows, columns, ai)	
 		@rows = rows
 		@cols = columns
-		@log = Logger.new('log.txt')
-		@scoutValues = Array.new(@rows){|row| Array.new(@cols,0)}
-		@foodValues = Array.new(@rows){|row| Array.new(@cols,0)}
-		@enemyInfluence = Array.new(@rows){|row| Array.new(@cols,0)}
-		@myInfluence = Array.new(@rows){|row| Array.new(@cols,0)}
-		@tile_map  = Array.new(@rows){|row| Array.new(@cols,0)}
+	#	@log = Logger.new('log.txt')
+		@scoutValues = Array2D.new(@rows,@cols,0)
+		@foodValues =Array2D.new(@rows,@cols,0)
+		@enemyInfluence = Array2D.new(@rows,@cols,0)
+		@myInfluence = Array2D.new(@rows,@cols,0)
+		@tile_map  = Array2D.new(@rows,@cols,0)
 		
-		generate_view_area(ai.viewradius2)
 		@ai = ai
+		generate_view_area(@ai.viewradius2) if (ai)
+		
 		@my_ants=[]
 		@enemy_ants=[]
 	end
@@ -52,23 +51,23 @@ class Map
 	
 
 	def food_value(row,col)
-		@foodValues[row][col]
+		@foodValues[row,col]
 	end
 	
 	def base_influence(row,col)
-		return  @enemyInfluence[row][col] - @myInfluence[row][col]
+		return  @enemyInfluence[row,col] - @myInfluence[row,col]
 	end
 	
 	def total_influence(row,col)
-		return base_influence(row,col) + food_value(row, col)  + @scoutValues[row][col]
+		return base_influence(row,col) + food_value(row, col)  + @scoutValues[row,col]
 	end
 	
 	def tension(row,col)
-		return  @myInfluence[row][col] + @enemyInfluence[row][col]
+		return  @myInfluence[row,col] + @enemyInfluence[row,col]
 	end
 	
 	def tile_value(row,col)
-		return @tile_map[row][col]
+		return @tile_map[row,col]
 	end
 	
 	def vunerability(row,col)
@@ -82,15 +81,14 @@ class Map
 		
 		# propegate all influence values
 		# Update visible squares
-		@log.debug "Resetting scoutValues: #{@ai.turn_number}"
 		@scoutValues.each do |row|
 			row.map! {|y| y+1 }
 		end
 		
 		# Regenerate food values
-		@foodValues = Array.new(@rows){|row| Array.new(@cols,0)}
-		@enemyInfluence = Array.new(@rows){|row| Array.new(@cols,0)}
-		@myInfluence = Array.new(@rows){|row| Array.new(@cols,0)}
+		@foodValues = Array2D.new(@rows,@cols,0)
+		@enemyInfluence = Array2D.new(@rows,@cols,0)
+		@myInfluence = Array2D.new(@rows,@cols,0)
 	
 		# Remove temporary objects from tilemap
 		@tile_map.each do |row|
@@ -150,7 +148,7 @@ class Map
 		 	(startVal..endVal).each do |col|
 		 		col = col % @cols if (col >= @cols or col<0)	# normalise if value on edges of square
 
-		 		@scoutValues[row][col] = 0
+		 		@scoutValues[row,col] = 0
 		 		# Clear the food value for this square as it is visible.
 		 	end
 		 end
@@ -160,64 +158,59 @@ class Map
 
 		case pointType
 		when :food
-			@tile_map[row][col] = 3
-			add_influence(row, col, 1000,10, @foodValues)
+			@tile_map[row,col] = 3
+			 add_influence(row, col, 1000,7, @foodValues)
+			#flood_influence(row, col, 1000, 7, @foodValues)
 		when :water
-			@tile_map[row][col] = 1
+			@tile_map[row,col] = 1
 		when :ant
-			@tile_map[row][col] = 2
+			@tile_map[row,col] = 2
 
 			ant = Ant.new row, col, true, owner,  self
 
 			if ant.owner==0
 				@my_ants.push ant
 				update_view_range(row,col)
+			#	flood_influence(row, col, 1000, 7, @myInfluence)
 				add_influence(row, col, 1000,7, @myInfluence)
 			else
 				@enemy_ants.push ant
 				add_influence(row, col, 2000,7, @enemyInfluence)
+			#	flood_influence(row, col, 2000, 7, @enemyInfluence)
 			end
 			
 		when :hill
-			@tile_map[row][col] = -1
+			@tile_map[row,col] = -1
 			add_influence(row, col, 10000,20, @foodValues) if (owner != 0) 
-
+		#	flood_influence(row, col, 10000, 20, @enemyInfluence)
 		else
 			raise 'Invalid Point Added'
 		end	
 	end
 	
-	# def to_s
-	# 	s = ""
-	# 	@rows.times do |row|
-	# 		s = s<< @foodValues[row*@cols, @cols].join(" ") << "\n"
+	
+	# # Propegate influence within range of the point...	
+	# #TODO: Use flood fill to flow around obstacles
+	# def add_influence(row, col, val, radius, map)
+	# 	axis = radius -1
+	# 	(-axis..axis).each do |ky|	
+	# 		
+	# 		kRow = row + ky
+	# 		kRow = kRow % @rows if (kRow >= @rows or kRow<0)	# normalise the row
+	# 
+	# 		# For each column...
+	# 		(-axis..axis).each do |kx|	
+	# 			kCol = col + kx
+	# 			kCol = kCol % @cols if (kCol >= @cols or kCol<0)	# normalise the column
+	# 			distance = (ky.abs + kx.abs)
+	# 			
+	# 			if (distance < radius)
+	# 				map[kRow,kCol] += (val * (radius - distance))/radius 
+	# 			end
+	# 		end
 	# 	end
-	# 	s
 	# end
 	
-	# Propegate influence within range of the point...	
-	#TODO: Use flood fill to flow around obstacles
-	def add_influence(row, col, val, radius, map)
-		axis = radius -1
-		(-axis..axis).each do |ky|	
-			
-			kRow = row + ky
-			kRow = kRow % @rows if (kRow >= @rows or kRow<0)	# normalise the row
-
-			# For each column...
-			(-axis..axis).each do |kx|	
-				kCol = col + kx
-				kCol = kCol % @cols if (kCol >= @cols or kCol<0)	# normalise the column
-				distance = (ky.abs + kx.abs)
-				
-				if (distance < radius)
-					map[kRow][kCol] = map[kRow][kCol] + (val * (radius - distance))/radius 
-				end
-			end
-		end
-	end
-	
-
 
 	def get_best_direction(tile)
 	#		try to go north, if possible; otherwise try east, south, west.
@@ -248,7 +241,7 @@ class Map
 		
 		dirs.each do |d|
 			n = neighbor(ant, d)
-			if (@tile_map[n[0]][n[1]] <1)
+			if (@tile_map[n[0],n[1]] <1)
 				puts "Ant #{ant.location.inspect}.  Best dir = #{d}"
 				return d
 			end
@@ -326,7 +319,94 @@ class Map
 		col =col % @cols if (col >= @cols or col<0)
 		return (col + (row * @cols))
  	end
+ 	
+ 	def map_to_s(map)
+ 		s = ""
+ 		map.each do |row|
+			s << row.inspect << "\n"
+		end
+		return s
+ 	end
+
+	def add_influence(row, col, val, radius, map)
+	circ = (radius *2)-1
+	checked = Array2D.new(circ, circ, false)
+	
+	nodes = [[row,col]]
+	checked[0,0] = true
+
+		(0..radius-1).each do |distance|
+			children = []
+			nodes.each do |point|
+
+				curRow = point[0] 
+				chkRow = point[0] - row
+				curCol = point[1]
+ 				chkCol = point[1] - col
+
+			#	puts "#{point.inspect} = #{[chkRow, chkCol].inspect} = #{(val * (radius - distance))/radius }"
+				map[curRow,curCol] += (val * (radius - distance))/radius 	#update tile value
+				
+			#	puts checked.to_s 
+			#	puts "------------" #if distance ==2
+				if (!checked[chkRow+1,chkCol] && @tile_map[curRow+1,curCol] != 1)
+					children << [curRow+1,curCol]
+					checked[chkRow+1,chkCol] = true
+				end
+				if (!checked[chkRow-1,chkCol] && @tile_map[curRow-1,curCol] != 1)
+					children << [curRow-1,curCol]
+					checked[chkRow-1,chkCol] = true
+				end
+				if (!checked[chkRow,chkCol+1] && @tile_map[curRow,curCol+1] != 1)
+					children << [curRow,curCol+1]
+					checked[chkRow,chkCol+1] = true
+				end
+				if (!checked[chkRow,chkCol-1] && @tile_map[curRow,curCol-1] != 1)
+					children << [curRow,curCol-1]
+					checked[chkRow,chkCol-1] = true
+				end			
+				
+			end				
+					
+			nodes = children
+		end
+	end
 end
-
-
-
+	
+	
+# beginning = Time.now
+# 	m = Map.new(200,200, nil)
+# 	400.times do
+# 		m.addPoint 4,4, :food
+# 	end
+# 	#puts m.map_to_s(m.foodValues)
+# 	puts "Time elapsed for radius  = #{Time.now - beginning} seconds"
+# 	
+# puts "-------------------------"
+# 	beginning = Time.now
+# 	m = Map.new(200,200, nil)
+# 	1000.times do
+# 		m.flood_influence 1,1, 1000, 7, m.foodValues
+# 	end
+# 	#puts m.map_to_s(m.foodValues)
+# 	puts "Time elapsed for flood  = #{Time.now - beginning} seconds"
+# 	
+# 
+	# puts "-------------------------"
+	# beginning = Time.now
+	# m = m = Map.new(200,200, nil)
+	# 100.times do
+	# 	m.flood_influence2 5,7, 1000, 7, m.foodValues
+	# end
+	# #puts m.map_to_s(m.foodValues)
+	# puts "Time elapsed for flood2  = #{Time.now - beginning} seconds"
+	# 
+	# puts "-------------------------"
+	# beginning = Time.now
+	# m = Map.new(200,200, nil)
+	# 100.times do
+	# 	m.flood_influence3 5,7, 1000,7, m.foodValues
+	# end
+	# #puts m.map_to_s(m.foodValues)
+	# puts "Time elapsed for flood3  = #{Time.now - beginning} seconds"
+	
