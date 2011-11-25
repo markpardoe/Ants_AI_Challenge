@@ -7,34 +7,17 @@ ai=AI.new
 
 ai.setup do |ai|
 	# your setup code here, if any
-	@enemyThreshold = 1000
+	
 end
 
 ai.run do |ai|
 	# your turn code here
 	@mapController = ai.map	
 		
-	maxRow = @mapController.rows
-	maxCol = @mapController.cols
+
 	myAnts = @mapController.my_ants
-		
-	# (0..maxRow-1).each do |row|
-	# 		
-	# 	rowIx = row * maxCol
-	# 	(0..maxCol-1).each do |col|
-	# 		if @mapController.tile_map[row,col] < 1	# is the square passable...
-	# 				if @mapController.base_influence(row,col) < @enemyThreshold
-	# 						val = @mapController.total_influence(row,col)
-	# 						
-	# 						myAnts.each do |ant|
-	# 							ant.check_max_value(row, col, val)
-	# 							
-	# 						end
-	# 				end
-	# 		end
-	# 	end	
-	# end
-		
+	
+
 		  myAnts.each do |ants| 		
 		 		ants.get_best_moves()
 		 		@mapController.try_move_ant(ants)

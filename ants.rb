@@ -68,7 +68,7 @@ class Ant
 	end
  	
 	def get_best_moves()
-		@targetDirections = @map.get_best_targets(self, 6)
+		@targetDirections = @map.get_best_targets(self,8)
 	end
 	
 	

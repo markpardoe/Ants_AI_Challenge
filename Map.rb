@@ -34,7 +34,10 @@ class Map
 	def initialize(rows, columns, ai)	
 		@rows = rows
 		@cols = columns
-	#	@log = Logger.new('log.txt')
+		@enemyThreshold = 1000
+		@log = Logger.new('log.txt')
+		
+		
 		@scoutValues = Array2D.new(@rows,@cols,0)
 		@foodValues =Array2D.new(@rows,@cols,0)
 		@enemyInfluence = Array2D.new(@rows,@cols,0)
@@ -74,6 +77,35 @@ class Map
 		return tension(row,col) - base_influence(row,col).abs
 	end
 	
+	def print_influence(rowStart, colStart, size)
+		inf = Array.new(@rows){|row| Array.new(@cols,0)}
+		(0..@rows-1).each do |row|
+			(0..@cols-1).each do |col|
+				inf[row][col] = total_influence(row,col)
+			end
+		end
+
+		s = ""
+				# 
+				# inf.transpose
+				# inf.unshift((0..inf.length-1).to_a)   # inserts column labels #
+				# inf.map.with_index{|col, i|
+				#     col.unshift(i.zero?? nil : i-1)   # inserts row labels #
+				#     w = col.map{|cell| cell.to_s.length}.max   # w = "column width" #
+				#  
+				#     col.map.with_index{|cell, i|
+				#          i.zero?? cell.to_s.center(w) : cell.to_s.ljust(w)}   # alligns the column #
+				# }
+				# inf.transpose
+		inf.each_with_index do |row, ix| 
+			 if (ix >= rowStart && ix <=(rowStart + size))
+	
+			 	s << "[#{row[colStart,size].join(' | ')}]"  << "\n"
+		 	end
+		end
+		return s
+	end
+	
 	
 	def reset() 
 		@my_ants=[]
@@ -82,7 +114,7 @@ class Map
 		# propegate all influence values
 		# Update visible squares
 		@scoutValues.each do |row|
-			row.map! {|y| y+1 }
+			row.map! {|y| y+10 }
 		end
 		
 		# Regenerate food values
@@ -155,7 +187,7 @@ class Map
 		case pointType
 		when :food
 			@tile_map[row,col] = 3
-			 add_influence(row, col, 3000,7, @foodValues)
+			 add_influence(row, col, 5000,5, @foodValues)
 			#flood_influence(row, col, 1000, 7, @foodValues)
 		when :water
 			@tile_map[row,col] = 1
@@ -167,17 +199,15 @@ class Map
 			if ant.owner==0
 				@my_ants.push ant
 				update_view_range(row,col)
-			#	flood_influence(row, col, 1000, 7, @myInfluence)
-				add_influence(row, col, 1000,3, @myInfluence)
+				add_influence(row, col, 500,5, @myInfluence)
 			else
 				@enemy_ants.push ant
-				add_influence(row, col, 2000,7, @enemyInfluence)
-			#	flood_influence(row, col, 2000, 7, @enemyInfluence)
+				add_influence(row, col, 500,5, @enemyInfluence)
 			end
 			
 		when :hill
 			@tile_map[row,col] = -1
-			add_influence(row, col, 10000,20, @foodValues) if (owner != 0) 
+			add_influence(row, col, 10000,30, @foodValues) if (owner != 0) 
 		#	flood_influence(row, col, 10000, 20, @enemyInfluence)
 		else
 			raise 'Invalid Point Added'
@@ -190,18 +220,15 @@ class Map
 		(0..@rows-1).each do |row|
 			(0..@cols-1).each do |col|
 				# Only check visible squares
-				puts "23,19 checked: #{@scoutValues[row,col]}.  Tile = #{@tile_map[row,col]}" if (row == 23 && col == 19)
 				if (@scoutValues[row,col] == 0 && @tile_map[row,col] != 1)
 					count = 0
 					count +=1 if @tile_map[row-1,col] == 1
 					count +=1 if @tile_map[row+1,col] == 1
 					count +=1 if @tile_map[row,col-1] == 1
 					count +=1 if @tile_map[row,col+1] == 1
+					
+					@tile_map[row, col] = 1 if (count >= 3)
 
-					if (count >= 3)
-						@tile_map[row, col] = 1
-						puts "Filled hole: #{[row, col].inspect}"
-					end
 				end
 			end
 		end
@@ -293,10 +320,8 @@ class Map
 	def add_influence(row, col, val, radius, map)
 	circ = (radius *2)-1
 	checked = Array2D.new(circ, circ, false)
-	
 	nodes = [[row,col]]
 	checked[0,0] = true
-
 		(0..radius-1).each do |distance|
 			children = []
 			nodes.each do |point|
@@ -305,28 +330,28 @@ class Map
 				chkRow = point[0] - row
 				curCol = point[1]
  				chkCol = point[1] - col
-
 			#	puts "#{point.inspect} = #{[chkRow, chkCol].inspect} = #{(val * (radius - distance))/radius }"
 				map[curRow,curCol] += (val * (radius - distance))/radius 	#update tile value
-				
 			#	puts checked.to_s 
 			#	puts "------------" #if distance ==2
-				if (!checked[chkRow+1,chkCol] && @tile_map[curRow+1,curCol] != 1)
-					children << [curRow+1,curCol]
-					checked[chkRow+1,chkCol] = true
-				end
-				if (!checked[chkRow-1,chkCol] && @tile_map[curRow-1,curCol] != 1)
-					children << [curRow-1,curCol]
-					checked[chkRow-1,chkCol] = true
-				end
-				if (!checked[chkRow,chkCol+1] && @tile_map[curRow,curCol+1] != 1)
-					children << [curRow,curCol+1]
-					checked[chkRow,chkCol+1] = true
-				end
-				if (!checked[chkRow,chkCol-1] && @tile_map[curRow,curCol-1] != 1)
-					children << [curRow,curCol-1]
-					checked[chkRow,chkCol-1] = true
-				end			
+			if (distance < radius - 1)
+					if (!checked[chkRow+1,chkCol] && @tile_map[curRow+1,curCol] != 1)
+						children << [curRow+1,curCol]
+						checked[chkRow+1,chkCol] = true
+					end
+					if (!checked[chkRow-1,chkCol] && @tile_map[curRow-1,curCol] != 1)
+						children << [curRow-1,curCol]
+						checked[chkRow-1,chkCol] = true
+					end
+					if (!checked[chkRow,chkCol+1] && @tile_map[curRow,curCol+1] != 1)
+						children << [curRow,curCol+1]
+						checked[chkRow,chkCol+1] = true
+					end
+					if (!checked[chkRow,chkCol-1] && @tile_map[curRow,curCol-1] != 1)
+						children << [curRow,curCol-1]
+						checked[chkRow,chkCol-1] = true
+					end		
+				end	
 				
 			end				
 					
@@ -344,23 +369,27 @@ class Map
 		checked[0,0] = true
 		
 		# Add initial values with their starting directions
+	#	if (!checked[1,0] && @tile_map[row+1,col] != 1 && total_influence(row+1, col) < @enemyThreshold)
 		if (!checked[1,0] && @tile_map[row+1,col] != 1)
 			nodes << [row+1,col, :S]
 			checked[1,0] = true
 		end
+	#	if (!checked[-1,0] && @tile_map[row-1,col] != 1 && total_influence(row-1, col) < @enemyThreshold)
 		if (!checked[-1,0] && @tile_map[row-1,col] != 1)
 			nodes << [row-1,col, :N]
 			checked[-1,0] = true
 		end
+	#	if (!checked[0,1] && @tile_map[row,col+1] != 1 && total_influence(row, col+1) < @enemyThreshold)
 		if (!checked[0,1] && @tile_map[row,col+1] != 1)
 			nodes << [row,col+1, :E]
 			checked[0,1] = true
 		end
+	#	if (!checked[0,-1] && @tile_map[row,col-1] != 1 && total_influence(row, col-1) < @enemyThreshold)
 		if (!checked[0,-1] && @tile_map[row,col-1] != 1)
 			nodes << [row,col-1, :W]
 			checked[0,-1] = true
 		end			
-		maxValue = 0
+		maxValue =-99999
 		maxDir = []
 		
 	
@@ -371,11 +400,12 @@ class Map
 				curRow = point[0] 
 				chkRow = point[0] - row
 				curCol = point[1]
-					chkCol = point[1] - col
-					curDir = point[2]
+				chkCol = point[1] - col
+				curDir = point[2]
 	
 				# Get the value of the current square / distance from the ant
-				val = total_influence(row,col) / distance.to_f
+				val = total_influence(curRow,curCol) / distance.to_f
+			#	val = total_influence(curRow,curCol)
 				# Update the distance list...
 				if (val > maxValue)
 					maxValue = val
@@ -384,24 +414,28 @@ class Map
 					maxDir << curDir
 				end
 				
-			#	puts checked.to_s 
-			#	puts "------------" #if distance ==2
-				if (!checked[chkRow+1,chkCol] && @tile_map[curRow+1,curCol] != 1)
-					children << [curRow+1,curCol, curDir]
-					checked[chkRow+1,chkCol] = true
-				end
-				if (!checked[chkRow-1,chkCol] && @tile_map[curRow-1,curCol] != 1)
-					children << [curRow-1,curCol, curDir]
-					checked[chkRow-1,chkCol] = true
-				end
-				if (!checked[chkRow,chkCol+1] && @tile_map[curRow,curCol+1] != 1)
-					children << [curRow,curCol+1, curDir]
-					checked[chkRow,chkCol+1] = true
-				end
-				if (!checked[chkRow,chkCol-1] && @tile_map[curRow,curCol-1] != 1)
-					children << [curRow,curCol-1, curDir]
-					checked[chkRow,chkCol-1] = true
-				end			
+			#	if (distance < radius-1)	# no point expanding children on last node
+					# if (!checked[chkRow+1,chkCol] && @tile_map[curRow+1,curCol] != 1 && total_influence(curRow+1, col) < @enemyThreshold)
+					if (!checked[chkRow+1,chkCol] && @tile_map[curRow+1,curCol] !=1)
+						children << [curRow+1,curCol, curDir]
+						checked[chkRow+1,chkCol] = true
+					end
+					#if (!checked[chkRow-1,chkCol] && @tile_map[curRow-1,curCol] != 1 && total_influence(curRow-1, col) < @enemyThreshold)
+					if (!checked[chkRow-1,chkCol] && @tile_map[curRow-1,curCol] != 1)
+						children << [curRow-1,curCol, curDir]
+						checked[chkRow-1,chkCol] = true
+					end
+					#if (!checked[chkRow,chkCol+1] && @tile_map[curRow,curCol+1] != 1 && total_influence(curRow, col+1) < @enemyThreshold)
+					if (!checked[chkRow,chkCol+1] && @tile_map[curRow,curCol+1] != 1)
+						children << [curRow,curCol+1, curDir]
+						checked[chkRow,chkCol+1] = true
+					end
+					#if (!checked[chkRow,chkCol-1] && @tile_map[curRow,curCol-1] != 1 && total_influence(curRow, col-1) < @enemyThreshold)
+					if (!checked[chkRow,chkCol-1] && @tile_map[curRow,curCol-1] != 1)
+						children << [curRow,curCol-1, curDir]
+						checked[chkRow,chkCol-1] = true
+					end		
+				#end	
 			end				
 					
 			nodes = children	# update the toCheck list
@@ -410,41 +444,14 @@ class Map
 	end
 end
 	
-	
+# 
 # beginning = Time.now
-# 	m = Map.new(200,200, nil)
-# 	400.times do
-# 		m.addPoint 4,4, :food
+# 	m = Map.new(10,10, nil)
+# 	1.times do
+# 		m.add_influence 4,4, 1000, 3, m.foodValues
 # 	end
-# 	#puts m.map_to_s(m.foodValues)
+# 	puts m.map_to_s(m.tile_map)
+# 	puts "----------"
+# 	#puts m.print_influence 2,2,8
 # 	puts "Time elapsed for radius  = #{Time.now - beginning} seconds"
 # 	
-# puts "-------------------------"
-# 	beginning = Time.now
-# 	m = Map.new(200,200, nil)
-# 	1000.times do
-# 		m.flood_influence 1,1, 1000, 7, m.foodValues
-# 	end
-# 	#puts m.map_to_s(m.foodValues)
-# 	puts "Time elapsed for flood  = #{Time.now - beginning} seconds"
-# 	
-# 
-	# puts "-------------------------"
-	# beginning = Time.now
-	# m = m = Map.new(200,200, nil)
-	# 100.times do
-	# 	m.flood_influence2 5,7, 1000, 7, m.foodValues
-	# end
-	# #puts m.map_to_s(m.foodValues)
-	# puts "Time elapsed for flood2  = #{Time.now - beginning} seconds"
-	# 
-	# puts "-------------------------"
-	# 	beginning = Time.now
-	# 	m = Map.new(200,200, nil)
-	# 	m.fill_holes
-	#	100.times do
-	#		m.flood_influence3 5,7, 1000,7, m.foodValues
-	#	end
-		#puts m.map_to_s(m.foodValues)
-		#puts "Time elapsed for flood3  = #{Time.now - beginning} seconds"
-	
