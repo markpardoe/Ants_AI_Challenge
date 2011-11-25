@@ -16,12 +16,15 @@ class Map
  	attr_accessor :foodValues
  	attr_accessor :myInfluence
  	attr_accessor :enemyInfluence
- 
+ 	attr_accessor :enemy_hills	# list of enemy hills (hash, with false values)
+ 	
+ 	
  	# -1 = Enemy Hill
  	# 0 = land
  	# 1 = water
- 	# 2 = ant (temp block)
- 	# 3 = food (temp block)
+ 	# 2 = my ant (temp block)
+ 	# 3 = enemy ant
+ 	# 4 = food (temp block)
  	attr_accessor :tile_map
  
  	attr_accessor :my_ants
@@ -37,6 +40,7 @@ class Map
 		@enemyThreshold = 1000
 		@log = Logger.new('log.txt')
 		
+		@enemy_hills = Hash.new(false)
 		
 		@scoutValues = Array2D.new(@rows,@cols,0)
 		@foodValues =Array2D.new(@rows,@cols,0)
@@ -184,36 +188,52 @@ class Map
 	end
 	
 	def addPoint (row, col, pointType, owner = 0)
+
 		case pointType
 		when :food
-			@tile_map[row,col] = 3
-			 add_influence(row, col, 5000,5, @foodValues)
-			#flood_influence(row, col, 1000, 7, @foodValues)
+			@tile_map[row,col] = 4
+			 add_influence(row, col, 3000,7, @foodValues)
 		when :water
 			@tile_map[row,col] = 1
 		when :ant
-			@tile_map[row,col] = 2
-
 			ant = Ant.new row, col, true, owner,  self
 
 			if ant.owner==0
+				@tile_map[row,col] = 2
 				@my_ants.push ant
 				update_view_range(row,col)
-				add_influence(row, col, 500,5, @myInfluence)
+				add_influence(row, col, 1000,3, @myInfluence)
 			else
+				@tile_map[row,col] = 3
 				@enemy_ants.push ant
-				add_influence(row, col, 500,5, @enemyInfluence)
+				add_influence(row, col, 2000,7, @enemyInfluence)
 			end
 			
 		when :hill
 			@tile_map[row,col] = -1
-			add_influence(row, col, 10000,30, @foodValues) if (owner != 0) 
-		#	flood_influence(row, col, 10000, 20, @enemyInfluence)
+			if (owner != 0)
+				@enemy_hills[[row,col]] = true if !@enemy_hills[[row,col]]
+			end
+		#	add_influence(row, col, 10000,20, @foodValues) if (owner != 0) 
 		else
 			raise 'Invalid Point Added'
 		end	
 	end
 	
+	def update_hills
+		@enemy_hills.each_pair do |key, val|
+			if val
+				puts "Key = #{key.to_s}"
+				#check if there is an ant (of mine) on this square
+				if (@tile_map[key[0],key[1]] == 2) # my ant on hill location - destroy it
+					@enemy_hills[key] = false
+				else
+					 # add influence to this square
+					add_influence(key[0], key[1], 10000,25, @foodValues)
+				end
+			end
+		end
+	end
 	
 	# Fills tiles surrounded on 3 sides, to prevent movement into them
 	def fill_holes
@@ -318,10 +338,13 @@ class Map
  	end
 
 	def add_influence(row, col, val, radius, map)
-	circ = (radius *2)-1
-	checked = Array2D.new(circ, circ, false)
-	nodes = [[row,col]]
-	checked[0,0] = true
+		circ = (radius *2)-1
+		checked = Array2D.new(circ, circ, false)
+	
+		
+		nodes = [[row,col]]
+		checked[0,0] = true
+
 		(0..radius-1).each do |distance|
 			children = []
 			nodes.each do |point|
@@ -330,11 +353,13 @@ class Map
 				chkRow = point[0] - row
 				curCol = point[1]
  				chkCol = point[1] - col
+
 			#	puts "#{point.inspect} = #{[chkRow, chkCol].inspect} = #{(val * (radius - distance))/radius }"
 				map[curRow,curCol] += (val * (radius - distance))/radius 	#update tile value
+				
 			#	puts checked.to_s 
 			#	puts "------------" #if distance ==2
-			if (distance < radius - 1)
+				if (distance < radius-1)
 					if (!checked[chkRow+1,chkCol] && @tile_map[curRow+1,curCol] != 1)
 						children << [curRow+1,curCol]
 						checked[chkRow+1,chkCol] = true
@@ -350,11 +375,9 @@ class Map
 					if (!checked[chkRow,chkCol-1] && @tile_map[curRow,curCol-1] != 1)
 						children << [curRow,curCol-1]
 						checked[chkRow,chkCol-1] = true
-					end		
-				end	
-				
-			end				
-					
+					end			
+				end
+			end					
 			nodes = children
 		end
 	end
@@ -414,7 +437,7 @@ class Map
 					maxDir << curDir
 				end
 				
-			#	if (distance < radius-1)	# no point expanding children on last node
+				if (distance < radius-1)	# no point expanding children on last node
 					# if (!checked[chkRow+1,chkCol] && @tile_map[curRow+1,curCol] != 1 && total_influence(curRow+1, col) < @enemyThreshold)
 					if (!checked[chkRow+1,chkCol] && @tile_map[curRow+1,curCol] !=1)
 						children << [curRow+1,curCol, curDir]
@@ -435,7 +458,7 @@ class Map
 						children << [curRow,curCol-1, curDir]
 						checked[chkRow,chkCol-1] = true
 					end		
-				#end	
+				end	
 			end				
 					
 			nodes = children	# update the toCheck list

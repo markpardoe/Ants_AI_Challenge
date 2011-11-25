@@ -149,6 +149,7 @@ class AI
 					warn "unexpected: #{rd}"
 			end
 		end
+		@map.update_hills
 		return ret
 	end
 	
