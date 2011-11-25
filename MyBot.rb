@@ -25,8 +25,3 @@ ai.run do |ai|
 		 
 		 
 end
-	
-	
-	#   row = row % @rows if (row >= @rows or row<0)
-	#	col =col % @cols if (col >= @cols or col<0)
-	#	return (col + (row * @cols))

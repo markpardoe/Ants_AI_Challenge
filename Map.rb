@@ -223,7 +223,6 @@ class Map
 	def update_hills
 		@enemy_hills.each_pair do |key, val|
 			if val
-				puts "Key = #{key.to_s}"
 				#check if there is an ant (of mine) on this square
 				if (@tile_map[key[0],key[1]] == 2) # my ant on hill location - destroy it
 					@enemy_hills[key] = false
@@ -354,11 +353,8 @@ class Map
 				curCol = point[1]
  				chkCol = point[1] - col
 
-			#	puts "#{point.inspect} = #{[chkRow, chkCol].inspect} = #{(val * (radius - distance))/radius }"
 				map[curRow,curCol] += (val * (radius - distance))/radius 	#update tile value
-				
-			#	puts checked.to_s 
-			#	puts "------------" #if distance ==2
+
 				if (distance < radius-1)
 					if (!checked[chkRow+1,chkCol] && @tile_map[curRow+1,curCol] != 1)
 						children << [curRow+1,curCol]
@@ -467,14 +463,3 @@ class Map
 	end
 end
 	
-# 
-# beginning = Time.now
-# 	m = Map.new(10,10, nil)
-# 	1.times do
-# 		m.add_influence 4,4, 1000, 3, m.foodValues
-# 	end
-# 	puts m.map_to_s(m.tile_map)
-# 	puts "----------"
-# 	#puts m.print_influence 2,2,8
-# 	puts "Time elapsed for radius  = #{Time.now - beginning} seconds"
-# 	
