@@ -97,10 +97,6 @@ class Map
 		
 	end
 	
-	def size()
-		return [@rows, @cols]
-	end
-
 	# Generates an array holding the view radius of a ant
 	# Array made up of pairs [xOffset, yOffset]
 	# xOffset = squares horizontal from center
@@ -156,7 +152,6 @@ class Map
 	end
 	
 	def addPoint (row, col, pointType, owner = 0)
-
 		case pointType
 		when :food
 			@tile_map[row,col] = 3
@@ -190,30 +185,8 @@ class Map
 	end
 	
 	
-	# # Propegate influence within range of the point...	
-	# #TODO: Use flood fill to flow around obstacles
-	# def add_influence(row, col, val, radius, map)
-	# 	axis = radius -1
-	# 	(-axis..axis).each do |ky|	
-	# 		
-	# 		kRow = row + ky
-	# 		kRow = kRow % @rows if (kRow >= @rows or kRow<0)	# normalise the row
-	# 
-	# 		# For each column...
-	# 		(-axis..axis).each do |kx|	
-	# 			kCol = col + kx
-	# 			kCol = kCol % @cols if (kCol >= @cols or kCol<0)	# normalise the column
-	# 			distance = (ky.abs + kx.abs)
-	# 			
-	# 			if (distance < radius)
-	# 				map[kRow,kCol] += (val * (radius - distance))/radius 
-	# 			end
-	# 		end
-	# 	end
-	# end
-	
+	# Fills tiles surrounded on 3 sides, to prevent movement into them
 	def fill_holes
-		puts "Filling holes!"
 		(0..@rows-1).each do |row|
 			(0..@cols-1).each do |col|
 				# Only check visible squares
@@ -233,55 +206,26 @@ class Map
 			end
 		end
 	end
-
-	def get_best_direction(tile)
-	#		try to go north, if possible; otherwise try east, south, west.
-		# [:N, :E, :S, :W].each do |dir|
-		# 	if neighbor(ant, dir).is_passable?
-		# 		return dir
-		# 		break
-		# 	end
-		# end
-		maxVal = 0-999999
-		maxDir =  nil
 		
-		[:N, :E, :S, :W].each do |dir|
-			n = neighbor(tile, dir)
-			val = total_influence(n[0], n[1])
-			if (tile_value(n[0], n[1]) < 1 && val > maxVal) 
-				maxDir = dir
-				maxVal = val
+	def try_move_ant ant
+		directions = ant.targetDirections
+		# Check if ant is to stay still...
+		return true if directions.empty?
+		
+		directions.each do |dir|
+			dest = neighbor(ant, dir)
+			if (@tile_map[dest[0], dest[1]] <1)
+				# Moves the ant to the new tile.
+				@ai.order ant, dir
+				# Remove old position from tilemap
+				@tile_map[ant.row, ant.col] =0
+				# Add ant at new position
+				@tile_map[dest[0], dest[1]] = 2
+				ant.update_location(dest[0], dest[1])
+				return true
 			end
 		end
-		return maxDir
-	end
-	
-	def ant_dir_to_target ant
-		# Write to standard out
-	#	ant, direction = a, b
-		dirs = ant.dirs_to_target
-		puts dirs.inspect
-		dirs.each do |d|
-			n = neighbor(ant, d)
-			if (@tile_map[n[0],n[1]] <1)
-				puts "Ant #{ant.location.inspect}.  Best dir = #{d}"
-				return d
-			end
-		end
-		
-		return get_best_direction(ant)
-	end
-		
-	def move_ant ant, direction
-		# Write to standard out
-
-		if !direction.nil?
-			@ai.order ant, direction
-			# Moves the ant to the new tile.
-			dest = neighbor(ant, direction)
-	
-			ant.update_location(dest[0], dest[1])
-		end
+		return false
 	end 
 	
  	# Returns a square neighboring this one in given direction.
@@ -301,7 +245,7 @@ class Map
 		else
 			raise "incorrect direction: #{direction}"
 		end
-		return normalize(x,y)
+		return x,y
 	end
 
  	# Expects two 2 element arrays [row, col], [row1,col1]
@@ -337,12 +281,6 @@ class Map
 		[row % @rows, col % @cols]
 	end
 	
-	# System Calculations
-	 def calculateIndex(row,col)
-	 	row = row % @rows if (row >= @rows or row<0)
-		col =col % @cols if (col >= @cols or col<0)
-		return (col + (row * @cols))
- 	end
  	
  	def map_to_s(map)
  		s = ""
@@ -394,6 +332,81 @@ class Map
 					
 			nodes = children
 		end
+	end
+	
+	def get_best_targets(ant, radius)
+		circ = (radius *2)-1
+		checked = Array2D.new(circ, circ, false)
+		
+		nodes = []
+		row = ant.row
+		col = ant.col
+		checked[0,0] = true
+		
+		# Add initial values with their starting directions
+		if (!checked[1,0] && @tile_map[row+1,col] != 1)
+			nodes << [row+1,col, :S]
+			checked[1,0] = true
+		end
+		if (!checked[-1,0] && @tile_map[row-1,col] != 1)
+			nodes << [row-1,col, :N]
+			checked[-1,0] = true
+		end
+		if (!checked[0,1] && @tile_map[row,col+1] != 1)
+			nodes << [row,col+1, :E]
+			checked[0,1] = true
+		end
+		if (!checked[0,-1] && @tile_map[row,col-1] != 1)
+			nodes << [row,col-1, :W]
+			checked[0,-1] = true
+		end			
+		maxValue = 0
+		maxDir = []
+		
+	
+		(1..radius-1).each do |distance|
+			children = []
+			nodes.each do |point|
+	
+				curRow = point[0] 
+				chkRow = point[0] - row
+				curCol = point[1]
+					chkCol = point[1] - col
+					curDir = point[2]
+	
+				# Get the value of the current square / distance from the ant
+				val = total_influence(row,col) / distance.to_f
+				# Update the distance list...
+				if (val > maxValue)
+					maxValue = val
+					maxDir = [curDir]
+				elsif (val == maxValue)	# Add to the available distance list
+					maxDir << curDir
+				end
+				
+			#	puts checked.to_s 
+			#	puts "------------" #if distance ==2
+				if (!checked[chkRow+1,chkCol] && @tile_map[curRow+1,curCol] != 1)
+					children << [curRow+1,curCol, curDir]
+					checked[chkRow+1,chkCol] = true
+				end
+				if (!checked[chkRow-1,chkCol] && @tile_map[curRow-1,curCol] != 1)
+					children << [curRow-1,curCol, curDir]
+					checked[chkRow-1,chkCol] = true
+				end
+				if (!checked[chkRow,chkCol+1] && @tile_map[curRow,curCol+1] != 1)
+					children << [curRow,curCol+1, curDir]
+					checked[chkRow,chkCol+1] = true
+				end
+				if (!checked[chkRow,chkCol-1] && @tile_map[curRow,curCol-1] != 1)
+					children << [curRow,curCol-1, curDir]
+					checked[chkRow,chkCol-1] = true
+				end			
+			end				
+					
+			nodes = children	# update the toCheck list
+		end
+		return maxDir.uniq
 	end
 end
 	

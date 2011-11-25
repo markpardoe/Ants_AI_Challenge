@@ -18,29 +18,29 @@ ai.run do |ai|
 	maxCol = @mapController.cols
 	myAnts = @mapController.my_ants
 		
-	(0..maxRow-1).each do |row|
-			
-		rowIx = row * maxCol
-		(0..maxCol-1).each do |col|
-			if @mapController.tile_map[row,col] < 1	# is the square passable...
-					if @mapController.base_influence(row,col) < @enemyThreshold
-							val = @mapController.total_influence(row,col)
-							
-							myAnts.each do |ant|
-								ant.check_max_value(row, col, val)
-								
-							end
-					end
-			end
-		end	
-	end
+	# (0..maxRow-1).each do |row|
+	# 		
+	# 	rowIx = row * maxCol
+	# 	(0..maxCol-1).each do |col|
+	# 		if @mapController.tile_map[row,col] < 1	# is the square passable...
+	# 				if @mapController.base_influence(row,col) < @enemyThreshold
+	# 						val = @mapController.total_influence(row,col)
+	# 						
+	# 						myAnts.each do |ant|
+	# 							ant.check_max_value(row, col, val)
+	# 							
+	# 						end
+	# 				end
+	# 		end
+	# 	end	
+	# end
 		
-		# puts "total ants = #{myAnts.length}" ------------------------
-		  @mapController.my_ants.each do |ants| 		
-		 		d = @mapController.ant_dir_to_target(ants)
-		 		
-				@mapController.move_ant(ants, d ) if (!d.nil?)
+		  myAnts.each do |ants| 		
+		 		ants.get_best_moves()
+		 		@mapController.try_move_ant(ants)
 		 end
+		 
+		 
 end
 	
 	

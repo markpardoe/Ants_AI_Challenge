@@ -10,20 +10,17 @@ class Ant
 	attr_accessor :owner
 	# Square this ant sits on.
 
-	attr_accessor :alive, :Map
+	attr_accessor :alive, :map
 	attr_accessor :moved
 
-	attr_accessor :targetValue
-	attr_accessor :targetRow
-	attr_accessor :targetCol
+	attr_accessor :targetDirections
 	
 	def initialize row, col, alive, owner, map
 		@alive, @owner, @map = alive, owner, map
 		@row, @col = row, col
 		@moved = false
-		@targetValue = 0
-		@targetRow = nil
-		
+
+		@targetDirections = []
 	end
 	
 	# True if ant is alive.
@@ -70,42 +67,12 @@ class Ant
 		location[index]
 	end
  	
-	def check_max_value(row2, col2, value)
-		dR = (row - row2).abs
-		dC = (col-col2).abs
-		# Deal with wraparound map
-		dR = @map.rows - dR if (dR*2 > @map.rows)
-		dC = @map.cols - dC if (dC*2 > @map.cols)
-		
-		if (dR + dC) != 0
-		
-			eval = value / (dR + dC)
-			if (eval > @targetValue)
-				@targetValue = eval
-				@targetRow = row2
-				@targetCol = col2
-			end
-		end
+	def get_best_moves()
+		@targetDirections = @map.get_best_targets(self, 6)
 	end
 	
-	def dirs_to_target()
-		return [] if !@targetRow
-		dirs = []
-		
-		if (@row > @targetRow)
-			dirs.push(:N)
-		elsif (@row < @targetRow)
-			dirs.push(:S)
-		end
-		
-		if (@col > @targetCol)
-			dirs.push(:W)
-		elsif (@col < @targetCol)
-			dirs.push(:E)
-		end
-		dirs
-	end
-
+	
+	
 end
 
 
