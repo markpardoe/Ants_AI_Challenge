@@ -12,7 +12,6 @@ class TileMap < Array2D
 	# ignore enemy hills as they are passable
 	def initialize(row, cols)
 		super(row, cols, 1)
-		puts "Data length = #{@data.length}"
 	end
 	
 	def reset()
@@ -59,6 +58,21 @@ class TileMap < Array2D
 		self[row,col] = -1 if owner == 0
 	end	
 	
-
+	 # Scoutmap should be a 2D array of scouting values
+  	def fill_holes(scoutMap)
+		(0..@rows-1).each do |row|
+			(0..@cols-1).each do |col|
+				# Only check visible squares
+				if (scoutMap[row,col] == 0 && !water?(row,col))
+					count = 0
+					count +=1 if water?(row-1,col)
+					count +=1 if water?(row+1,col)
+					count +=1 if water?(row,col - 1)
+					count +=1 if water?(row,col + 1)
+					add_water(row, col)  if (count >= 3)
+				end
+			end
+		end
+	end
 		
 end

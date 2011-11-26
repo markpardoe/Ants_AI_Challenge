@@ -2,22 +2,25 @@ $:.unshift File.dirname($0)
 require 'ants.rb'
 require 'AI.rb'
 require 'Map.rb'
+require "Settings.rb"
 
-ai=AI.new
+
+@settings = Settings.new()	
+ai=AI.new @settings
 
 ai.setup do |ai|
 	@args = []
 	# your setup code here, if any
 	ARGV.each do|a|
- 	 @args << a
+	  @args << a
 	end
+	
 end
 
 ai.run do |ai|
 	# your turn code here
 	@mapController = ai.map	
 	@mapController.update_hills
-		
 
 	myAnts = @mapController.my_ants
 	
@@ -27,7 +30,7 @@ ai.run do |ai|
 		 end
 		 
 		 
-		 3.times do 
+		 10.times do 
 		 	unmoved = []
 		 	myAnts.each do |ants| 		
 		 		if (!@mapController.try_move_ant(ants))

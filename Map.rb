@@ -28,20 +28,22 @@ class Map
 	attr_accessor :rows
  	attr_accessor :cols
  	
+ 	
 	#Creates the new map object of the given size
 	def initialize(rows, columns, ai)	
 		@rows = rows
 		@cols = columns
-		@enemyThreshold = 1000
+		@settings = ai.settings
 		
 		
+		@tile_map = TileMap.new(@rows, @cols)
 		@enemy_hills = Hash.new(false)
 		
 		@scoutValues = Array2D.new(@rows,@cols,0)
-		@foodValues =Array2D.new(@rows,@cols,0)
-		@enemyInfluence = Array2D.new(@rows,@cols,0)
-		@myInfluence = Array2D.new(@rows,@cols,0)
-		@tile_map = TileMap.new(@rows, @cols)
+		@foodValues = InfluenceMap.new(@rows,@cols,@tile_map)
+		@enemyInfluence = InfluenceMap.new(@rows,@cols,@tile_map)
+		@myInfluence = InfluenceMap.new(@rows,@cols,@tile_map)
+		
 		
 		@ai = ai
 		generate_view_area(@ai.viewradius2) if (ai)
@@ -81,20 +83,8 @@ class Map
 		end
 
 		s = ""
-				# 
-				# inf.transpose
-				# inf.unshift((0..inf.length-1).to_a)   # inserts column labels #
-				# inf.map.with_index{|col, i|
-				#     col.unshift(i.zero?? nil : i-1)   # inserts row labels #
-				#     w = col.map{|cell| cell.to_s.length}.max   # w = "column width" #
-				#  
-				#     col.map.with_index{|cell, i|
-				#          i.zero?? cell.to_s.center(w) : cell.to_s.ljust(w)}   # alligns the column #
-				# }
-				# inf.transpose
 		inf.each_with_index do |row, ix| 
 			 if (ix >= rowStart && ix <=(rowStart + size))
-	
 			 	s << "[#{row[colStart,size].join(' | ')}]"  << "\n"
 		 	end
 		end
@@ -105,20 +95,19 @@ class Map
 	def reset() 
 		@my_ants=[]
 		@enemy_ants=[]
-		fill_holes
+		@tile_map.reset
+		@tile_map.fill_holes(@scoutValues)
+		
 		# propegate all influence values
 		# Update visible squares
-		@scoutValues.each do |row|
-			row.map! {|y| y+10 }
-		end
+		 @scoutValues.each do |row|
+		 	row.map! {|y| y+ @settings.scoutCounter }
+		 end
 		
-		# Regenerate food values
-		@foodValues = Array2D.new(@rows,@cols,0)
-		@enemyInfluence = Array2D.new(@rows,@cols,0)
-		@myInfluence = Array2D.new(@rows,@cols,0)
-	
-		# Remove temporary objects from tilemap
-		@tile_map.reset
+		# Create New InfluenceMaps
+		@foodValues = InfluenceMap.new(@rows,@cols,@tile_map)
+		@enemyInfluence =  InfluenceMap.new(@rows,@cols,@tile_map)
+		@myInfluence = InfluenceMap.new(@rows,@cols,@tile_map)
 		
 	end
 	
@@ -181,7 +170,7 @@ class Map
 		case pointType
 		when :food
 			@tile_map.add_food(row,col)
-			 add_influence(row, col, 3000,7, @foodValues)
+			@foodValues.add_influence(row, col, @settings.food_value, @settings.food_range)
 		when :water
 			@tile_map.add_water(row,col)
 		when :ant
@@ -191,18 +180,18 @@ class Map
 			if ant.owner==0
 				@my_ants.push ant
 				update_view_range(row,col)
-				add_influence(row, col, 1000,2, @myInfluence)
+				@myInfluence.add_influence(row, col, @settings.myAnt_value, @settings.myAnt_range)
 			else
 				@enemy_ants.push ant
-				add_influence(row, col, 2000,7, @enemyInfluence)
+				@enemyInfluence.add_influence(row, col, @settings.enemyAnt_value, @settings.enemyAnt_range)
 			end
 			
 		when :hill
 			@tile_map.add_hill(row,col, owner)
-			if (owner != 0)
+			if (owner != 0)	# add to list of enemy hills
 				@enemy_hills[[row,col]] = true if !@enemy_hills[[row,col]]
 			else
-				add_influence(row, col, 1000,3, @myInfluence)
+				 @myInfluence.add_influence(row, col, @settings.myHill_value, @settings.myHill_range)
 			end
 
 		else
@@ -212,22 +201,7 @@ class Map
 	
 	
 		# Fills tiles surrounded on 3 sides, to prevent movement into them
-	def fill_holes
-		(0..@rows-1).each do |row|
-			(0..@cols-1).each do |col|
-				# Only check visible squares
-				if (@scoutValues[row,col] == 0 && !@tile_map.water?(row,col))
-					count = 0
-					count +=1 if @tile_map.water?(row-1,col)
-					count +=1 if @tile_map.water?(row+1,col)
-					count +=1 if @tile_map.water?(row,col - 1)
-					count +=1 if @tile_map.water?(row,col + 1)
-					@tile_map.add_water(row, col)  if (count >= 3)
-
-				end
-			end
-		end
-	end
+	
 	
 	def update_hills
 		@enemy_hills.each_pair do |key, val|
@@ -237,7 +211,8 @@ class Map
 					@enemy_hills[key] = false
 				else
 					 # add influence to this square
-					add_influence(key[0], key[1], 10000,25, @foodValues)
+					@foodValues.add_influence(key[0], key[1],  @settings.enemyHill_value,  @settings.enemyHill_range)
+					puts "Enemy Hill Added"
 				end
 			end
 		end
@@ -309,66 +284,7 @@ class Map
 		return dR + dC
 	end
 	
-	# If row or col are greater than or equal map width/height, makes them fit the map.
-	#
-	# Handles negative values correctly (it may return a negative value, but always one that is a correct index).
-	#
-	# Returns [row, col].
-	def normalize row, col
-		[row % @rows, col % @cols]
-	end
-	
- 	
- 	def map_to_s(map)
- 		s = ""
- 		map.each do |row|
-			s << row.inspect << "\n"
-		end
-		return s
- 	end
 
-	def add_influence(row, col, val, radius, map)
-		circ = (radius *2)-1
-		checked = Array2D.new(circ, circ, false)
-	
-		
-		nodes = [[row,col]]
-		checked[0,0] = true
-
-		(0..radius-1).each do |distance|
-			children = []
-			nodes.each do |point|
-
-				curRow = point[0] 
-				chkRow = point[0] - row
-				curCol = point[1]
- 				chkCol = point[1] - col
-
-				map[curRow,curCol] += (val * (radius - distance))/radius 	#update tile value
-
-				if (distance < radius-1)
-					if (!checked[chkRow+1,chkCol] && @tile_map.passable?(curRow+1,curCol))
-						children << [curRow+1,curCol]
-						checked[chkRow+1,chkCol] = true
-					end
-					if (!checked[chkRow-1,chkCol] && @tile_map.passable?(curRow-1,curCol))
-						children << [curRow-1,curCol]
-						checked[chkRow-1,chkCol] = true
-					end
-					if (!checked[chkRow,chkCol+1] && @tile_map.passable?(curRow,curCol+1))
-						children << [curRow,curCol+1]
-						checked[chkRow,chkCol+1] = true
-					end
-					if (!checked[chkRow,chkCol-1] && @tile_map.passable?(curRow,curCol-1))
-						children << [curRow,curCol-1]
-						checked[chkRow,chkCol-1] = true
-					end			
-				end
-			end					
-			nodes = children
-		end
-	end
-	
 	def get_best_targets(ant, radius)
 		circ = (radius *2)-1
 		checked = Array2D.new(circ, circ, false)

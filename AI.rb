@@ -18,14 +18,16 @@ class AI
 	
 	attr_accessor :map
 	
+	attr_accessor :settings
 	
 	
 
 	# Initialize a new AI object. Arguments are streams this AI will read from and write to.
-	def initialize stdin=$stdin, stdout=$stdout
+	def initialize settingsFile, stdin=$stdin, stdout=$stdout
 		@stdin, @stdout = stdin, stdout
 		@turn_number=0
 		@did_setup=false
+		@settings = settingsFile
 	#	@log = Logger.new("log.txt")	
 	#	@log.info("")
 	#	@log.info("NEW GAME -----------------------------------------")	
@@ -34,23 +36,23 @@ class AI
 	
 	
 	
-	# Returns a read-only hash of all settings.
-	def settings
-		{
-			:loadtime => @loadtime,
-			:turntime => @turntime,
-			:rows => @rows,
-			:cols => @cols,
-			:turns => @turns,
-			:viewradius2 => @viewradius2,
-			:attackradius2 => @attackradius2,
-			:spawnradius2 => @spawnradius2,
-			:viewradius => @viewradius,
-			:attackradius => @attackradius,
-			:spawnradius => @spawnradius,
-			:seed => @seed
-		}.freeze
-	end
+	# # Returns a read-only hash of all settings.
+	# 	def settings
+	# 		{
+	# 			:loadtime => @loadtime,
+	# 			:turntime => @turntime,
+	# 			:rows => @rows,
+	# 			:cols => @cols,
+	# 			:turns => @turns,
+	# 			:viewradius2 => @viewradius2,
+	# 			:attackradius2 => @attackradius2,
+	# 			:spawnradius2 => @spawnradius2,
+	# 			:viewradius => @viewradius,
+	# 			:attackradius => @attackradius,
+	# 			:spawnradius => @spawnradius,
+	# 			:seed => @seed
+	# 		}.freeze
+	# 	end
 	
 	# Zero-turn logic. 
 	def setup # :yields: self
