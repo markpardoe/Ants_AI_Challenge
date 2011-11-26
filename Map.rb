@@ -2,9 +2,11 @@ $:.unshift File.dirname($0)
 require 'Array2D.rb'
 require "InfluenceMap.rb"
 require "TileMap.rb"
+require "Utilities.rb"
+require "ScoutMap.rb"
 
 class Map
-
+	include Utilities
 #columns = x
 #rows = y
 
@@ -12,7 +14,7 @@ class Map
 	# Can be used to allow scouting of unspotted squares
 	# To get the value, call tile.scount_value
 	# This allows us to take account of water squares which will always be zero
- 	attr_accessor :scoutValues
+ 	attr_accessor :scout_map
  	
  	# Food influence map
  	attr_accessor :foodValues
@@ -34,25 +36,37 @@ class Map
 		@rows = rows
 		@cols = columns
 		@settings = ai.settings
-		
+		@ai = ai
 		
 		@tile_map = TileMap.new(@rows, @cols)
 		@enemy_hills = Hash.new(false)
 		
-		@scoutValues = Array2D.new(@rows,@cols,0)
+		viewRad = @ai.nil? ? 5 : @ai.viewradius2	# allows for blank ai values in testing
+
+		@scout_map = ScoutMap.new(@rows,@cols, @settings.scoutCounter, viewRad)
+		
 		@foodValues = InfluenceMap.new(@rows,@cols,@tile_map)
 		@enemyInfluence = InfluenceMap.new(@rows,@cols,@tile_map)
 		@myInfluence = InfluenceMap.new(@rows,@cols,@tile_map)
 		
-		
-		@ai = ai
-		generate_view_area(@ai.viewradius2) if (ai)
-		
+				
 		@my_ants=[]
 		@enemy_ants=[]
 	end
 	
-	
+	def reset() 
+		@my_ants=[]
+		@enemy_ants=[]
+		@tile_map.reset
+		@tile_map.fill_holes(@scout_map)
+		
+		
+		# Create New InfluenceMaps
+		@foodValues = InfluenceMap.new(@rows,@cols,@tile_map)
+		@enemyInfluence =  InfluenceMap.new(@rows,@cols,@tile_map)
+		@myInfluence = InfluenceMap.new(@rows,@cols,@tile_map)
+		@scout_map.reset
+	end
 
 	def food_value(row,col)
 		@foodValues[row,col]
@@ -63,7 +77,7 @@ class Map
 	end
 	
 	def total_influence(row,col)
-		return base_influence(row,col) + food_value(row, col)  + @scoutValues[row,col]
+		return base_influence(row,col) + food_value(row, col)  + @scout_map[row,col]
 	end
 	
 	def tension(row,col)
@@ -91,80 +105,7 @@ class Map
 		return s
 	end
 	
-	
-	def reset() 
-		@my_ants=[]
-		@enemy_ants=[]
-		@tile_map.reset
-		@tile_map.fill_holes(@scoutValues)
 		
-		# propegate all influence values
-		# Update visible squares
-		 @scoutValues.each do |row|
-		 	row.map! {|y| y+ @settings.scoutCounter }
-		 end
-		
-		# Create New InfluenceMaps
-		@foodValues = InfluenceMap.new(@rows,@cols,@tile_map)
-		@enemyInfluence =  InfluenceMap.new(@rows,@cols,@tile_map)
-		@myInfluence = InfluenceMap.new(@rows,@cols,@tile_map)
-		
-	end
-	
-	# Generates an array holding the view radius of a ant
-	# Array made up of pairs [xOffset, yOffset]
-	# xOffset = squares horizontal from center
-	# yOffset = maximum distance of viewable range (from center) in the column XoffSet
-	def generate_view_area(distance2)
-		initalPoint = [0,0]
-		distance = Integer(Math.sqrt(distance2))
-		
-		viewRadius = []
-		xCounter = 1
-		yCounter = distance
-		viewRadius.push([0 , distance])
-		
-		while (xCounter <= distance) do
-		
-			x =  xCounter
-			y =  yCounter
-			
-			if ((eculidean_distance(initalPoint, [xCounter,yCounter])) < distance2)
-				#Within range, so can use this square
-				viewRadius.push([xCounter, yCounter])
-				viewRadius.push([-xCounter, yCounter])
-				xCounter += 1
-			else
-				yCounter -=1 # move in slightly and try again
-			end
-		end
-		@viewRadius =  viewRadius
-	end
-		
-	
-	# Updates every square that the ant can see....
-	# Sets tile.scout_value = 0
-	def update_view_range(row, col)
-		 antRow = row
-		 antCol = col
-		 
-		 @viewRadius.each do |viewPair|
-		 	row = viewPair[0] + antRow
-		 	row = row % @rows if (row >= @rows or row <0)	# normalise the y value if needed
-		 #	row = row * @cols
-		 	
-		 	startVal = antCol - viewPair[1]	#start index
-		 	endVal = antCol + viewPair[1]
-
-		 	(startVal..endVal).each do |col|
-		 		col = col % @cols if (col >= @cols or col<0)	# normalise if value on edges of square
-
-		 		@scoutValues[row,col] = 0
-		 		# Clear the food value for this square as it is visible.
-		 	end
-		 end
-	end
-	
 	def addPoint (row, col, pointType, owner = 0)
 
 		case pointType
@@ -179,7 +120,7 @@ class Map
 			
 			if ant.owner==0
 				@my_ants.push ant
-				update_view_range(row,col)
+				@scout_map.update_view_range(row,col)
 				@myInfluence.add_influence(row, col, @settings.myAnt_value, @settings.myAnt_range)
 			else
 				@enemy_ants.push ant
@@ -212,7 +153,6 @@ class Map
 				else
 					 # add influence to this square
 					@foodValues.add_influence(key[0], key[1],  @settings.enemyHill_value,  @settings.enemyHill_range)
-					puts "Enemy Hill Added"
 				end
 			end
 		end
@@ -260,29 +200,7 @@ class Map
 		return x,y
 	end
 
- 	# Expects two 2 element arrays [row, col], [row1,col1]
- 	# Or two tiles
- 	# Or two ant
- 	# Or any combination of the above...
-	def eculidean_distance(point1, point2)
-		(point1[0] - point2[0])**2  + (point1[1] - point2[1])**2 
-	end
-		
-	 	
-	# Expects two 2 element arrays [x, y], [x1,y1]
-	# Or two tiles
- 	# Or two ant
- 	# Or any combination of the above...
- 	#http://en.wikipedia.org/wiki/Taxicab_geometry
-	def move_distance(point1, point2)
-		dR = (point1[0] - point2[0]).abs
-		dC = (point1[1]-point2[1]).abs
-		# Deal with wraparound map
-		dR = @rows - dR if (dR*2 > @rows)
-		dC = @cols - dC if (dC*2 > @cols)
 
-		return dR + dC
-	end
 	
 
 	def get_best_targets(ant, radius)
