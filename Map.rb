@@ -1,5 +1,7 @@
 $:.unshift File.dirname($0)
 require 'Array2D.rb'
+require "InfluenceMap.rb"
+require "TileMap.rb"
 
 class Map
 
@@ -18,13 +20,6 @@ class Map
  	attr_accessor :enemyInfluence
  	attr_accessor :enemy_hills	# list of enemy hills (hash, with false values)
  	
- 	
- 	# -1 = Enemy Hill
- 	# 0 = land
- 	# 1 = water
- 	# 2 = my ant (temp block)
- 	# 3 = enemy ant
- 	# 4 = food (temp block)
  	attr_accessor :tile_map
  
  	attr_accessor :my_ants
@@ -38,7 +33,7 @@ class Map
 		@rows = rows
 		@cols = columns
 		@enemyThreshold = 1000
-		@log = Logger.new('log.txt')
+		
 		
 		@enemy_hills = Hash.new(false)
 		
@@ -46,7 +41,7 @@ class Map
 		@foodValues =Array2D.new(@rows,@cols,0)
 		@enemyInfluence = Array2D.new(@rows,@cols,0)
 		@myInfluence = Array2D.new(@rows,@cols,0)
-		@tile_map  = Array2D.new(@rows,@cols,0)
+		@tile_map = TileMap.new(@rows, @cols)
 		
 		@ai = ai
 		generate_view_area(@ai.viewradius2) if (ai)
@@ -71,10 +66,6 @@ class Map
 	
 	def tension(row,col)
 		return  @myInfluence[row,col] + @enemyInfluence[row,col]
-	end
-	
-	def tile_value(row,col)
-		return @tile_map[row,col]
 	end
 	
 	def vunerability(row,col)
@@ -127,9 +118,7 @@ class Map
 		@myInfluence = Array2D.new(@rows,@cols,0)
 	
 		# Remove temporary objects from tilemap
-		@tile_map.each do |row|
-			row.map! {|x| x > 1 ? 0 : x}
-		end
+		@tile_map.reset
 		
 	end
 	
@@ -191,40 +180,60 @@ class Map
 
 		case pointType
 		when :food
-			@tile_map[row,col] = 4
+			@tile_map.add_food(row,col)
 			 add_influence(row, col, 3000,7, @foodValues)
 		when :water
-			@tile_map[row,col] = 1
+			@tile_map.add_water(row,col)
 		when :ant
 			ant = Ant.new row, col, true, owner,  self
-
+			@tile_map.add_ant(row,col, owner)
+			
 			if ant.owner==0
-				@tile_map[row,col] = 2
 				@my_ants.push ant
 				update_view_range(row,col)
-				add_influence(row, col, 1000,3, @myInfluence)
+				add_influence(row, col, 1000,2, @myInfluence)
 			else
-				@tile_map[row,col] = 3
 				@enemy_ants.push ant
 				add_influence(row, col, 2000,7, @enemyInfluence)
 			end
 			
 		when :hill
-			@tile_map[row,col] = -1
+			@tile_map.add_hill(row,col, owner)
 			if (owner != 0)
 				@enemy_hills[[row,col]] = true if !@enemy_hills[[row,col]]
+			else
+				add_influence(row, col, 1000,3, @myInfluence)
 			end
-		#	add_influence(row, col, 10000,20, @foodValues) if (owner != 0) 
+
 		else
 			raise 'Invalid Point Added'
 		end	
+	end
+	
+	
+		# Fills tiles surrounded on 3 sides, to prevent movement into them
+	def fill_holes
+		(0..@rows-1).each do |row|
+			(0..@cols-1).each do |col|
+				# Only check visible squares
+				if (@scoutValues[row,col] == 0 && !@tile_map.water?(row,col))
+					count = 0
+					count +=1 if @tile_map.water?(row-1,col)
+					count +=1 if @tile_map.water?(row+1,col)
+					count +=1 if @tile_map.water?(row,col - 1)
+					count +=1 if @tile_map.water?(row,col + 1)
+					@tile_map.add_water(row, col)  if (count >= 3)
+
+				end
+			end
+		end
 	end
 	
 	def update_hills
 		@enemy_hills.each_pair do |key, val|
 			if val
 				#check if there is an ant (of mine) on this square
-				if (@tile_map[key[0],key[1]] == 2) # my ant on hill location - destroy it
+				if (@tile_map.my_ant?(key[0],key[1]))  # my ant on hill location - destroy it
 					@enemy_hills[key] = false
 				else
 					 # add influence to this square
@@ -234,25 +243,7 @@ class Map
 		end
 	end
 	
-	# Fills tiles surrounded on 3 sides, to prevent movement into them
-	def fill_holes
-		(0..@rows-1).each do |row|
-			(0..@cols-1).each do |col|
-				# Only check visible squares
-				if (@scoutValues[row,col] == 0 && @tile_map[row,col] != 1)
-					count = 0
-					count +=1 if @tile_map[row-1,col] == 1
-					count +=1 if @tile_map[row+1,col] == 1
-					count +=1 if @tile_map[row,col-1] == 1
-					count +=1 if @tile_map[row,col+1] == 1
-					
-					@tile_map[row, col] = 1 if (count >= 3)
 
-				end
-			end
-		end
-	end
-		
 	def try_move_ant ant
 		directions = ant.targetDirections
 		# Check if ant is to stay still...
@@ -260,13 +251,13 @@ class Map
 		
 		directions.each do |dir|
 			dest = neighbor(ant, dir)
-			if (@tile_map[dest[0], dest[1]] <1)
+			if (!@tile_map.occupied?(dest[0], dest[1]))
 				# Moves the ant to the new tile.
 				@ai.order ant, dir
 				# Remove old position from tilemap
-				@tile_map[ant.row, ant.col] =0
+				@tile_map.remove_ant(ant.row, ant.col)
 				# Add ant at new position
-				@tile_map[dest[0], dest[1]] = 2
+				@tile_map.add_ant(dest[0], dest[1],0)
 				ant.update_location(dest[0], dest[1])
 				return true
 			end
@@ -356,19 +347,19 @@ class Map
 				map[curRow,curCol] += (val * (radius - distance))/radius 	#update tile value
 
 				if (distance < radius-1)
-					if (!checked[chkRow+1,chkCol] && @tile_map[curRow+1,curCol] != 1)
+					if (!checked[chkRow+1,chkCol] && @tile_map.passable?(curRow+1,curCol))
 						children << [curRow+1,curCol]
 						checked[chkRow+1,chkCol] = true
 					end
-					if (!checked[chkRow-1,chkCol] && @tile_map[curRow-1,curCol] != 1)
+					if (!checked[chkRow-1,chkCol] && @tile_map.passable?(curRow-1,curCol))
 						children << [curRow-1,curCol]
 						checked[chkRow-1,chkCol] = true
 					end
-					if (!checked[chkRow,chkCol+1] && @tile_map[curRow,curCol+1] != 1)
+					if (!checked[chkRow,chkCol+1] && @tile_map.passable?(curRow,curCol+1))
 						children << [curRow,curCol+1]
 						checked[chkRow,chkCol+1] = true
 					end
-					if (!checked[chkRow,chkCol-1] && @tile_map[curRow,curCol-1] != 1)
+					if (!checked[chkRow,chkCol-1] && @tile_map.passable?(curRow,curCol-1))
 						children << [curRow,curCol-1]
 						checked[chkRow,chkCol-1] = true
 					end			
@@ -388,23 +379,19 @@ class Map
 		checked[0,0] = true
 		
 		# Add initial values with their starting directions
-	#	if (!checked[1,0] && @tile_map[row+1,col] != 1 && total_influence(row+1, col) < @enemyThreshold)
-		if (!checked[1,0] && @tile_map[row+1,col] != 1)
+		if (!checked[1,0] && @tile_map.passable?(row+1,col))
 			nodes << [row+1,col, :S]
 			checked[1,0] = true
 		end
-	#	if (!checked[-1,0] && @tile_map[row-1,col] != 1 && total_influence(row-1, col) < @enemyThreshold)
-		if (!checked[-1,0] && @tile_map[row-1,col] != 1)
+		if (!checked[-1,0] && @tile_map.passable?(row-1,col))
 			nodes << [row-1,col, :N]
 			checked[-1,0] = true
 		end
-	#	if (!checked[0,1] && @tile_map[row,col+1] != 1 && total_influence(row, col+1) < @enemyThreshold)
-		if (!checked[0,1] && @tile_map[row,col+1] != 1)
+		if (!checked[0,1] && @tile_map.passable?(row,col+1))
 			nodes << [row,col+1, :E]
 			checked[0,1] = true
 		end
-	#	if (!checked[0,-1] && @tile_map[row,col-1] != 1 && total_influence(row, col-1) < @enemyThreshold)
-		if (!checked[0,-1] && @tile_map[row,col-1] != 1)
+		if (!checked[0,-1] &&@tile_map.passable?(row,col-1))
 			nodes << [row,col-1, :W]
 			checked[0,-1] = true
 		end			
@@ -433,24 +420,25 @@ class Map
 					maxDir << curDir
 				end
 				
+				# Add child nodes in each of 4 directions
 				if (distance < radius-1)	# no point expanding children on last node
-					# if (!checked[chkRow+1,chkCol] && @tile_map[curRow+1,curCol] != 1 && total_influence(curRow+1, col) < @enemyThreshold)
-					if (!checked[chkRow+1,chkCol] && @tile_map[curRow+1,curCol] !=1)
+				
+					if (!checked[chkRow+1,chkCol] && @tile_map.passable?(curRow+1,curCol))
 						children << [curRow+1,curCol, curDir]
 						checked[chkRow+1,chkCol] = true
 					end
-					#if (!checked[chkRow-1,chkCol] && @tile_map[curRow-1,curCol] != 1 && total_influence(curRow-1, col) < @enemyThreshold)
-					if (!checked[chkRow-1,chkCol] && @tile_map[curRow-1,curCol] != 1)
+
+					if (!checked[chkRow-1,chkCol] && @tile_map.passable?(curRow-1,curCol))
 						children << [curRow-1,curCol, curDir]
 						checked[chkRow-1,chkCol] = true
 					end
-					#if (!checked[chkRow,chkCol+1] && @tile_map[curRow,curCol+1] != 1 && total_influence(curRow, col+1) < @enemyThreshold)
-					if (!checked[chkRow,chkCol+1] && @tile_map[curRow,curCol+1] != 1)
+
+					if (!checked[chkRow,chkCol+1] && @tile_map.passable?(curRow,curCol+1))
 						children << [curRow,curCol+1, curDir]
 						checked[chkRow,chkCol+1] = true
 					end
-					#if (!checked[chkRow,chkCol-1] && @tile_map[curRow,curCol-1] != 1 && total_influence(curRow, col-1) < @enemyThreshold)
-					if (!checked[chkRow,chkCol-1] && @tile_map[curRow,curCol-1] != 1)
+
+					if (!checked[chkRow,chkCol-1] && @tile_map.passable?(curRow,curCol-1))
 						children << [curRow,curCol-1, curDir]
 						checked[chkRow,chkCol-1] = true
 					end		

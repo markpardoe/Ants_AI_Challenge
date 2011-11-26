@@ -1,9 +1,5 @@
 #!/usr/bin/env ruby
-require 'logger'
-require 'thread'
-
 class Array2D
- include Enumerable
   
  def initialize(rows , cols, initalValue = nil)
   	@data = Array.new(rows){|row| Array.new(cols,initalValue)}

@@ -1,4 +1,5 @@
-
+#!/usr/bin/env ruby
+#require 'logger'
 class AI
 
 	
@@ -25,7 +26,10 @@ class AI
 		@stdin, @stdout = stdin, stdout
 		@turn_number=0
 		@did_setup=false
-				
+	#	@log = Logger.new("log.txt")	
+	#	@log.info("")
+	#	@log.info("NEW GAME -----------------------------------------")	
+		
 	end
 	
 	
@@ -71,16 +75,17 @@ class AI
 			@stdout.puts 'go'
 			@stdout.flush
 		end
+		
 	end
 
 	# Internal; reads zero-turn input (game settings).
 	def read_intro
 		rd=@stdin.gets.strip
 		warn "unexpected: #{rd}" unless rd=='turn 0'
-
+		#@log.info("#{rd}")
 		until((rd=@stdin.gets.strip)=='ready')
 			_, name, value = *rd.match(/\A([a-z0-9]+) (\d+)\Z/)
-			
+		#	@log.info("#{rd}")
 			case name
 			when 'loadtime'; @loadtime=value.to_i
 			when 'turntime'; @turntime=value.to_i
@@ -95,7 +100,7 @@ class AI
 				warn "unexpected: #{rd}"
 			end
 		end
-		
+	#	@log.info("#{rd}")
 		@viewradius=Math.sqrt @viewradius2
 		@attackradius=Math.sqrt @attackradius2
 		@spawnradius=Math.sqrt @spawnradius2
@@ -106,18 +111,23 @@ class AI
 	def read_turn
 		ret=false
 		rd=@stdin.gets.strip
+	#	@log.info("#{rd}")
 		
 		if rd=='end'
 			@turn_number=:game_over
-			
+		#	@log.info("GAMEOVER")
 			rd=@stdin.gets.strip
+		#	@log.info("#{rd}")
 			_, players = *rd.match(/\Aplayers (\d+)\Z/)
 			@players = players.to_i
 			
 			rd=@stdin.gets.strip
-			_, score = *rd.match(/\Ascore (\d+(?: \d+)+)\Z/)
+		#	@log.info("#{rd}")
+			_, score = *rd.match(/\Ascore (.*) (.*)\Z/)
 			@score = score.split(' ').map{|s| s.to_i}
-			
+			puts "------------"
+			puts "Score = #{@score}"
+			@stdout.flush
 			ret=true
 		else
 			_, num = *rd.match(/\Aturn (\d+)\Z/)
@@ -128,6 +138,7 @@ class AI
 		
 		
 		until((rd=@stdin.gets.strip)=='go')
+		#	@log.info("#{rd}")
 			_, type, row, col, owner = *rd.match(/(w|f|h|a|d) (\d+) (\d+)(?: (\d+)|)/)
 			row, col = row.to_i, col.to_i
 			owner = owner.to_i if owner
@@ -149,7 +160,7 @@ class AI
 					warn "unexpected: #{rd}"
 			end
 		end
-		@map.update_hills
+	#	@log.info("#{rd}")
 		return ret
 	end
 	

@@ -71,8 +71,6 @@ class Ant
 		@targetDirections = @map.get_best_targets(self,20)
 	end
 	
-	
-	
 end
 
 
