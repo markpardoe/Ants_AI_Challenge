@@ -3,7 +3,7 @@ require 'Array2D.rb'
 require 'Utilities.rb'
 
 class ScoutMap < Array2D
-	
+include Utilities
 	attr_accessor :viewArea
 	def initialize(row, cols, unseen_value, viewDistance2)
 		super(row, cols, 0)
@@ -18,14 +18,6 @@ class ScoutMap < Array2D
 		 end		
 	end
 	
-	 # Expects two 2 element arrays [row, col], [row1,col1]
- 	# Or two tiles
- 	# Or two ant
- 	# Or any combination of the above...
-	def eculidean_distance(point1, point2)
-		(point1[0] - point2[0])**2  + (point1[1] - point2[1])**2 
-	end
-		
 	
 	# Generates an array holding the view radius of a ant
 	# Array made up of pairs [xOffset, yOffset]
