@@ -14,7 +14,7 @@ class Settings
 	attr_reader :myHill_range
 	
 	def initialize
-		@enemyThreshold = 1000
+		@enemyThreshold =1000
 		@scoutCounter = 50
 		@food_value = 5000
 		@food_range = 7

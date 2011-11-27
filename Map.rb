@@ -200,9 +200,8 @@ class Map
 		return x,y
 	end
 
-
 	def add_direction(row, col, set, chkRow, chkCol, checked, dir)
-		if (!checked[chkRow,chkCol] && @tile_map.passable?(row,col))
+		if (!checked[chkRow,chkCol] && @tile_map.passable?(row,col) && base_influence(row,col) <= @settings.enemyThreshold ) 
 			set << [row,col, dir]
 			checked[chkRow,chkCol] = true
 		end
