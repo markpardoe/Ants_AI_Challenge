@@ -201,7 +201,12 @@ class Map
 	end
 
 
-	
+	def add_direction(row, col, set, chkRow, chkCol, checked, dir)
+		if (!checked[chkRow,chkCol] && @tile_map.passable?(row,col))
+			set << [row,col, dir]
+			checked[chkRow,chkCol] = true
+		end
+	end
 
 	def get_best_targets(ant, radius)
 		circ = (radius *2)-1
@@ -212,23 +217,11 @@ class Map
 		col = ant.col
 		checked[0,0] = true
 		
-		# Add initial values with their starting directions
-		if (!checked[1,0] && @tile_map.passable?(row+1,col))
-			nodes << [row+1,col, :S]
-			checked[1,0] = true
-		end
-		if (!checked[-1,0] && @tile_map.passable?(row-1,col))
-			nodes << [row-1,col, :N]
-			checked[-1,0] = true
-		end
-		if (!checked[0,1] && @tile_map.passable?(row,col+1))
-			nodes << [row,col+1, :E]
-			checked[0,1] = true
-		end
-		if (!checked[0,-1] &&@tile_map.passable?(row,col-1))
-			nodes << [row,col-1, :W]
-			checked[0,-1] = true
-		end			
+		add_direction(row + 1, col, nodes, 1,0, checked, :S)
+		add_direction(row - 1, col, nodes, -1,0, checked, :N)
+		add_direction(row, col +1, nodes, 0,1, checked, :E)
+		add_direction(row, col -1, nodes, 0,-1, checked, :W)
+
 		maxValue =-99999
 		maxDir = []
 		
@@ -237,15 +230,12 @@ class Map
 			children = []
 			nodes.each do |point|
 	
-				curRow = point[0] 
-				chkRow = point[0] - row
-				curCol = point[1]
-				chkCol = point[1] - col
-				curDir = point[2]
-	
+				curRow, curCol, curDir = point[0], point[1], point[2]
+				chkRow, chkCol = point[0] - row , point[1] - col
+
 				# Get the value of the current square / distance from the ant
 				val = total_influence(curRow,curCol) / distance.to_f
-			#	val = total_influence(curRow,curCol)
+	
 				# Update the distance list...
 				if (val > maxValue)
 					maxValue = val
@@ -256,26 +246,10 @@ class Map
 				
 				# Add child nodes in each of 4 directions
 				if (distance < radius-1)	# no point expanding children on last node
-				
-					if (!checked[chkRow+1,chkCol] && @tile_map.passable?(curRow+1,curCol))
-						children << [curRow+1,curCol, curDir]
-						checked[chkRow+1,chkCol] = true
-					end
-
-					if (!checked[chkRow-1,chkCol] && @tile_map.passable?(curRow-1,curCol))
-						children << [curRow-1,curCol, curDir]
-						checked[chkRow-1,chkCol] = true
-					end
-
-					if (!checked[chkRow,chkCol+1] && @tile_map.passable?(curRow,curCol+1))
-						children << [curRow,curCol+1, curDir]
-						checked[chkRow,chkCol+1] = true
-					end
-
-					if (!checked[chkRow,chkCol-1] && @tile_map.passable?(curRow,curCol-1))
-						children << [curRow,curCol-1, curDir]
-						checked[chkRow,chkCol-1] = true
-					end		
+					add_direction(curRow + 1, curCol, children, chkRow+1,chkCol, checked, curDir)
+					add_direction(curRow - 1, curCol, children, chkRow-1,chkCol, checked, curDir)
+					add_direction(curRow, curCol +1, children, chkRow,chkCol+1, checked, curDir)
+					add_direction(curRow, curCol -1, children, chkRow,chkCol-1, checked, curDir)
 				end	
 			end				
 					
