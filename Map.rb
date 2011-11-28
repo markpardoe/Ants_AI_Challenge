@@ -4,6 +4,8 @@ require "InfluenceMap.rb"
 require "TileMap.rb"
 require "Utilities.rb"
 require "ScoutMap.rb"
+require "Settings.rb"
+require "ants.rb"
 
 class Map
 	include Utilities
@@ -35,16 +37,22 @@ class Map
 	def initialize(rows, columns, ai)	
 		@rows = rows
 		@cols = columns
-		@settings = ai.settings
 		@ai = ai
+		
+		# Allows for blank ai in testing
+		if ai.nil?
+			viewRad = 5
+			@settings = Settings.new
+		else
+			@settings = ai.settings	
+			viewRad = @ai.viewradius2
+			
+		end
+		@scout_map = ScoutMap.new(@rows,@cols, @settings.scoutCounter, viewRad)
 		
 		@tile_map = TileMap.new(@rows, @cols)
 		@enemy_hills = Hash.new(false)
-		
-		viewRad = @ai.nil? ? 5 : @ai.viewradius2	# allows for blank ai values in testing
-
-		@scout_map = ScoutMap.new(@rows,@cols, @settings.scoutCounter, viewRad)
-		
+				
 		@foodValues = InfluenceMap.new(@rows,@cols,@tile_map)
 		@enemyInfluence = InfluenceMap.new(@rows,@cols,@tile_map)
 		@myInfluence = InfluenceMap.new(@rows,@cols,@tile_map)
@@ -73,7 +81,7 @@ class Map
 	end
 	
 	def base_influence(row,col)
-		return  @enemyInfluence[row,col] - @myInfluence[row,col]
+		return  @enemyInfluence[row,col] -  @myInfluence[row,col] 
 	end
 	
 	def total_influence(row,col)
@@ -201,9 +209,16 @@ class Map
 	end
 
 	def add_direction(row, col, set, chkRow, chkCol, checked, dir)
-		if (!checked[chkRow,chkCol] && @tile_map.passable?(row,col) && base_influence(row,col) <= @settings.enemyThreshold ) 
-			set << [row,col, dir]
-			checked[chkRow,chkCol] = true
+		# Check if the square can be moved to.
+		# Checks against:
+		# => 	Array of previously checked values
+		# => 	That the square can be moved through
+		# => 	That the enemy presence in this square isn't too strong
+		if (!checked[chkRow,chkCol])
+			if (@tile_map.passable?(row,col) && base_influence(row,col) <= @settings.enemyThreshold ) 
+				set << [row,col, dir]
+			end
+			checked[chkRow,chkCol] = true  # always checked as we have looked at it!
 		end
 	end
 
@@ -234,7 +249,7 @@ class Map
 
 				# Get the value of the current square / distance from the ant
 				val = total_influence(curRow,curCol) / distance.to_f
-	
+			#	val  = total_influence(curRow,curCol) + vunerability(curRow, curCol)
 				# Update the distance list...
 				if (val > maxValue)
 					maxValue = val
@@ -254,7 +269,20 @@ class Map
 					
 			nodes = children	# update the toCheck list
 		end
+		maxDir.flatten!
 		return maxDir.uniq
 	end
 end
-	
+# 
+# m = Map.new(200,200, nil)
+# a = Ant.new(100,100, true, 0, m)
+# m.foodValues.add_influence(90,90, 1000,10)
+# m.foodValues.add_influence(105,105, 1000,10)
+# m.foodValues.add_influence(95,105, 1000,10)
+# beginning = Time.now
+# # code block
+# 200.times do
+# a.get_best_moves()
+# end
+# puts "Time elapsed #{Time.now - beginning} seconds"
+# puts a.targetDirections.inspect

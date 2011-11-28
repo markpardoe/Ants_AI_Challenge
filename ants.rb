@@ -67,8 +67,8 @@ class Ant
 		location[index]
 	end
  	
-	def get_best_moves()
-		@targetDirections = @map.get_best_targets(self,20)
+	def get_best_moves(search_radius)
+		@targetDirections = @map.get_best_targets(self,search_radius)
 	end
 	
 end

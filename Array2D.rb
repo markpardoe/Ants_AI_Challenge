@@ -10,7 +10,9 @@ class Array2D
   def [](row, col = nil)
   	row = row % @rows if (row >= @rows or row<0)	# normalise the row
   	col = col % @cols if (col >= @cols or col<0)	# normalise the column
-   	@data[row][col]
+ # 	raise "Invalid co-ordinates #{[row,col].inspect}" if ((row >= @rows) || (col >= @cols))
+  
+  	 @data[row][col]
   end
   	
 
@@ -18,6 +20,9 @@ class Array2D
   def []=(row, col,  value)
   	row = row - @rows if (row >= @rows)	# normalise the row
   	col = col - @cols if (col >= @cols)	# normalise the column
+  	
+  #	raise "Invalid co-ordinates #{[row,col].inspect}" if ((row >= @rows) || (col >= @cols))
+  	
     @data[row][col] = value
   end
 

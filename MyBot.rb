@@ -23,10 +23,21 @@ ai.run do |ai|
 	@mapController.update_hills
 
 	myAnts = @mapController.my_ants
+	total_ants = myAnts.length
+	
+	if total_ants < 20
+		search = 30
+	elsif total_ants < 100
+		search = 20
+	elsif total_ants < 200
+		search = 15
+	else
+		search = 10
+	end
 	
 
 		  myAnts.each do |ants| 		
-		 		ants.get_best_moves()
+		 		ants.get_best_moves(search)
 		 end
 		 
 		 

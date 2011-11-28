@@ -15,12 +15,13 @@ class Settings
 	
 	def initialize
 		@enemyThreshold =1000
-		@scoutCounter = 50
+		@scoutCounter = 100
 		@food_value = 5000
-		@food_range = 7
+		@food_range = 3
+		@search_range = 20
 		
-		@myAnt_value = 1000
-		@myAnt_range = 3
+		@myAnt_value = 500
+		@myAnt_range = 4
 		@enemyAnt_value = 2000
 		@enemyAnt_range = 7
 		
