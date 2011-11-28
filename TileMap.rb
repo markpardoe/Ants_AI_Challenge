@@ -47,7 +47,7 @@ class TileMap < Array2D
 	end
 	
 	def add_ant(row,col, owner)
-		self[row,col] = (owner == 0? 3 : 4)
+		self[row,col] = (owner == 0? 3 : 4) if !my_hill?(row,col)
 	end
 	
 	def remove_ant(row,col)
@@ -57,6 +57,10 @@ class TileMap < Array2D
 	def add_hill(row,col, owner)
 		self[row,col] = -1 if owner == 0
 	end	
+	
+	def my_hill?(row, col)
+		self[row,col] == -1
+	end
 	
 	 # Scoutmap should be a 2D array of scouting values
   	def fill_holes(scoutMap)

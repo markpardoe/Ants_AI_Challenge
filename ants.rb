@@ -3,22 +3,22 @@
 # Released under CC-BY 3.0 license
 
 # Represents a single ant.
-
+require "Utilities.rb"
 class Ant
-
+	include Utilities
 	# Owner of this ant. If it's 0, it's your ant.
 	attr_accessor :owner
 	# Square this ant sits on.
 
 	attr_accessor :alive, :map
-	attr_accessor :moved
+	#attr_accessor :moved
 
-	attr_accessor :targetDirections
+	#attr_accessor :targetDirections
 	
 	def initialize row, col, alive, owner, map
-		@alive, @owner, @map = alive, owner, map
+		@alive, @owner, @map  = alive, owner, map
 		@row, @col = row, col
-		@moved = false
+	#	@moved = false
 
 		@targetDirections = []
 	end
@@ -33,8 +33,8 @@ class Ant
 	# Equivalent to ant.owner!=0.
 	def enemy?; owner!=0; end
 	
-	#Equivalent to !ant.moved?
-	def moved?; @moved; end
+#	#Equivalent to !ant.moved?
+#	def moved?; @moved; end
 	
 	# Returns the row of square this ant is standing at.
 	def row; @row; end
@@ -43,7 +43,6 @@ class Ant
 
 	def update_location(row, col)
 		@row, @col = row, col
-		@moved = true
 	end
 
 	def eql? (object)
@@ -70,6 +69,44 @@ class Ant
 	def get_best_moves(search_radius)
 		@targetDirections = @map.get_best_targets(self,search_radius)
 	end
+	
+	def move
+		directions = @targetDirections
+		moved = false
+		# Check if ant is to stay still...
+		if directions.empty?
+			moved = true 
+		else
+			tiles = @map.tile_map
+			directions.each do |dir|
+				if (!moved) 
+					dest = neighbor(location, dir)
+					r, c = dest[0], dest[1]
+					
+					if (!tiles.occupied?(r, c))
+						# Send the move order
+						@map.ai.order location, dir
+						
+						# Remove old position from tilemap
+						tiles.remove_ant(@row, @col)
+						
+						# Add ant at new position
+						tiles.add_ant(r, c,0)
+						
+						@row, @col = r, c
+						moved =  true
+					end
+				end
+			end
+		end
+		
+		if moved
+			 ix = @map.calc_index(@row, @col)
+			@map.moved_locations[ix] = self
+		end
+		return moved
+	end 
+	
 	
 end
 

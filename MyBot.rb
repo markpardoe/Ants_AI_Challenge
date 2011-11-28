@@ -17,7 +17,11 @@ ai.setup do |ai|
 	
 end
 
+executeTime = ai.turntime * 1000		# Execution time available
+
 ai.run do |ai|
+	beginning = Time.now.to_f
+
 	# your turn code here
 	@mapController = ai.map	
 	@mapController.update_hills
@@ -36,18 +40,24 @@ ai.run do |ai|
 	end
 	
 
-		  myAnts.each do |ants| 		
-		 		ants.get_best_moves(search)
-		 end
-		 
-		 
-		 10.times do 
-		 	unmoved = []
-		 	myAnts.each do |ants| 		
-		 		if (!@mapController.try_move_ant(ants))
-		 			unmoved << ants
-	 			end
-		 	end
-		 	myAnts = unmoved
+	  myAnts.each do |ants| 		
+	 	ants.get_best_moves(search)
+	 end
+	 
+	#while (myAnts.length > 0 && executeTime - (Time.now.to_f - beginning) >= 0.03 ) do
+		#puts "elapsed time = #{Time.now.to_f - beginning}" 
+	 	unmoved = []
+	 	# try to move each bot
+	 	myAnts.each do |ant| 		
+	 		if (!ant.move)
+	 			# failed to move the bot - so add it to the umnoved list to retry.
+	 			unmoved << ant
+ 			end
 	 	end
+	 	myAnts = unmoved
+ #	end
+ 	
+ 			
+   finish = Time.now.to_f
+   puts "Time elapsed #{finish - beginning} seconds"
 end

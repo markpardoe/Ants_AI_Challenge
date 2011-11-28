@@ -23,4 +23,24 @@ module Utilities
 
 		return dR + dC
 	end
+	
+	 	# Returns a square neighboring this one in given direction.
+ 	# Point can be a ant, and or 2d location array ([x, y])
+	def neighbor point, direction
+		direction=direction.to_s.upcase.to_sym # canonical: :N, :E, :S, :W
+
+		case direction
+		when :N
+			x, y = point[0]-1, point[1]
+		when :E
+			x, y = point[0],  point[1]+1
+		when :S
+			x, y = point[0]+1, point[1]
+		when :W
+			x, y = point[0],  point[1]-1
+		else
+			raise "incorrect direction: #{direction}"
+		end
+		return x,y
+	end
 end

@@ -6,6 +6,8 @@ require "Utilities.rb"
 require "ScoutMap.rb"
 require "Settings.rb"
 require "ants.rb"
+#!/usr/bin/env ruby
+require 'logger'
 
 class Map
 	include Utilities
@@ -28,17 +30,26 @@ class Map
  
  	attr_accessor :my_ants
 	attr_accessor :enemy_ants
+	attr_accessor :moved_locations  # list of locations being moved to.
 	
 	attr_accessor :rows
  	attr_accessor :cols
  	
+ 	attr_accessor :ai
+ 	
+ 	def calc_index(row, col)
+		row = row % @rows if (row >= @rows || row < 0)
+		col = col % @cols if (col >= @cols || col < 0)
+		return col + (row * @cols)
+	end
  	
 	#Creates the new map object of the given size
 	def initialize(rows, columns, ai)	
 		@rows = rows
 		@cols = columns
 		@ai = ai
-		
+	
+		@log = Logger.new("Log.txt")
 		# Allows for blank ai in testing
 		if ai.nil?
 			viewRad = 5
@@ -60,6 +71,9 @@ class Map
 				
 		@my_ants=[]
 		@enemy_ants=[]
+		
+		@current_locations = Hash.new()
+		@moved_locations = Hash.new()
 	end
 	
 	def reset() 
@@ -67,7 +81,8 @@ class Map
 		@enemy_ants=[]
 		@tile_map.reset
 		@tile_map.fill_holes(@scout_map)
-		
+		@log.info("-----------------------------------------")
+		@log.info("Turn: #{@ai.turn_number}")
 		
 		# Create New InfluenceMaps
 		@foodValues = InfluenceMap.new(@rows,@cols,@tile_map)
@@ -125,7 +140,6 @@ class Map
 		when :ant
 			ant = Ant.new row, col, true, owner,  self
 			@tile_map.add_ant(row,col, owner)
-			
 			if ant.owner==0
 				@my_ants.push ant
 				@scout_map.update_view_range(row,col)
@@ -166,47 +180,55 @@ class Map
 		end
 	end
 	
-
-	def try_move_ant ant
-		directions = ant.targetDirections
-		# Check if ant is to stay still...
-		return true if directions.empty?
-		
-		directions.each do |dir|
-			dest = neighbor(ant, dir)
-			if (!@tile_map.occupied?(dest[0], dest[1]))
-				# Moves the ant to the new tile.
-				@ai.order ant, dir
-				# Remove old position from tilemap
-				@tile_map.remove_ant(ant.row, ant.col)
-				# Add ant at new position
-				@tile_map.add_ant(dest[0], dest[1],0)
-				ant.update_location(dest[0], dest[1])
-				return true
-			end
-		end
-		return false
-	end 
 	
- 	# Returns a square neighboring this one in given direction.
- 	# Point can be a ant, and or 2d location array ([x, y])
-	def neighbor point, direction
-		direction=direction.to_s.upcase.to_sym # canonical: :N, :E, :S, :W
-
-		case direction
-		when :N
-			x, y = point[0]-1, point[1]
-		when :E
-			x, y = point[0],  point[1]+1
-		when :S
-			x, y = point[0]+1, point[1]
-		when :W
-			x, y = point[0],  point[1]-1
-		else
-			raise "incorrect direction: #{direction}"
+	def update_ants(newAntPositions)
+		@my_ants = []
+		locations = Hash.new()
+		newAntPositions.each do |pos|
+			row, col = pos[0], pos[1]
+						
+			index = calc_index(row, col)
+			
+			if (@tile_map.my_hill?(row, col))
+				ant = Ant.new(row, col, true, 0, self)
+				@my_ants << ant 
+				locations[index] = ant
+			else
+			
+				# Check for the ant in the moved_to location
+				if (ant = @moved_locations[index])
+					ant.update_location(row, col)
+					@my_ants << ant
+					locations[index] = ant
+				elsif (ant = @current_locations[index])   #check if still in old location
+					ant.update_location(row, col)
+					@my_ants << ant 
+					locations[index] = ant
+				else
+					ant = Ant.new(row, col, true, 0, self)
+					@my_ants << ant 
+					locations[index] = ant
+					@log.info("Adding New Ant: #{[row, col].inspect}")
+				end
+			end
+			# Can only have one ant in that square....
+			@moved_locations[index] = nil
+			@current_locations[index]  = nil		
 		end
-		return x,y
+		
+		# Add ants to map
+		@my_ants.each do |a|
+			@tile_map.add_ant(a.row,a.col, 0)
+			@scout_map.update_view_range(a.row, a.col)
+			@myInfluence.add_influence(a.row, a.col, @settings.myAnt_value, @settings.myAnt_range)
+		end
+		
+		#Clear movement indexes
+		@current_locations = locations
+		@moved_locations = Hash.new()	
 	end
+	
+
 
 	def add_direction(row, col, set, chkRow, chkCol, checked, dir)
 		# Check if the square can be moved to.
@@ -236,7 +258,7 @@ class Map
 		add_direction(row, col +1, nodes, 0,1, checked, :E)
 		add_direction(row, col -1, nodes, 0,-1, checked, :W)
 
-		maxValue =-99999
+		maxValue = total_influence(ant.row, ant.col)
 		maxDir = []
 		
 	
@@ -249,7 +271,7 @@ class Map
 
 				# Get the value of the current square / distance from the ant
 				val = total_influence(curRow,curCol) / distance.to_f
-			#	val  = total_influence(curRow,curCol) + vunerability(curRow, curCol)
+
 				# Update the distance list...
 				if (val > maxValue)
 					maxValue = val

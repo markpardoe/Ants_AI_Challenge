@@ -1,5 +1,6 @@
 #!/usr/bin/env ruby
 #require 'logger'
+
 class AI
 
 	
@@ -34,26 +35,7 @@ class AI
 		
 	end
 	
-	
-	
-	# # Returns a read-only hash of all settings.
-	# 	def settings
-	# 		{
-	# 			:loadtime => @loadtime,
-	# 			:turntime => @turntime,
-	# 			:rows => @rows,
-	# 			:cols => @cols,
-	# 			:turns => @turns,
-	# 			:viewradius2 => @viewradius2,
-	# 			:attackradius2 => @attackradius2,
-	# 			:spawnradius2 => @spawnradius2,
-	# 			:viewradius => @viewradius,
-	# 			:attackradius => @attackradius,
-	# 			:spawnradius => @spawnradius,
-	# 			:seed => @seed
-	# 		}.freeze
-	# 	end
-	
+		
 	# Zero-turn logic. 
 	def setup # :yields: self
 		read_intro
@@ -138,7 +120,7 @@ class AI
 	
 		@map.reset
 		
-		
+		antPositions = []
 		until((rd=@stdin.gets.strip)=='go')
 		#	@log.info("#{rd}")
 			_, type, row, col, owner = *rd.match(/(w|f|h|a|d) (\d+) (\d+)(?: (\d+)|)/)
@@ -153,7 +135,11 @@ class AI
 				when 'h'
 					@map.addPoint row, col, :hill, owner
 				when 'a'
-					@map.addPoint row, col, :ant,  owner
+					if (owner == 0)
+						antPositions << [row,col]
+					else
+						@map.addPoint row, col, :ant,  owner
+					end
 				when 'd'	# Ignore dead ants for now
 					# do nothing
 				when 'r'
@@ -162,7 +148,8 @@ class AI
 					warn "unexpected: #{rd}"
 			end
 		end
-	#	@log.info("#{rd}")
+		@map.update_ants(antPositions)
+		
 		return ret
 	end
 	
@@ -173,6 +160,4 @@ class AI
 		@stdout.puts "o #{point[0]} #{point[1]} #{direction.to_s.upcase}"
 	#	puts "Moving Ant: #{point.location.inspect} -> #{direction}"
 	end 
-	
-	
 end
