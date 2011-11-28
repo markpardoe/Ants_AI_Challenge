@@ -25,6 +25,7 @@ class Map
  	attr_accessor :myInfluence
  	attr_accessor :enemyInfluence
  	attr_accessor :enemy_hills	# list of enemy hills (hash, with false values)
+ 	attr_accessor :my_hills		# Array of my hills.  Contains [row, col] values
  	
  	attr_accessor :tile_map
  
@@ -49,7 +50,7 @@ class Map
 		@cols = columns
 		@ai = ai
 	
-		@log = Logger.new("Log.txt")
+	#	@log = Logger.new("Log.txt")
 		# Allows for blank ai in testing
 		if ai.nil?
 			viewRad = 5
@@ -63,7 +64,7 @@ class Map
 		
 		@tile_map = TileMap.new(@rows, @cols)
 		@enemy_hills = Hash.new(false)
-				
+		@my_hills = Hash.new(false)
 		@foodValues = InfluenceMap.new(@rows,@cols,@tile_map)
 		@enemyInfluence = InfluenceMap.new(@rows,@cols,@tile_map)
 		@myInfluence = InfluenceMap.new(@rows,@cols,@tile_map)
@@ -81,8 +82,8 @@ class Map
 		@enemy_ants=[]
 		@tile_map.reset
 		@tile_map.fill_holes(@scout_map)
-		@log.info("-----------------------------------------")
-		@log.info("Turn: #{@ai.turn_number}")
+	#	@log.info("-----------------------------------------")
+	#	@log.info("Turn: #{@ai.turn_number}")
 		
 		# Create New InfluenceMaps
 		@foodValues = InfluenceMap.new(@rows,@cols,@tile_map)
@@ -128,7 +129,22 @@ class Map
 		return s
 	end
 	
+	def distance_to_nearest_hill(ant)
+		min = 9999
+		@my_hills.each_pair do |hill, val|
+			if val	# check the hill still exists
+				d = move_distance(ant.location, hill)
+				if (d == 0) # hill is destroyed as enemy ant on it
+					@my_hills[hill] = false
+				elsif (d < min)
+					min = d
+				end
+			end
+		end
 		
+		return min
+	end	
+	
 	def addPoint (row, col, pointType, owner = 0)
 
 		case pointType
@@ -146,7 +162,14 @@ class Map
 				@myInfluence.add_influence(row, col, @settings.myAnt_value, @settings.myAnt_range)
 			else
 				@enemy_ants.push ant
-				@enemyInfluence.add_influence(row, col, @settings.enemyAnt_value, @settings.enemyAnt_range)
+				dist = distance_to_nearest_hill(ant)
+				if (dist < @settings.hill_defence_radius)
+					inf =  @settings.enemyAnt_value * ((@settings.hill_defence_radius **2) / dist)
+				else
+					inf = @settings.enemyAnt_value
+				end
+				@enemyInfluence.add_influence(row, col, inf, @settings.enemyAnt_range)
+
 			end
 			
 		when :hill
@@ -155,6 +178,7 @@ class Map
 				@enemy_hills[[row,col]] = true if !@enemy_hills[[row,col]]
 			else
 				 @myInfluence.add_influence(row, col, @settings.myHill_value, @settings.myHill_range)
+				 @my_hills[[row,col]] = true
 			end
 
 		else
@@ -208,7 +232,6 @@ class Map
 					ant = Ant.new(row, col, true, 0, self)
 					@my_ants << ant 
 					locations[index] = ant
-					@log.info("Adding New Ant: #{[row, col].inspect}")
 				end
 			end
 			# Can only have one ant in that square....
@@ -229,7 +252,7 @@ class Map
 	end
 	
 
-
+	# Adds an node to the list of directions to check
 	def add_direction(row, col, set, chkRow, chkCol, checked, dir)
 		# Check if the square can be moved to.
 		# Checks against:
@@ -243,7 +266,8 @@ class Map
 			checked[chkRow,chkCol] = true  # always checked as we have looked at it!
 		end
 	end
-
+	# Gets the best direction for an ant to move in.
+	# Performs a flood fill out to the distance radius, checking suqare values
 	def get_best_targets(ant, radius)
 		circ = (radius *2)-1
 		checked = Array2D.new(circ, circ, false)
