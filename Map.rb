@@ -27,6 +27,7 @@ class Map
  	attr_accessor :enemy_hills	# list of enemy hills (hash, with false values)
  	attr_accessor :my_hills		# Array of my hills.  Contains [row, col] values
  	
+ 	attr_accessor :modifier_map
  	attr_accessor :tile_map
  
  	attr_accessor :my_ants
@@ -68,7 +69,7 @@ class Map
 		@foodValues = InfluenceMap.new(@rows,@cols,@tile_map)
 		@enemyInfluence = InfluenceMap.new(@rows,@cols,@tile_map)
 		@myInfluence = InfluenceMap.new(@rows,@cols,@tile_map)
-		
+		@modifier_map  = InfluenceMap.new(@rows,@cols,@tile_map,1)
 				
 		@my_ants=[]
 		@enemy_ants=[]
@@ -101,7 +102,7 @@ class Map
 	end
 	
 	def total_influence(row,col)
-		return base_influence(row,col) + food_value(row, col)  + @scout_map[row,col]
+		return (base_influence(row,col) + food_value(row, col)  + @scout_map[row,col]) * @modifier_map[row,col]
 	end
 	
 	def tension(row,col)
@@ -128,25 +129,8 @@ class Map
 		end
 		return s
 	end
-	
-	def distance_to_nearest_hill(ant)
-		min = 9999
-		@my_hills.each_pair do |hill, val|
-			if val	# check the hill still exists
-				d = move_distance(ant.location, hill)
-				if (d == 0) # hill is destroyed as enemy ant on it
-					@my_hills[hill] = false
-				elsif (d < min)
-					min = d
-				end
-			end
-		end
 		
-		return min
-	end	
-	
 	def addPoint (row, col, pointType, owner = 0)
-
 		case pointType
 		when :food
 			@tile_map.add_food(row,col)
@@ -162,14 +146,7 @@ class Map
 				@myInfluence.add_influence(row, col, @settings.myAnt_value, @settings.myAnt_range)
 			else
 				@enemy_ants.push ant
-				dist = distance_to_nearest_hill(ant)
-				if (dist < @settings.hill_defence_radius)
-					inf =  @settings.enemyAnt_value * ((@settings.hill_defence_radius **2) / dist)
-				else
-					inf = @settings.enemyAnt_value
-				end
-				@enemyInfluence.add_influence(row, col, inf, @settings.enemyAnt_range)
-
+				@enemyInfluence.add_influence(row, col, @settings.enemyAnt_value, @settings.enemyAnt_range)
 			end
 			
 		when :hill
@@ -178,6 +155,10 @@ class Map
 				@enemy_hills[[row,col]] = true if !@enemy_hills[[row,col]]
 			else
 				 @myInfluence.add_influence(row, col, @settings.myHill_value, @settings.myHill_range)
+				 
+				 if (@ai.turn_number <=1) # Only need to do this once as we can't start new hills!
+					 @modifier_map.add_influence_linear(row, col, @settings.hill_defence_radius, @settings.hill_defence_radius)
+			 	end
 				 @my_hills[[row,col]] = true
 			end
 

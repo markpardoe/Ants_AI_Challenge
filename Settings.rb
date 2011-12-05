@@ -32,5 +32,6 @@ class Settings
 		@myHill_range = 2	
 		
 		@hill_defence_radius = 10
+		@hill_defence_modifier = 20
 	end
 end
