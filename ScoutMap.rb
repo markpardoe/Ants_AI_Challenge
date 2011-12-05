@@ -8,7 +8,7 @@ include Utilities
 	def initialize(row, cols, unseen_value, viewDistance2)
 		super(row, cols, 0)
 		@unseen = unseen_value
-		@viewArea = generate_view_area(viewDistance2)
+		@viewArea = generate_area(viewDistance2)
 	end
 	
 	
@@ -18,36 +18,6 @@ include Utilities
 		 end		
 	end
 	
-	
-	# Generates an array holding the view radius of a ant
-	# Array made up of pairs [xOffset, yOffset]
-	# xOffset = squares horizontal from center
-	# yOffset = maximum distance of viewable range (from center) in the column XoffSet
-	def generate_view_area(distance2)
-		distance2
-		initalPoint = [0,0]
-		distance = Integer(Math.sqrt(distance2))
-		viewRadius = []
-		xCounter = 1
-		yCounter = distance
-		viewRadius.push([0 , distance])
-		
-		while (xCounter <= distance) do
-			x =  xCounter
-			y =  yCounter		
-
-			if ((eculidean_distance(initalPoint, [xCounter,yCounter])) <= distance2)
-				#Within range, so can use this square
-				viewRadius.push([xCounter, yCounter])
-				viewRadius.push([-xCounter, yCounter])
-				xCounter += 1
-			else
-				yCounter -=1 # move in slightly and try again
-			end
-		end
-		return viewRadius
-	end
-		
 	# Updates every square that the ant can see....
 	# Sets tile.scout_value = 0
 	def update_view_range(row, col)

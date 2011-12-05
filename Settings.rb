@@ -13,6 +13,7 @@ class Settings
 	attr_reader :myHill_value
 	attr_reader :myHill_range
 	attr_reader :hill_defence_radius
+	attr_reader :hill_defence_value
 	
 	def initialize
 		@enemyThreshold =1000
@@ -32,6 +33,6 @@ class Settings
 		@myHill_range = 2	
 		
 		@hill_defence_radius = 10
-		@hill_defence_modifier = 20
+		@hill_defence_value = 10
 	end
 end

@@ -43,4 +43,33 @@ module Utilities
 		end
 		return x,y
 	end
+	
+		# Generates an array holding the view radius of a ant
+	# Array made up of pairs [xOffset, yOffset]
+	# xOffset = squares horizontal from center
+	# yOffset = maximum distance of viewable range (from center) in the column XoffSet
+	def generate_area(distance2)
+		distance2
+		initalPoint = [0,0]
+		distance = Integer(Math.sqrt(distance2))
+		viewRadius = []
+		xCounter = 1
+		yCounter = distance
+		viewRadius.push([0 , distance])
+		
+		while (xCounter <= distance) do
+			x =  xCounter
+			y =  yCounter		
+
+			if ((eculidean_distance(initalPoint, [xCounter,yCounter])) <= distance2)
+				#Within range, so can use this square
+				viewRadius.push([xCounter, yCounter])
+				viewRadius.push([-xCounter, yCounter])
+				xCounter += 1
+			else
+				yCounter -=1 # move in slightly and try again
+			end
+		end
+		return viewRadius
+	end
 end

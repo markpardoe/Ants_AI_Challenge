@@ -51,7 +51,6 @@ class Map
 		@cols = columns
 		@ai = ai
 	
-	#	@log = Logger.new("Log.txt")
 		# Allows for blank ai in testing
 		if ai.nil?
 			viewRad = 5
@@ -83,9 +82,7 @@ class Map
 		@enemy_ants=[]
 		@tile_map.reset
 		@tile_map.fill_holes(@scout_map)
-	#	@log.info("-----------------------------------------")
-	#	@log.info("Turn: #{@ai.turn_number}")
-		
+
 		# Create New InfluenceMaps
 		@foodValues = InfluenceMap.new(@rows,@cols,@tile_map)
 		@enemyInfluence =  InfluenceMap.new(@rows,@cols,@tile_map)
@@ -157,7 +154,7 @@ class Map
 				 @myInfluence.add_influence(row, col, @settings.myHill_value, @settings.myHill_range)
 				 
 				 if (@ai.turn_number <=1) # Only need to do this once as we can't start new hills!
-					 @modifier_map.add_influence_linear(row, col, @settings.hill_defence_radius, @settings.hill_defence_radius)
+					 @modifier_map.add_influence_linear(row, col, @settings.hill_defence_value, @settings.hill_defence_radius)
 			 	end
 				 @my_hills[[row,col]] = true
 			end
