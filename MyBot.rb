@@ -17,8 +17,8 @@ ai.setup do |ai|
 	
 end
 
-executeTime = ai.turntime * 1000		# Execution time available
-
+executeTime = ai.turntime - 50 	# Execution time available
+puts "exe time = #{executeTime}"
 ai.run do |ai|
 	beginning = Time.now.to_f
 
@@ -35,17 +35,19 @@ ai.run do |ai|
 		search = 20
 	elsif total_ants < 200
 		search = 15
-	else
+	elsif total_ants < 250
 		search = 10
+	else
+		search = 7
 	end
 	
 
 	  myAnts.each do |ants| 		
 	 	ants.get_best_moves(search)
 	 end
-	 
+	 count = 0
 	#while (myAnts.length > 0 && executeTime - (Time.now.to_f - beginning) >= 0.03 ) do
-		#puts "elapsed time = #{Time.now.to_f - beginning}" 
+	while ((count < 10) && ((Time.now.to_f - beginning) * 1000 < executeTime) && (myAnts.length >0)) do
 	 	unmoved = []
 	 	# try to move each bot
 	 	myAnts.each do |ant| 		
@@ -55,9 +57,10 @@ ai.run do |ai|
  			end
 	 	end
 	 	myAnts = unmoved
- #	end
+	 	count +=1
+ 	end
  	
  			
    finish = Time.now.to_f
-   puts "Time elapsed #{finish - beginning} seconds"
+   puts "Time elapsed #{(finish - beginning) *1000} ms"
 end

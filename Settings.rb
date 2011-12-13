@@ -27,7 +27,7 @@ class Settings
 		@enemyAnt_range = 7
 		
 	    @enemyHill_value = 10000
-		@enemyHill_range = 20
+		@enemyHill_range = 25
 		
 		@myHill_value = 2000000
 		@myHill_range = 2	

@@ -244,6 +244,8 @@ class Map
 			checked[chkRow,chkCol] = true  # always checked as we have looked at it!
 		end
 	end
+	
+	
 	# Gets the best direction for an ant to move in.
 	# Performs a flood fill out to the distance radius, checking suqare values
 	def get_best_targets(ant, radius)
@@ -255,6 +257,7 @@ class Map
 		col = ant.col
 		checked[0,0] = true
 		
+	
 		add_direction(row + 1, col, nodes, 1,0, checked, :S)
 		add_direction(row - 1, col, nodes, -1,0, checked, :N)
 		add_direction(row, col +1, nodes, 0,1, checked, :E)
