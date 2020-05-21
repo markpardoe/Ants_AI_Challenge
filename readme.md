@@ -1,3 +1,3 @@
-Ants AI Challenge solution in Ruby.
+Ants AI Challenge solution.
 
 http://ants.aichallenge.org/
