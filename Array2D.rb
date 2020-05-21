@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+
 class Array2D
   
  def initialize(rows , cols, initalValue = nil)
@@ -14,9 +15,7 @@ class Array2D
   
   	 @data[row][col]
   end
-  	
-
-   
+  	   
   def []=(row, col,  value)
   	row = row - @rows if (row >= @rows)	# normalise the row
   	col = col - @cols if (col >= @cols)	# normalise the column
@@ -25,15 +24,13 @@ class Array2D
   	
     @data[row][col] = value
   end
-
   
   def each(&block) # Returns each row
     @data.each do |row|
       	block.call(row)
     end
   end
-  
-  
+    
   def to_s
   	s = ""
   	@data.each do |row| 

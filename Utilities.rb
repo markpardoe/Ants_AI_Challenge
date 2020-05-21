@@ -44,7 +44,7 @@ module Utilities
 		return x,y
 	end
 	
-		# Generates an array holding the view radius of a ant
+	# Generates an array holding the view radius of a ant
 	# Array made up of pairs [xOffset, yOffset]
 	# xOffset = squares horizontal from center
 	# yOffset = maximum distance of viewable range (from center) in the column XoffSet
@@ -72,4 +72,20 @@ module Utilities
 		end
 		return viewRadius
 	end
+end
+
+class Array
+
+  def randomize
+    duplicated_original, new_array = self.dup, self.class.new
+    new_array << 
+duplicated_original.slice!(rand(duplicated_original.size)) until 
+new_array.size.eql?(self.size)
+    new_array
+  end
+
+  def randomize!
+    self.replace(randomize)
+  end
+
 end

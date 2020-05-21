@@ -18,7 +18,6 @@ ai.setup do |ai|
 end
 
 executeTime = ai.turntime - 50 	# Execution time available
-puts "exe time = #{executeTime}"
 ai.run do |ai|
 	beginning = Time.now.to_f
 
@@ -60,7 +59,4 @@ ai.run do |ai|
 	 	count +=1
  	end
  	
- 			
-   finish = Time.now.to_f
-   puts "Time elapsed #{(finish - beginning) *1000} ms"
 end

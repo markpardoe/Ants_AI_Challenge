@@ -92,13 +92,3 @@ class InfluenceMap < Array2D
 		end
 	end
 end
-
-tm = TileMap.new(200,200)
-im = InfluenceMap.new(200,200, tm)
-
-beginning = Time.now
-
-im.add_influence(100,100, 1000, 50)
-ending = Time.now
-
-puts "Execution time = #{ending - beginning} seconds"

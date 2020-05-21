@@ -20,10 +20,10 @@ class Map
 	# This allows us to take account of water squares which will always be zero
  	attr_accessor :scout_map
  	
- 	# Food influence map
- 	attr_accessor :foodValues
- 	attr_accessor :myInfluence
- 	attr_accessor :enemyInfluence
+ 	# Influence maps
+ 	attr_accessor :foodValues	# food positions
+ 	attr_accessor :myInfluence	
+ 	attr_accessor :enemyInfluence	# enemy positions
  	attr_accessor :enemy_hills	# list of enemy hills (hash, with false values)
  	attr_accessor :my_hills		# Array of my hills.  Contains [row, col] values
  	
@@ -77,6 +77,9 @@ class Map
 		@moved_locations = Hash.new()
 	end
 	
+	# resets values between turns.
+	# some of the influence maps can stay the same (eg. hills don't move)
+	# whilst others need to be recreated with new values.
 	def reset() 
 		@my_ants=[]
 		@enemy_ants=[]
@@ -87,6 +90,8 @@ class Map
 		@foodValues = InfluenceMap.new(@rows,@cols,@tile_map)
 		@enemyInfluence =  InfluenceMap.new(@rows,@cols,@tile_map)
 		@myInfluence = InfluenceMap.new(@rows,@cols,@tile_map)
+		
+		# Update the scout map.
 		@scout_map.reset
 	end
 
@@ -257,12 +262,32 @@ class Map
 		col = ant.col
 		checked[0,0] = true
 		
+				
+		dArr = [:N, :S, :E, :W].randomize
+		
+		dArr.each do |d|
+			add_direction(row + 1, col, nodes, 1,0, checked, :S) if (d = :S)
+			add_direction(row - 1, col, nodes, -1,0, checked, :N) if (d = :N)
+			add_direction(row, col +1, nodes, 0,1, checked, :E) if (d = :E)
+			add_direction(row, col -1, nodes, 0,-1, checked, :W) if (d = :W)
+		end
+	# # Add diagonals (if passable to them)
+	# 		if (@tile_map.passable?(row+1, col) && @tile_map.passable?(row, col+1)) 
+	# 			add_direction(row + 1, col+1, nodes, 1,1, checked, [:S,:E])
+	# 		end
+	# 		
+	# 		if (@tile_map.passable?(row-1, col) && @tile_map.passable?(row, col-1)) 
+	# 			add_direction(row - 1, col-1, nodes, -1,-1, checked, [:N, :W])
+	# 		end
+	# 		
+	# 		if (@tile_map.passable?(row+1, col) && @tile_map.passable?(row, col-1)) 
+	# 			add_direction(row + 1, col-1, nodes, 1,-1, checked, [:S, :W])
+	# 		end
+	# 		
+	# 		if (@tile_map.passable?(row-1, col) && @tile_map.passable?(row, col+1))
+	# 			add_direction(row - 1, col+1, nodes, -1,1, checked, [:N, :E])
+	# 		end
 	
-		add_direction(row + 1, col, nodes, 1,0, checked, :S)
-		add_direction(row - 1, col, nodes, -1,0, checked, :N)
-		add_direction(row, col +1, nodes, 0,1, checked, :E)
-		add_direction(row, col -1, nodes, 0,-1, checked, :W)
-
 		maxValue = total_influence(ant.row, ant.col)
 		maxDir = []
 		
@@ -300,16 +325,3 @@ class Map
 		return maxDir.uniq
 	end
 end
-# 
-# m = Map.new(200,200, nil)
-# a = Ant.new(100,100, true, 0, m)
-# m.foodValues.add_influence(90,90, 1000,10)
-# m.foodValues.add_influence(105,105, 1000,10)
-# m.foodValues.add_influence(95,105, 1000,10)
-# beginning = Time.now
-# # code block
-# 200.times do
-# a.get_best_moves()
-# end
-# puts "Time elapsed #{Time.now - beginning} seconds"
-# puts a.targetDirections.inspect
