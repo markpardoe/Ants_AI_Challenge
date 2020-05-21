@@ -1,0 +1,1480 @@
+<?xml version="1.0" encoding="CP850"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta content="text/html; charset=CP850" http-equiv="Content-Type" />
+
+  <title>Class: Map</title>
+
+  <link rel="stylesheet" href="./rdoc.css" type="text/css" media="screen" />
+
+  <script src="./js/jquery.js" type="text/javascript" charset="utf-8"></script>
+  <script src="./js/thickbox-compressed.js" type="text/javascript" charset="utf-8"></script>
+  <script src="./js/quicksearch.js" type="text/javascript" charset="utf-8"></script>
+  <script src="./js/darkfish.js" type="text/javascript" charset="utf-8"></script>
+
+</head>
+<body id="top" class="class">
+
+  <div id="metadata">
+    <div id="home-metadata">
+      <div id="home-section" class="section">
+        <h3 class="section-header">
+          <a href="./index.html">Home</a>
+          <a href="./index.html#classes">Classes</a>
+          <a href="./index.html#methods">Methods</a>
+        </h3>
+      </div>
+    </div>
+
+    <div id="file-metadata">
+      <div id="file-list-section" class="section">
+        <h3 class="section-header">In Files</h3>
+        <div class="section-body">
+          <ul>
+          
+            <li><a href="./Bot/Map_rb.html?TB_iframe=true&amp;height=550&amp;width=785"
+              class="thickbox" title="Bot/Map.rb">Bot/Map.rb</a></li>
+          
+            <li><a href="./LiveBot/Map_rb.html?TB_iframe=true&amp;height=550&amp;width=785"
+              class="thickbox" title="LiveBot/Map.rb">LiveBot/Map.rb</a></li>
+          
+          </ul>
+        </div>
+      </div>
+
+      
+    </div>
+
+    <div id="class-metadata">
+      
+      <!-- Parent Class -->
+      <div id="parent-class-section" class="section">
+        <h3 class="section-header">Parent</h3>
+        
+        <p class="link"><a href="Object.html">Object</a></p>
+        
+      </div>
+      
+
+      
+
+      
+
+      
+      <!-- Method Quickref -->
+      <div id="method-list-section" class="section">
+        <h3 class="section-header">Methods</h3>
+        <ul class="link-list">
+          
+          <li><a href="#method-c-new">::new</a></li>
+          
+          <li><a href="#method-i-addPoint">#addPoint</a></li>
+          
+          <li><a href="#method-i-add_direction">#add_direction</a></li>
+          
+          <li><a href="#method-i-add_influence">#add_influence</a></li>
+          
+          <li><a href="#method-i-base_influence">#base_influence</a></li>
+          
+          <li><a href="#method-i-eculidean_distance">#eculidean_distance</a></li>
+          
+          <li><a href="#method-i-fill_holes">#fill_holes</a></li>
+          
+          <li><a href="#method-i-food_value">#food_value</a></li>
+          
+          <li><a href="#method-i-generate_view_area">#generate_view_area</a></li>
+          
+          <li><a href="#method-i-get_best_targets">#get_best_targets</a></li>
+          
+          <li><a href="#method-i-map_to_s">#map_to_s</a></li>
+          
+          <li><a href="#method-i-move_distance">#move_distance</a></li>
+          
+          <li><a href="#method-i-neighbor">#neighbor</a></li>
+          
+          <li><a href="#method-i-normalize">#normalize</a></li>
+          
+          <li><a href="#method-i-print_influence">#print_influence</a></li>
+          
+          <li><a href="#method-i-reset">#reset</a></li>
+          
+          <li><a href="#method-i-tension">#tension</a></li>
+          
+          <li><a href="#method-i-tile_value">#tile_value</a></li>
+          
+          <li><a href="#method-i-total_influence">#total_influence</a></li>
+          
+          <li><a href="#method-i-try_move_ant">#try_move_ant</a></li>
+          
+          <li><a href="#method-i-update_hills">#update_hills</a></li>
+          
+          <li><a href="#method-i-update_view_range">#update_view_range</a></li>
+          
+          <li><a href="#method-i-vunerability">#vunerability</a></li>
+          
+        </ul>
+      </div>
+      
+
+      
+      <!-- Included Modules -->
+      <div id="includes-section" class="section">
+        <h3 class="section-header">Included Modules</h3>
+        <ul class="link-list">
+        
+        
+          <li><a class="include" href="Utilities.html">Utilities</a></li>
+        
+        
+        </ul>
+      </div>
+      
+    </div>
+
+    <div id="project-metadata">
+      
+      
+      <div id="fileindex-section" class="section project-section">
+        <h3 class="section-header">Files</h3>
+        <ul>
+        
+          <li class="file"><a href="./LiveBot/log_txt.html">log.txt</a></li>
+        
+          <li class="file"><a href="./log_txt.html">log.txt</a></li>
+        
+          <li class="file"><a href="./tools/VERSION.html">VERSION</a></li>
+        
+          <li class="file"><a href="./tools/sample_bots/java/Makefile.html">Makefile</a></li>
+        
+        </ul>
+      </div>
+      
+
+      <div id="classindex-section" class="section project-section">
+        <h3 class="section-header">Class/Module Index
+          <span class="search-toggle"><img src="./images/find.png"
+            height="16" width="16" alt="[+]"
+            title="show/hide quicksearch" /></span></h3>
+        <form action="#" method="get" accept-charset="utf-8" class="initially-hidden">
+        <fieldset>
+          <legend>Quicksearch</legend>
+          <input type="text" name="quicksearch" value=""
+            class="quicksearch-field" />
+        </fieldset>
+        </form>
+
+        <ul class="link-list">
+        
+          <li><a href="./AI.html">AI</a></li>
+        
+          <li><a href="./Ant.html">Ant</a></li>
+        
+          <li><a href="./Array2D.html">Array2D</a></li>
+        
+          <li><a href="./InfluenceMap.html">InfluenceMap</a></li>
+        
+          <li><a href="./Map.html">Map</a></li>
+        
+          <li><a href="./Object.html">Object</a></li>
+        
+          <li><a href="./ScoutMap.html">ScoutMap</a></li>
+        
+          <li><a href="./Settings.html">Settings</a></li>
+        
+          <li><a href="./TileMap.html">TileMap</a></li>
+        
+          <li><a href="./Utilities.html">Utilities</a></li>
+        
+        </ul>
+        <div id="no-class-search-results" style="display: none;">No matching classes.</div>
+      </div>
+
+      
+    </div>
+  </div>
+
+  <div id="documentation">
+    <h1 class="class">Map</h1>
+
+    <div id="description" class="description">
+      
+    </div><!-- description -->
+
+    
+    
+    
+    <div id="5Buntitled-5D" class="documentation-section">
+      
+
+      
+
+      
+
+      
+      <!-- Attributes -->
+      <div id="attribute-method-details" class="method-section section">
+        <h3 class="section-header">Attributes</h3>
+
+        
+        <div id="cols-attribute-method" class="method-detail">
+          <a name="cols"></a>
+          
+          <a name="cols="></a>
+          
+          <div class="method-heading attribute-method-heading">
+            <span class="method-name">cols</span><span
+              class="attribute-access-type">[RW]</span>
+          </div>
+
+          <div class="method-description">
+          
+          
+          
+          </div>
+        </div>
+        
+        <div id="enemyInfluence-attribute-method" class="method-detail">
+          <a name="enemyInfluence"></a>
+          
+          <a name="enemyInfluence="></a>
+          
+          <div class="method-heading attribute-method-heading">
+            <span class="method-name">enemyInfluence</span><span
+              class="attribute-access-type">[RW]</span>
+          </div>
+
+          <div class="method-description">
+          
+          
+          
+          </div>
+        </div>
+        
+        <div id="enemy_ants-attribute-method" class="method-detail">
+          <a name="enemy_ants"></a>
+          
+          <a name="enemy_ants="></a>
+          
+          <div class="method-heading attribute-method-heading">
+            <span class="method-name">enemy_ants</span><span
+              class="attribute-access-type">[RW]</span>
+          </div>
+
+          <div class="method-description">
+          
+          
+          
+          </div>
+        </div>
+        
+        <div id="enemy_hills-attribute-method" class="method-detail">
+          <a name="enemy_hills"></a>
+          
+          <a name="enemy_hills="></a>
+          
+          <div class="method-heading attribute-method-heading">
+            <span class="method-name">enemy_hills</span><span
+              class="attribute-access-type">[RW]</span>
+          </div>
+
+          <div class="method-description">
+          
+          
+          
+          </div>
+        </div>
+        
+        <div id="foodValues-attribute-method" class="method-detail">
+          <a name="foodValues"></a>
+          
+          <a name="foodValues="></a>
+          
+          <div class="method-heading attribute-method-heading">
+            <span class="method-name">foodValues</span><span
+              class="attribute-access-type">[RW]</span>
+          </div>
+
+          <div class="method-description">
+          
+          <p>Food influence map</p>
+          
+          </div>
+        </div>
+        
+        <div id="myInfluence-attribute-method" class="method-detail">
+          <a name="myInfluence"></a>
+          
+          <a name="myInfluence="></a>
+          
+          <div class="method-heading attribute-method-heading">
+            <span class="method-name">myInfluence</span><span
+              class="attribute-access-type">[RW]</span>
+          </div>
+
+          <div class="method-description">
+          
+          
+          
+          </div>
+        </div>
+        
+        <div id="my_ants-attribute-method" class="method-detail">
+          <a name="my_ants"></a>
+          
+          <a name="my_ants="></a>
+          
+          <div class="method-heading attribute-method-heading">
+            <span class="method-name">my_ants</span><span
+              class="attribute-access-type">[RW]</span>
+          </div>
+
+          <div class="method-description">
+          
+          
+          
+          </div>
+        </div>
+        
+        <div id="rows-attribute-method" class="method-detail">
+          <a name="rows"></a>
+          
+          <a name="rows="></a>
+          
+          <div class="method-heading attribute-method-heading">
+            <span class="method-name">rows</span><span
+              class="attribute-access-type">[RW]</span>
+          </div>
+
+          <div class="method-description">
+          
+          
+          
+          </div>
+        </div>
+        
+        <div id="scoutValues-attribute-method" class="method-detail">
+          <a name="scoutValues"></a>
+          
+          <a name="scoutValues="></a>
+          
+          <div class="method-heading attribute-method-heading">
+            <span class="method-name">scoutValues</span><span
+              class="attribute-access-type">[RW]</span>
+          </div>
+
+          <div class="method-description">
+          
+          <p>How many turns since this square was last seen. Can be used to allow
+scouting of unspotted squares To get the value, call tile.scount_value This
+allows us to take account of water squares which will always be zero</p>
+          
+          </div>
+        </div>
+        
+        <div id="scout_map-attribute-method" class="method-detail">
+          <a name="scout_map"></a>
+          
+          <a name="scout_map="></a>
+          
+          <div class="method-heading attribute-method-heading">
+            <span class="method-name">scout_map</span><span
+              class="attribute-access-type">[RW]</span>
+          </div>
+
+          <div class="method-description">
+          
+          <p>How many turns since this square was last seen. Can be used to allow
+scouting of unspotted squares To get the value, call tile.scount_value This
+allows us to take account of water squares which will always be zero</p>
+          
+          </div>
+        </div>
+        
+        <div id="tile_map-attribute-method" class="method-detail">
+          <a name="tile_map"></a>
+          
+          <a name="tile_map="></a>
+          
+          <div class="method-heading attribute-method-heading">
+            <span class="method-name">tile_map</span><span
+              class="attribute-access-type">[RW]</span>
+          </div>
+
+          <div class="method-description">
+          
+          <p>-1 = Enemy Hill 0 = land 1 = water 2 = my ant (temp block) 3 = enemy ant 4
+= food (temp block)</p>
+          
+          </div>
+        </div>
+        
+      </div><!-- attribute-method-details -->
+      
+
+      <!-- Methods -->
+      
+      <div id="public-class-method-details" class="method-section section">
+        <h3 class="section-header">Public Class Methods</h3>
+
+      
+        <div id="new-method" class="method-detail ">
+          <a name="method-c-new"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">new</span><span
+              class="method-args">(rows, columns, ai)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>Creates the new map object of the given size</p>
+            
+
+            
+            <div class="method-source-code" id="new-source">
+<pre>
+<span class="ruby-comment"># File Bot/Map.rb, line 35</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">rows</span>, <span class="ruby-identifier">columns</span>, <span class="ruby-identifier">ai</span>)      
+        <span class="ruby-ivar">@rows</span> = <span class="ruby-identifier">rows</span>
+        <span class="ruby-ivar">@cols</span> = <span class="ruby-identifier">columns</span>
+        <span class="ruby-ivar">@settings</span> = <span class="ruby-identifier">ai</span>.<span class="ruby-identifier">settings</span>
+        <span class="ruby-ivar">@ai</span> = <span class="ruby-identifier">ai</span>
+        
+        <span class="ruby-ivar">@tile_map</span> = <span class="ruby-constant">TileMap</span>.<span class="ruby-identifier">new</span>(<span class="ruby-ivar">@rows</span>, <span class="ruby-ivar">@cols</span>)
+        <span class="ruby-ivar">@enemy_hills</span> = <span class="ruby-constant">Hash</span>.<span class="ruby-identifier">new</span>(<span class="ruby-keyword">false</span>)
+        
+        <span class="ruby-identifier">viewRad</span> = <span class="ruby-ivar">@ai</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-operator">?</span> <span class="ruby-value">5</span> <span class="ruby-operator">:</span> <span class="ruby-ivar">@ai</span>.<span class="ruby-identifier">viewradius2</span>      <span class="ruby-comment"># allows for blank ai values in testing</span>
+
+        <span class="ruby-ivar">@scout_map</span> = <span class="ruby-constant">ScoutMap</span>.<span class="ruby-identifier">new</span>(<span class="ruby-ivar">@rows</span>,<span class="ruby-ivar">@cols</span>, <span class="ruby-ivar">@settings</span>.<span class="ruby-identifier">scoutCounter</span>, <span class="ruby-identifier">viewRad</span>)
+        
+        <span class="ruby-ivar">@foodValues</span> = <span class="ruby-constant">InfluenceMap</span>.<span class="ruby-identifier">new</span>(<span class="ruby-ivar">@rows</span>,<span class="ruby-ivar">@cols</span>,<span class="ruby-ivar">@tile_map</span>)
+        <span class="ruby-ivar">@enemyInfluence</span> = <span class="ruby-constant">InfluenceMap</span>.<span class="ruby-identifier">new</span>(<span class="ruby-ivar">@rows</span>,<span class="ruby-ivar">@cols</span>,<span class="ruby-ivar">@tile_map</span>)
+        <span class="ruby-ivar">@myInfluence</span> = <span class="ruby-constant">InfluenceMap</span>.<span class="ruby-identifier">new</span>(<span class="ruby-ivar">@rows</span>,<span class="ruby-ivar">@cols</span>,<span class="ruby-ivar">@tile_map</span>)
+        
+                        
+        <span class="ruby-ivar">@my_ants</span>=[]
+        <span class="ruby-ivar">@enemy_ants</span>=[]
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- new-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- new-method -->
+
+      
+      </div><!-- public-class-method-details -->
+    
+      <div id="public-instance-method-details" class="method-section section">
+        <h3 class="section-header">Public Instance Methods</h3>
+
+      
+        <div id="addPoint-method" class="method-detail ">
+          <a name="method-i-addPoint"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">addPoint</span><span
+              class="method-args">(row, col, pointType, owner = 0)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="addPoint-source">
+<pre>
+<span class="ruby-comment"># File Bot/Map.rb, line 109</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">addPoint</span> (<span class="ruby-identifier">row</span>, <span class="ruby-identifier">col</span>, <span class="ruby-identifier">pointType</span>, <span class="ruby-identifier">owner</span> = <span class="ruby-value">0</span>)
+
+        <span class="ruby-keyword">case</span> <span class="ruby-identifier">pointType</span>
+        <span class="ruby-keyword">when</span> <span class="ruby-value">:food</span>
+                <span class="ruby-ivar">@tile_map</span>.<span class="ruby-identifier">add_food</span>(<span class="ruby-identifier">row</span>,<span class="ruby-identifier">col</span>)
+                <span class="ruby-ivar">@foodValues</span>.<span class="ruby-identifier">add_influence</span>(<span class="ruby-identifier">row</span>, <span class="ruby-identifier">col</span>, <span class="ruby-ivar">@settings</span>.<span class="ruby-identifier">food_value</span>, <span class="ruby-ivar">@settings</span>.<span class="ruby-identifier">food_range</span>)
+        <span class="ruby-keyword">when</span> <span class="ruby-value">:water</span>
+                <span class="ruby-ivar">@tile_map</span>.<span class="ruby-identifier">add_water</span>(<span class="ruby-identifier">row</span>,<span class="ruby-identifier">col</span>)
+        <span class="ruby-keyword">when</span> <span class="ruby-value">:ant</span>
+                <span class="ruby-identifier">ant</span> = <span class="ruby-constant">Ant</span>.<span class="ruby-identifier">new</span> <span class="ruby-identifier">row</span>, <span class="ruby-identifier">col</span>, <span class="ruby-keyword">true</span>, <span class="ruby-identifier">owner</span>,  <span class="ruby-keyword">self</span>
+                <span class="ruby-ivar">@tile_map</span>.<span class="ruby-identifier">add_ant</span>(<span class="ruby-identifier">row</span>,<span class="ruby-identifier">col</span>, <span class="ruby-identifier">owner</span>)
+                
+                <span class="ruby-keyword">if</span> <span class="ruby-identifier">ant</span>.<span class="ruby-identifier">owner</span><span class="ruby-operator">==</span><span class="ruby-value">0</span>
+                        <span class="ruby-ivar">@my_ants</span>.<span class="ruby-identifier">push</span> <span class="ruby-identifier">ant</span>
+                        <span class="ruby-ivar">@scout_map</span>.<span class="ruby-identifier">update_view_range</span>(<span class="ruby-identifier">row</span>,<span class="ruby-identifier">col</span>)
+                        <span class="ruby-ivar">@myInfluence</span>.<span class="ruby-identifier">add_influence</span>(<span class="ruby-identifier">row</span>, <span class="ruby-identifier">col</span>, <span class="ruby-ivar">@settings</span>.<span class="ruby-identifier">myAnt_value</span>, <span class="ruby-ivar">@settings</span>.<span class="ruby-identifier">myAnt_range</span>)
+                <span class="ruby-keyword">else</span>
+                        <span class="ruby-ivar">@enemy_ants</span>.<span class="ruby-identifier">push</span> <span class="ruby-identifier">ant</span>
+                        <span class="ruby-ivar">@enemyInfluence</span>.<span class="ruby-identifier">add_influence</span>(<span class="ruby-identifier">row</span>, <span class="ruby-identifier">col</span>, <span class="ruby-ivar">@settings</span>.<span class="ruby-identifier">enemyAnt_value</span>, <span class="ruby-ivar">@settings</span>.<span class="ruby-identifier">enemyAnt_range</span>)
+                <span class="ruby-keyword">end</span>
+                
+        <span class="ruby-keyword">when</span> <span class="ruby-value">:hill</span>
+                <span class="ruby-ivar">@tile_map</span>.<span class="ruby-identifier">add_hill</span>(<span class="ruby-identifier">row</span>,<span class="ruby-identifier">col</span>, <span class="ruby-identifier">owner</span>)
+                <span class="ruby-keyword">if</span> (<span class="ruby-identifier">owner</span> <span class="ruby-operator">!=</span> <span class="ruby-value">0</span>)      <span class="ruby-comment"># add to list of enemy hills</span>
+                        <span class="ruby-ivar">@enemy_hills</span>[[<span class="ruby-identifier">row</span>,<span class="ruby-identifier">col</span>]] = <span class="ruby-keyword">true</span> <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-ivar">@enemy_hills</span>[[<span class="ruby-identifier">row</span>,<span class="ruby-identifier">col</span>]]
+                <span class="ruby-keyword">else</span>
+                         <span class="ruby-ivar">@myInfluence</span>.<span class="ruby-identifier">add_influence</span>(<span class="ruby-identifier">row</span>, <span class="ruby-identifier">col</span>, <span class="ruby-ivar">@settings</span>.<span class="ruby-identifier">myHill_value</span>, <span class="ruby-ivar">@settings</span>.<span class="ruby-identifier">myHill_range</span>)
+                <span class="ruby-keyword">end</span>
+
+        <span class="ruby-keyword">else</span>
+                <span class="ruby-identifier">raise</span> <span class="ruby-string">'Invalid Point Added'</span>
+        <span class="ruby-keyword">end</span>   
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- addPoint-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- addPoint-method -->
+
+      
+        <div id="add_direction-method" class="method-detail ">
+          <a name="method-i-add_direction"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">add_direction</span><span
+              class="method-args">(row, col, set, chkRow, chkCol, checked, dir)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="add_direction-source">
+<pre>
+<span class="ruby-comment"># File Bot/Map.rb, line 203</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">add_direction</span>(<span class="ruby-identifier">row</span>, <span class="ruby-identifier">col</span>, <span class="ruby-identifier">set</span>, <span class="ruby-identifier">chkRow</span>, <span class="ruby-identifier">chkCol</span>, <span class="ruby-identifier">checked</span>, <span class="ruby-identifier">dir</span>)
+        <span class="ruby-keyword">if</span> (<span class="ruby-operator">!</span><span class="ruby-identifier">checked</span>[<span class="ruby-identifier">chkRow</span>,<span class="ruby-identifier">chkCol</span>] <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@tile_map</span>.<span class="ruby-identifier">passable?</span>(<span class="ruby-identifier">row</span>,<span class="ruby-identifier">col</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">base_influence</span>(<span class="ruby-identifier">row</span>,<span class="ruby-identifier">col</span>) <span class="ruby-operator">&lt;=</span> <span class="ruby-ivar">@settings</span>.<span class="ruby-identifier">enemyThreshold</span> ) 
+                <span class="ruby-identifier">set</span> <span class="ruby-operator">&lt;&lt;</span> [<span class="ruby-identifier">row</span>,<span class="ruby-identifier">col</span>, <span class="ruby-identifier">dir</span>]
+                <span class="ruby-identifier">checked</span>[<span class="ruby-identifier">chkRow</span>,<span class="ruby-identifier">chkCol</span>] = <span class="ruby-keyword">true</span>
+        <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- add_direction-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- add_direction-method -->
+
+      
+        <div id="add_influence-method" class="method-detail ">
+          <a name="method-i-add_influence"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">add_influence</span><span
+              class="method-args">(row, col, val, radius, map)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="add_influence-source">
+<pre>
+<span class="ruby-comment"># File LiveBot/Map.rb, line 339</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">add_influence</span>(<span class="ruby-identifier">row</span>, <span class="ruby-identifier">col</span>, <span class="ruby-identifier">val</span>, <span class="ruby-identifier">radius</span>, <span class="ruby-identifier">map</span>)
+        <span class="ruby-identifier">circ</span> = (<span class="ruby-identifier">radius</span> *<span class="ruby-value">2</span>)<span class="ruby-operator">-</span><span class="ruby-value">1</span>
+        <span class="ruby-identifier">checked</span> = <span class="ruby-constant">Array2D</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">circ</span>, <span class="ruby-identifier">circ</span>, <span class="ruby-keyword">false</span>)
+
+        
+        <span class="ruby-identifier">nodes</span> = [[<span class="ruby-identifier">row</span>,<span class="ruby-identifier">col</span>]]
+        <span class="ruby-identifier">checked</span>[<span class="ruby-value">0</span>,<span class="ruby-value">0</span>] = <span class="ruby-keyword">true</span>
+
+        (<span class="ruby-value">0</span><span class="ruby-operator">..</span><span class="ruby-identifier">radius</span><span class="ruby-operator">-</span><span class="ruby-value">1</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">distance</span><span class="ruby-operator">|</span>
+                <span class="ruby-identifier">children</span> = []
+                <span class="ruby-identifier">nodes</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">point</span><span class="ruby-operator">|</span>
+
+                        <span class="ruby-identifier">curRow</span> = <span class="ruby-identifier">point</span>[<span class="ruby-value">0</span>] 
+                        <span class="ruby-identifier">chkRow</span> = <span class="ruby-identifier">point</span>[<span class="ruby-value">0</span>] <span class="ruby-operator">-</span> <span class="ruby-identifier">row</span>
+                        <span class="ruby-identifier">curCol</span> = <span class="ruby-identifier">point</span>[<span class="ruby-value">1</span>]
+                        <span class="ruby-identifier">chkCol</span> = <span class="ruby-identifier">point</span>[<span class="ruby-value">1</span>] <span class="ruby-operator">-</span> <span class="ruby-identifier">col</span>
+
+                        <span class="ruby-identifier">map</span>[<span class="ruby-identifier">curRow</span>,<span class="ruby-identifier">curCol</span>] <span class="ruby-operator">+=</span> (<span class="ruby-identifier">val</span> * (<span class="ruby-identifier">radius</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">distance</span>))<span class="ruby-operator">/</span><span class="ruby-identifier">radius</span>    <span class="ruby-comment">#update tile value</span>
+
+                        <span class="ruby-keyword">if</span> (<span class="ruby-identifier">distance</span> <span class="ruby-operator">&lt;</span> <span class="ruby-identifier">radius</span><span class="ruby-operator">-</span><span class="ruby-value">1</span>)
+                                <span class="ruby-keyword">if</span> (<span class="ruby-operator">!</span><span class="ruby-identifier">checked</span>[<span class="ruby-identifier">chkRow</span><span class="ruby-operator">+</span><span class="ruby-value">1</span>,<span class="ruby-identifier">chkCol</span>] <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@tile_map</span>[<span class="ruby-identifier">curRow</span><span class="ruby-operator">+</span><span class="ruby-value">1</span>,<span class="ruby-identifier">curCol</span>] <span class="ruby-operator">!=</span> <span class="ruby-value">1</span>)
+                                        <span class="ruby-identifier">children</span> <span class="ruby-operator">&lt;&lt;</span> [<span class="ruby-identifier">curRow</span><span class="ruby-operator">+</span><span class="ruby-value">1</span>,<span class="ruby-identifier">curCol</span>]
+                                        <span class="ruby-identifier">checked</span>[<span class="ruby-identifier">chkRow</span><span class="ruby-operator">+</span><span class="ruby-value">1</span>,<span class="ruby-identifier">chkCol</span>] = <span class="ruby-keyword">true</span>
+                                <span class="ruby-keyword">end</span>
+                                <span class="ruby-keyword">if</span> (<span class="ruby-operator">!</span><span class="ruby-identifier">checked</span>[<span class="ruby-identifier">chkRow</span><span class="ruby-operator">-</span><span class="ruby-value">1</span>,<span class="ruby-identifier">chkCol</span>] <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@tile_map</span>[<span class="ruby-identifier">curRow</span><span class="ruby-operator">-</span><span class="ruby-value">1</span>,<span class="ruby-identifier">curCol</span>] <span class="ruby-operator">!=</span> <span class="ruby-value">1</span>)
+                                        <span class="ruby-identifier">children</span> <span class="ruby-operator">&lt;&lt;</span> [<span class="ruby-identifier">curRow</span><span class="ruby-operator">-</span><span class="ruby-value">1</span>,<span class="ruby-identifier">curCol</span>]
+                                        <span class="ruby-identifier">checked</span>[<span class="ruby-identifier">chkRow</span><span class="ruby-operator">-</span><span class="ruby-value">1</span>,<span class="ruby-identifier">chkCol</span>] = <span class="ruby-keyword">true</span>
+                                <span class="ruby-keyword">end</span>
+                                <span class="ruby-keyword">if</span> (<span class="ruby-operator">!</span><span class="ruby-identifier">checked</span>[<span class="ruby-identifier">chkRow</span>,<span class="ruby-identifier">chkCol</span><span class="ruby-operator">+</span><span class="ruby-value">1</span>] <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@tile_map</span>[<span class="ruby-identifier">curRow</span>,<span class="ruby-identifier">curCol</span><span class="ruby-operator">+</span><span class="ruby-value">1</span>] <span class="ruby-operator">!=</span> <span class="ruby-value">1</span>)
+                                        <span class="ruby-identifier">children</span> <span class="ruby-operator">&lt;&lt;</span> [<span class="ruby-identifier">curRow</span>,<span class="ruby-identifier">curCol</span><span class="ruby-operator">+</span><span class="ruby-value">1</span>]
+                                        <span class="ruby-identifier">checked</span>[<span class="ruby-identifier">chkRow</span>,<span class="ruby-identifier">chkCol</span><span class="ruby-operator">+</span><span class="ruby-value">1</span>] = <span class="ruby-keyword">true</span>
+                                <span class="ruby-keyword">end</span>
+                                <span class="ruby-keyword">if</span> (<span class="ruby-operator">!</span><span class="ruby-identifier">checked</span>[<span class="ruby-identifier">chkRow</span>,<span class="ruby-identifier">chkCol</span><span class="ruby-operator">-</span><span class="ruby-value">1</span>] <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@tile_map</span>[<span class="ruby-identifier">curRow</span>,<span class="ruby-identifier">curCol</span><span class="ruby-operator">-</span><span class="ruby-value">1</span>] <span class="ruby-operator">!=</span> <span class="ruby-value">1</span>)
+                                        <span class="ruby-identifier">children</span> <span class="ruby-operator">&lt;&lt;</span> [<span class="ruby-identifier">curRow</span>,<span class="ruby-identifier">curCol</span><span class="ruby-operator">-</span><span class="ruby-value">1</span>]
+                                        <span class="ruby-identifier">checked</span>[<span class="ruby-identifier">chkRow</span>,<span class="ruby-identifier">chkCol</span><span class="ruby-operator">-</span><span class="ruby-value">1</span>] = <span class="ruby-keyword">true</span>
+                                <span class="ruby-keyword">end</span>                        
+                        <span class="ruby-keyword">end</span>
+                <span class="ruby-keyword">end</span>                                  
+                <span class="ruby-identifier">nodes</span> = <span class="ruby-identifier">children</span>
+        <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- add_influence-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- add_influence-method -->
+
+      
+        <div id="base_influence-method" class="method-detail ">
+          <a name="method-i-base_influence"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">base_influence</span><span
+              class="method-args">(row,col)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="base_influence-source">
+<pre>
+<span class="ruby-comment"># File Bot/Map.rb, line 75</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">base_influence</span>(<span class="ruby-identifier">row</span>,<span class="ruby-identifier">col</span>)
+        <span class="ruby-keyword">return</span>  <span class="ruby-ivar">@enemyInfluence</span>[<span class="ruby-identifier">row</span>,<span class="ruby-identifier">col</span>] <span class="ruby-operator">-</span> <span class="ruby-ivar">@myInfluence</span>[<span class="ruby-identifier">row</span>,<span class="ruby-identifier">col</span>]
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- base_influence-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- base_influence-method -->
+
+      
+        <div id="eculidean_distance-method" class="method-detail ">
+          <a name="method-i-eculidean_distance"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">eculidean_distance</span><span
+              class="method-args">(point1, point2)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>Expects two 2 element arrays [row, col], [row1,col1] Or two tiles Or two
+ant Or any combination of the above...</p>
+            
+
+            
+            <div class="method-source-code" id="eculidean_distance-source">
+<pre>
+<span class="ruby-comment"># File LiveBot/Map.rb, line 301</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">eculidean_distance</span>(<span class="ruby-identifier">point1</span>, <span class="ruby-identifier">point2</span>)
+        (<span class="ruby-identifier">point1</span>[<span class="ruby-value">0</span>] <span class="ruby-operator">-</span> <span class="ruby-identifier">point2</span>[<span class="ruby-value">0</span>])<span class="ruby-operator">**</span><span class="ruby-value">2</span>  <span class="ruby-operator">+</span> (<span class="ruby-identifier">point1</span>[<span class="ruby-value">1</span>] <span class="ruby-operator">-</span> <span class="ruby-identifier">point2</span>[<span class="ruby-value">1</span>])<span class="ruby-operator">**</span><span class="ruby-value">2</span> 
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- eculidean_distance-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- eculidean_distance-method -->
+
+      
+        <div id="fill_holes-method" class="method-detail ">
+          <a name="method-i-fill_holes"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">fill_holes</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>Fills tiles surrounded on 3 sides, to prevent movement into them</p>
+            
+
+            
+            <div class="method-source-code" id="fill_holes-source">
+<pre>
+<span class="ruby-comment"># File LiveBot/Map.rb, line 238</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">fill_holes</span>
+        (<span class="ruby-value">0</span><span class="ruby-operator">..</span><span class="ruby-ivar">@rows</span><span class="ruby-operator">-</span><span class="ruby-value">1</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">row</span><span class="ruby-operator">|</span>
+                (<span class="ruby-value">0</span><span class="ruby-operator">..</span><span class="ruby-ivar">@cols</span><span class="ruby-operator">-</span><span class="ruby-value">1</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">col</span><span class="ruby-operator">|</span>
+                        <span class="ruby-comment"># Only check visible squares</span>
+                        <span class="ruby-keyword">if</span> (<span class="ruby-ivar">@scoutValues</span>[<span class="ruby-identifier">row</span>,<span class="ruby-identifier">col</span>] <span class="ruby-operator">==</span> <span class="ruby-value">0</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@tile_map</span>[<span class="ruby-identifier">row</span>,<span class="ruby-identifier">col</span>] <span class="ruby-operator">!=</span> <span class="ruby-value">1</span>)
+                                <span class="ruby-identifier">count</span> = <span class="ruby-value">0</span>
+                                <span class="ruby-identifier">count</span> <span class="ruby-operator">+=</span><span class="ruby-value">1</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@tile_map</span>[<span class="ruby-identifier">row</span><span class="ruby-operator">-</span><span class="ruby-value">1</span>,<span class="ruby-identifier">col</span>] <span class="ruby-operator">==</span> <span class="ruby-value">1</span>
+                                <span class="ruby-identifier">count</span> <span class="ruby-operator">+=</span><span class="ruby-value">1</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@tile_map</span>[<span class="ruby-identifier">row</span><span class="ruby-operator">+</span><span class="ruby-value">1</span>,<span class="ruby-identifier">col</span>] <span class="ruby-operator">==</span> <span class="ruby-value">1</span>
+                                <span class="ruby-identifier">count</span> <span class="ruby-operator">+=</span><span class="ruby-value">1</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@tile_map</span>[<span class="ruby-identifier">row</span>,<span class="ruby-identifier">col</span><span class="ruby-operator">-</span><span class="ruby-value">1</span>] <span class="ruby-operator">==</span> <span class="ruby-value">1</span>
+                                <span class="ruby-identifier">count</span> <span class="ruby-operator">+=</span><span class="ruby-value">1</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@tile_map</span>[<span class="ruby-identifier">row</span>,<span class="ruby-identifier">col</span><span class="ruby-operator">+</span><span class="ruby-value">1</span>] <span class="ruby-operator">==</span> <span class="ruby-value">1</span>
+                                
+                                <span class="ruby-ivar">@tile_map</span>[<span class="ruby-identifier">row</span>, <span class="ruby-identifier">col</span>] = <span class="ruby-value">1</span> <span class="ruby-keyword">if</span> (<span class="ruby-identifier">count</span> <span class="ruby-operator">&gt;=</span> <span class="ruby-value">3</span>)
+
+                        <span class="ruby-keyword">end</span>
+                <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- fill_holes-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- fill_holes-method -->
+
+      
+        <div id="food_value-method" class="method-detail ">
+          <a name="method-i-food_value"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">food_value</span><span
+              class="method-args">(row,col)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="food_value-source">
+<pre>
+<span class="ruby-comment"># File Bot/Map.rb, line 71</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">food_value</span>(<span class="ruby-identifier">row</span>,<span class="ruby-identifier">col</span>)
+        <span class="ruby-ivar">@foodValues</span>[<span class="ruby-identifier">row</span>,<span class="ruby-identifier">col</span>]
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- food_value-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- food_value-method -->
+
+      
+        <div id="generate_view_area-method" class="method-detail ">
+          <a name="method-i-generate_view_area"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">generate_view_area</span><span
+              class="method-args">(distance2)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>Generates an array holding the view radius of a ant Array made up of pairs
+[xOffset, yOffset] xOffset = squares horizontal from center yOffset =
+maximum distance of viewable range (from center) in the column XoffSet</p>
+            
+
+            
+            <div class="method-source-code" id="generate_view_area-source">
+<pre>
+<span class="ruby-comment"># File LiveBot/Map.rb, line 140</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">generate_view_area</span>(<span class="ruby-identifier">distance2</span>)
+        <span class="ruby-identifier">initalPoint</span> = [<span class="ruby-value">0</span>,<span class="ruby-value">0</span>]
+        <span class="ruby-identifier">distance</span> = <span class="ruby-constant">Integer</span>(<span class="ruby-constant">Math</span>.<span class="ruby-identifier">sqrt</span>(<span class="ruby-identifier">distance2</span>))
+        
+        <span class="ruby-identifier">viewRadius</span> = []
+        <span class="ruby-identifier">xCounter</span> = <span class="ruby-value">1</span>
+        <span class="ruby-identifier">yCounter</span> = <span class="ruby-identifier">distance</span>
+        <span class="ruby-identifier">viewRadius</span>.<span class="ruby-identifier">push</span>([<span class="ruby-value">0</span> , <span class="ruby-identifier">distance</span>])
+        
+        <span class="ruby-keyword">while</span> (<span class="ruby-identifier">xCounter</span> <span class="ruby-operator">&lt;=</span> <span class="ruby-identifier">distance</span>) <span class="ruby-keyword">do</span>
+        
+                <span class="ruby-identifier">x</span> =  <span class="ruby-identifier">xCounter</span>
+                <span class="ruby-identifier">y</span> =  <span class="ruby-identifier">yCounter</span>
+                
+                <span class="ruby-keyword">if</span> ((<span class="ruby-identifier">eculidean_distance</span>(<span class="ruby-identifier">initalPoint</span>, [<span class="ruby-identifier">xCounter</span>,<span class="ruby-identifier">yCounter</span>])) <span class="ruby-operator">&lt;</span> <span class="ruby-identifier">distance2</span>)
+                        <span class="ruby-comment">#Within range, so can use this square</span>
+                        <span class="ruby-identifier">viewRadius</span>.<span class="ruby-identifier">push</span>([<span class="ruby-identifier">xCounter</span>, <span class="ruby-identifier">yCounter</span>])
+                        <span class="ruby-identifier">viewRadius</span>.<span class="ruby-identifier">push</span>([<span class="ruby-operator">-</span><span class="ruby-identifier">xCounter</span>, <span class="ruby-identifier">yCounter</span>])
+                        <span class="ruby-identifier">xCounter</span> <span class="ruby-operator">+=</span> <span class="ruby-value">1</span>
+                <span class="ruby-keyword">else</span>
+                        <span class="ruby-identifier">yCounter</span> <span class="ruby-operator">-=</span><span class="ruby-value">1</span> <span class="ruby-comment"># move in slightly and try again</span>
+                <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">end</span>
+        <span class="ruby-ivar">@viewRadius</span> =  <span class="ruby-identifier">viewRadius</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- generate_view_area-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- generate_view_area-method -->
+
+      
+        <div id="get_best_targets-method" class="method-detail ">
+          <a name="method-i-get_best_targets"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">get_best_targets</span><span
+              class="method-args">(ant, radius)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="get_best_targets-source">
+<pre>
+<span class="ruby-comment"># File Bot/Map.rb, line 210</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_best_targets</span>(<span class="ruby-identifier">ant</span>, <span class="ruby-identifier">radius</span>)
+        <span class="ruby-identifier">circ</span> = (<span class="ruby-identifier">radius</span> *<span class="ruby-value">2</span>)<span class="ruby-operator">-</span><span class="ruby-value">1</span>
+        <span class="ruby-identifier">checked</span> = <span class="ruby-constant">Array2D</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">circ</span>, <span class="ruby-identifier">circ</span>, <span class="ruby-keyword">false</span>)
+        
+        <span class="ruby-identifier">nodes</span> = []
+        <span class="ruby-identifier">row</span> = <span class="ruby-identifier">ant</span>.<span class="ruby-identifier">row</span>
+        <span class="ruby-identifier">col</span> = <span class="ruby-identifier">ant</span>.<span class="ruby-identifier">col</span>
+        <span class="ruby-identifier">checked</span>[<span class="ruby-value">0</span>,<span class="ruby-value">0</span>] = <span class="ruby-keyword">true</span>
+        
+        <span class="ruby-identifier">add_direction</span>(<span class="ruby-identifier">row</span> <span class="ruby-operator">+</span> <span class="ruby-value">1</span>, <span class="ruby-identifier">col</span>, <span class="ruby-identifier">nodes</span>, <span class="ruby-value">1</span>,<span class="ruby-value">0</span>, <span class="ruby-identifier">checked</span>, <span class="ruby-value">:S</span>)
+        <span class="ruby-identifier">add_direction</span>(<span class="ruby-identifier">row</span> <span class="ruby-operator">-</span> <span class="ruby-value">1</span>, <span class="ruby-identifier">col</span>, <span class="ruby-identifier">nodes</span>, <span class="ruby-value">-1</span>,<span class="ruby-value">0</span>, <span class="ruby-identifier">checked</span>, <span class="ruby-value">:N</span>)
+        <span class="ruby-identifier">add_direction</span>(<span class="ruby-identifier">row</span>, <span class="ruby-identifier">col</span> <span class="ruby-value">+1</span>, <span class="ruby-identifier">nodes</span>, <span class="ruby-value">0</span>,<span class="ruby-value">1</span>, <span class="ruby-identifier">checked</span>, <span class="ruby-value">:E</span>)
+        <span class="ruby-identifier">add_direction</span>(<span class="ruby-identifier">row</span>, <span class="ruby-identifier">col</span> <span class="ruby-value">-1</span>, <span class="ruby-identifier">nodes</span>, <span class="ruby-value">0</span>,<span class="ruby-value">-1</span>, <span class="ruby-identifier">checked</span>, <span class="ruby-value">:W</span>)
+
+        <span class="ruby-identifier">maxValue</span> =<span class="ruby-value">-99999</span>
+        <span class="ruby-identifier">maxDir</span> = []
+        
+
+        (<span class="ruby-value">1</span><span class="ruby-operator">..</span><span class="ruby-identifier">radius</span><span class="ruby-operator">-</span><span class="ruby-value">1</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">distance</span><span class="ruby-operator">|</span>
+                <span class="ruby-identifier">children</span> = []
+                <span class="ruby-identifier">nodes</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">point</span><span class="ruby-operator">|</span>
+
+                        <span class="ruby-identifier">curRow</span>, <span class="ruby-identifier">curCol</span>, <span class="ruby-identifier">curDir</span> = <span class="ruby-identifier">point</span>[<span class="ruby-value">0</span>], <span class="ruby-identifier">point</span>[<span class="ruby-value">1</span>], <span class="ruby-identifier">point</span>[<span class="ruby-value">2</span>]
+                        <span class="ruby-identifier">chkRow</span>, <span class="ruby-identifier">chkCol</span> = <span class="ruby-identifier">point</span>[<span class="ruby-value">0</span>] <span class="ruby-operator">-</span> <span class="ruby-identifier">row</span> , <span class="ruby-identifier">point</span>[<span class="ruby-value">1</span>] <span class="ruby-operator">-</span> <span class="ruby-identifier">col</span>
+
+                        <span class="ruby-comment"># Get the value of the current square / distance from the ant</span>
+                        <span class="ruby-identifier">val</span> = <span class="ruby-identifier">total_influence</span>(<span class="ruby-identifier">curRow</span>,<span class="ruby-identifier">curCol</span>) <span class="ruby-operator">/</span> <span class="ruby-identifier">distance</span>.<span class="ruby-identifier">to_f</span>
+
+                        <span class="ruby-comment"># Update the distance list...</span>
+                        <span class="ruby-keyword">if</span> (<span class="ruby-identifier">val</span> <span class="ruby-operator">&gt;</span> <span class="ruby-identifier">maxValue</span>)
+                                <span class="ruby-identifier">maxValue</span> = <span class="ruby-identifier">val</span>
+                                <span class="ruby-identifier">maxDir</span> = [<span class="ruby-identifier">curDir</span>]
+                        <span class="ruby-keyword">elsif</span> (<span class="ruby-identifier">val</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">maxValue</span>)     <span class="ruby-comment"># Add to the available distance list</span>
+                                <span class="ruby-identifier">maxDir</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">curDir</span>
+                        <span class="ruby-keyword">end</span>
+                        
+                        <span class="ruby-comment"># Add child nodes in each of 4 directions</span>
+                        <span class="ruby-keyword">if</span> (<span class="ruby-identifier">distance</span> <span class="ruby-operator">&lt;</span> <span class="ruby-identifier">radius</span><span class="ruby-operator">-</span><span class="ruby-value">1</span>)    <span class="ruby-comment"># no point expanding children on last node</span>
+                                <span class="ruby-identifier">add_direction</span>(<span class="ruby-identifier">curRow</span> <span class="ruby-operator">+</span> <span class="ruby-value">1</span>, <span class="ruby-identifier">curCol</span>, <span class="ruby-identifier">children</span>, <span class="ruby-identifier">chkRow</span><span class="ruby-operator">+</span><span class="ruby-value">1</span>,<span class="ruby-identifier">chkCol</span>, <span class="ruby-identifier">checked</span>, <span class="ruby-identifier">curDir</span>)
+                                <span class="ruby-identifier">add_direction</span>(<span class="ruby-identifier">curRow</span> <span class="ruby-operator">-</span> <span class="ruby-value">1</span>, <span class="ruby-identifier">curCol</span>, <span class="ruby-identifier">children</span>, <span class="ruby-identifier">chkRow</span><span class="ruby-operator">-</span><span class="ruby-value">1</span>,<span class="ruby-identifier">chkCol</span>, <span class="ruby-identifier">checked</span>, <span class="ruby-identifier">curDir</span>)
+                                <span class="ruby-identifier">add_direction</span>(<span class="ruby-identifier">curRow</span>, <span class="ruby-identifier">curCol</span> <span class="ruby-value">+1</span>, <span class="ruby-identifier">children</span>, <span class="ruby-identifier">chkRow</span>,<span class="ruby-identifier">chkCol</span><span class="ruby-operator">+</span><span class="ruby-value">1</span>, <span class="ruby-identifier">checked</span>, <span class="ruby-identifier">curDir</span>)
+                                <span class="ruby-identifier">add_direction</span>(<span class="ruby-identifier">curRow</span>, <span class="ruby-identifier">curCol</span> <span class="ruby-value">-1</span>, <span class="ruby-identifier">children</span>, <span class="ruby-identifier">chkRow</span>,<span class="ruby-identifier">chkCol</span><span class="ruby-operator">-</span><span class="ruby-value">1</span>, <span class="ruby-identifier">checked</span>, <span class="ruby-identifier">curDir</span>)
+                        <span class="ruby-keyword">end</span> 
+                <span class="ruby-keyword">end</span>                          
+                                
+                <span class="ruby-identifier">nodes</span> = <span class="ruby-identifier">children</span>     <span class="ruby-comment"># update the toCheck list</span>
+        <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">return</span> <span class="ruby-identifier">maxDir</span>.<span class="ruby-identifier">uniq</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- get_best_targets-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- get_best_targets-method -->
+
+      
+        <div id="map_to_s-method" class="method-detail ">
+          <a name="method-i-map_to_s"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">map_to_s</span><span
+              class="method-args">(map)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="map_to_s-source">
+<pre>
+<span class="ruby-comment"># File LiveBot/Map.rb, line 331</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">map_to_s</span>(<span class="ruby-identifier">map</span>)
+        <span class="ruby-identifier">s</span> = <span class="ruby-string">&quot;&quot;</span>
+        <span class="ruby-identifier">map</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">row</span><span class="ruby-operator">|</span>
+                <span class="ruby-identifier">s</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">row</span>.<span class="ruby-identifier">inspect</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-string">&quot;\n&quot;</span>
+        <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">return</span> <span class="ruby-identifier">s</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- map_to_s-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- map_to_s-method -->
+
+      
+        <div id="move_distance-method" class="method-detail ">
+          <a name="method-i-move_distance"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">move_distance</span><span
+              class="method-args">(point1, point2)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <pre>Expects two 2 element arrays [x, y], [x1,y1]
+Or two tiles
+Or two ant
+Or any combination of the above...</pre>
+
+<p><a
+href="http://en.wikipedia.org/wiki/Taxicab_geometry">en.wikipedia.org/wiki/Taxicab_geometry</a></p>
+            
+
+            
+            <div class="method-source-code" id="move_distance-source">
+<pre>
+<span class="ruby-comment"># File LiveBot/Map.rb, line 311</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">move_distance</span>(<span class="ruby-identifier">point1</span>, <span class="ruby-identifier">point2</span>)
+        <span class="ruby-identifier">dR</span> = (<span class="ruby-identifier">point1</span>[<span class="ruby-value">0</span>] <span class="ruby-operator">-</span> <span class="ruby-identifier">point2</span>[<span class="ruby-value">0</span>]).<span class="ruby-identifier">abs</span>
+        <span class="ruby-identifier">dC</span> = (<span class="ruby-identifier">point1</span>[<span class="ruby-value">1</span>]<span class="ruby-operator">-</span><span class="ruby-identifier">point2</span>[<span class="ruby-value">1</span>]).<span class="ruby-identifier">abs</span>
+        <span class="ruby-comment"># Deal with wraparound map</span>
+        <span class="ruby-identifier">dR</span> = <span class="ruby-ivar">@rows</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">dR</span> <span class="ruby-keyword">if</span> (<span class="ruby-identifier">dR</span>*<span class="ruby-value">2</span> <span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@rows</span>)
+        <span class="ruby-identifier">dC</span> = <span class="ruby-ivar">@cols</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">dC</span> <span class="ruby-keyword">if</span> (<span class="ruby-identifier">dC</span>*<span class="ruby-value">2</span> <span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@cols</span>)
+
+        <span class="ruby-keyword">return</span> <span class="ruby-identifier">dR</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">dC</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- move_distance-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- move_distance-method -->
+
+      
+        <div id="neighbor-method" class="method-detail ">
+          <a name="method-i-neighbor"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">neighbor</span><span
+              class="method-args">(point, direction)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>Returns a square neighboring this one in given direction. Point can be a
+ant, and or 2d location array ([x, y])</p>
+            
+
+            
+            <div class="method-source-code" id="neighbor-source">
+<pre>
+<span class="ruby-comment"># File Bot/Map.rb, line 185</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">neighbor</span> <span class="ruby-identifier">point</span>, <span class="ruby-identifier">direction</span>
+        <span class="ruby-identifier">direction</span>=<span class="ruby-identifier">direction</span>.<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">upcase</span>.<span class="ruby-identifier">to_sym</span> <span class="ruby-comment"># canonical: :N, :E, :S, :W</span>
+
+        <span class="ruby-keyword">case</span> <span class="ruby-identifier">direction</span>
+        <span class="ruby-keyword">when</span> <span class="ruby-value">:N</span>
+                <span class="ruby-identifier">x</span>, <span class="ruby-identifier">y</span> = <span class="ruby-identifier">point</span>[<span class="ruby-value">0</span>]<span class="ruby-operator">-</span><span class="ruby-value">1</span>, <span class="ruby-identifier">point</span>[<span class="ruby-value">1</span>]
+        <span class="ruby-keyword">when</span> <span class="ruby-value">:E</span>
+                <span class="ruby-identifier">x</span>, <span class="ruby-identifier">y</span> = <span class="ruby-identifier">point</span>[<span class="ruby-value">0</span>],  <span class="ruby-identifier">point</span>[<span class="ruby-value">1</span>]<span class="ruby-operator">+</span><span class="ruby-value">1</span>
+        <span class="ruby-keyword">when</span> <span class="ruby-value">:S</span>
+                <span class="ruby-identifier">x</span>, <span class="ruby-identifier">y</span> = <span class="ruby-identifier">point</span>[<span class="ruby-value">0</span>]<span class="ruby-operator">+</span><span class="ruby-value">1</span>, <span class="ruby-identifier">point</span>[<span class="ruby-value">1</span>]
+        <span class="ruby-keyword">when</span> <span class="ruby-value">:W</span>
+                <span class="ruby-identifier">x</span>, <span class="ruby-identifier">y</span> = <span class="ruby-identifier">point</span>[<span class="ruby-value">0</span>],  <span class="ruby-identifier">point</span>[<span class="ruby-value">1</span>]<span class="ruby-operator">-</span><span class="ruby-value">1</span>
+        <span class="ruby-keyword">else</span>
+                <span class="ruby-identifier">raise</span> <span class="ruby-node">&quot;incorrect direction: #{direction}&quot;</span>
+        <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">return</span> <span class="ruby-identifier">x</span>,<span class="ruby-identifier">y</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- neighbor-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- neighbor-method -->
+
+      
+        <div id="normalize-method" class="method-detail ">
+          <a name="method-i-normalize"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">normalize</span><span
+              class="method-args">(row, col)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>If row or col are greater than or equal map width/height, makes them fit
+the map.</p>
+
+<p>Handles negative values correctly (it may return a negative value, but
+always one that is a correct index).</p>
+
+<p>Returns [row, col].</p>
+            
+
+            
+            <div class="method-source-code" id="normalize-source">
+<pre>
+<span class="ruby-comment"># File LiveBot/Map.rb, line 326</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">normalize</span> <span class="ruby-identifier">row</span>, <span class="ruby-identifier">col</span>
+        [<span class="ruby-identifier">row</span> <span class="ruby-operator">%</span> <span class="ruby-ivar">@rows</span>, <span class="ruby-identifier">col</span> <span class="ruby-operator">%</span> <span class="ruby-ivar">@cols</span>]
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- normalize-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- normalize-method -->
+
+      
+        <div id="print_influence-method" class="method-detail ">
+          <a name="method-i-print_influence"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">print_influence</span><span
+              class="method-args">(rowStart, colStart, size)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="print_influence-source">
+<pre>
+<span class="ruby-comment"># File Bot/Map.rb, line 91</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">print_influence</span>(<span class="ruby-identifier">rowStart</span>, <span class="ruby-identifier">colStart</span>, <span class="ruby-identifier">size</span>)
+        <span class="ruby-identifier">inf</span> = <span class="ruby-constant">Array</span>.<span class="ruby-identifier">new</span>(<span class="ruby-ivar">@rows</span>){<span class="ruby-operator">|</span><span class="ruby-identifier">row</span><span class="ruby-operator">|</span> <span class="ruby-constant">Array</span>.<span class="ruby-identifier">new</span>(<span class="ruby-ivar">@cols</span>,<span class="ruby-value">0</span>)}
+        (<span class="ruby-value">0</span><span class="ruby-operator">..</span><span class="ruby-ivar">@rows</span><span class="ruby-operator">-</span><span class="ruby-value">1</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">row</span><span class="ruby-operator">|</span>
+                (<span class="ruby-value">0</span><span class="ruby-operator">..</span><span class="ruby-ivar">@cols</span><span class="ruby-operator">-</span><span class="ruby-value">1</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">col</span><span class="ruby-operator">|</span>
+                        <span class="ruby-identifier">inf</span>[<span class="ruby-identifier">row</span>][<span class="ruby-identifier">col</span>] = <span class="ruby-identifier">total_influence</span>(<span class="ruby-identifier">row</span>,<span class="ruby-identifier">col</span>)
+                <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">end</span>
+
+        <span class="ruby-identifier">s</span> = <span class="ruby-string">&quot;&quot;</span>
+        <span class="ruby-identifier">inf</span>.<span class="ruby-identifier">each_with_index</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">row</span>, <span class="ruby-identifier">ix</span><span class="ruby-operator">|</span> 
+                 <span class="ruby-keyword">if</span> (<span class="ruby-identifier">ix</span> <span class="ruby-operator">&gt;=</span> <span class="ruby-identifier">rowStart</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">ix</span> <span class="ruby-operator">&lt;=</span>(<span class="ruby-identifier">rowStart</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">size</span>))
+                     <span class="ruby-identifier">s</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;[#{row[colStart,size].join(' | ')}]&quot;</span>  <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-string">&quot;\n&quot;</span>
+              <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">return</span> <span class="ruby-identifier">s</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- print_influence-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- print_influence-method -->
+
+      
+        <div id="reset-method" class="method-detail ">
+          <a name="method-i-reset"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">reset</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="reset-source">
+<pre>
+<span class="ruby-comment"># File Bot/Map.rb, line 57</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">reset</span>() 
+        <span class="ruby-ivar">@my_ants</span>=[]
+        <span class="ruby-ivar">@enemy_ants</span>=[]
+        <span class="ruby-ivar">@tile_map</span>.<span class="ruby-identifier">reset</span>
+        <span class="ruby-ivar">@tile_map</span>.<span class="ruby-identifier">fill_holes</span>(<span class="ruby-ivar">@scout_map</span>)
+        
+        
+        <span class="ruby-comment"># Create New InfluenceMaps</span>
+        <span class="ruby-ivar">@foodValues</span> = <span class="ruby-constant">InfluenceMap</span>.<span class="ruby-identifier">new</span>(<span class="ruby-ivar">@rows</span>,<span class="ruby-ivar">@cols</span>,<span class="ruby-ivar">@tile_map</span>)
+        <span class="ruby-ivar">@enemyInfluence</span> =  <span class="ruby-constant">InfluenceMap</span>.<span class="ruby-identifier">new</span>(<span class="ruby-ivar">@rows</span>,<span class="ruby-ivar">@cols</span>,<span class="ruby-ivar">@tile_map</span>)
+        <span class="ruby-ivar">@myInfluence</span> = <span class="ruby-constant">InfluenceMap</span>.<span class="ruby-identifier">new</span>(<span class="ruby-ivar">@rows</span>,<span class="ruby-ivar">@cols</span>,<span class="ruby-ivar">@tile_map</span>)
+        <span class="ruby-ivar">@scout_map</span>.<span class="ruby-identifier">reset</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- reset-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- reset-method -->
+
+      
+        <div id="tension-method" class="method-detail ">
+          <a name="method-i-tension"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">tension</span><span
+              class="method-args">(row,col)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="tension-source">
+<pre>
+<span class="ruby-comment"># File Bot/Map.rb, line 83</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">tension</span>(<span class="ruby-identifier">row</span>,<span class="ruby-identifier">col</span>)
+        <span class="ruby-keyword">return</span>  <span class="ruby-ivar">@myInfluence</span>[<span class="ruby-identifier">row</span>,<span class="ruby-identifier">col</span>] <span class="ruby-operator">+</span> <span class="ruby-ivar">@enemyInfluence</span>[<span class="ruby-identifier">row</span>,<span class="ruby-identifier">col</span>]
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- tension-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- tension-method -->
+
+      
+        <div id="tile_value-method" class="method-detail ">
+          <a name="method-i-tile_value"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">tile_value</span><span
+              class="method-args">(row,col)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="tile_value-source">
+<pre>
+<span class="ruby-comment"># File LiveBot/Map.rb, line 76</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">tile_value</span>(<span class="ruby-identifier">row</span>,<span class="ruby-identifier">col</span>)
+        <span class="ruby-keyword">return</span> <span class="ruby-ivar">@tile_map</span>[<span class="ruby-identifier">row</span>,<span class="ruby-identifier">col</span>]
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- tile_value-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- tile_value-method -->
+
+      
+        <div id="total_influence-method" class="method-detail ">
+          <a name="method-i-total_influence"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">total_influence</span><span
+              class="method-args">(row,col)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="total_influence-source">
+<pre>
+<span class="ruby-comment"># File Bot/Map.rb, line 79</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">total_influence</span>(<span class="ruby-identifier">row</span>,<span class="ruby-identifier">col</span>)
+        <span class="ruby-keyword">return</span> <span class="ruby-identifier">base_influence</span>(<span class="ruby-identifier">row</span>,<span class="ruby-identifier">col</span>) <span class="ruby-operator">+</span> <span class="ruby-identifier">food_value</span>(<span class="ruby-identifier">row</span>, <span class="ruby-identifier">col</span>)  <span class="ruby-operator">+</span> <span class="ruby-ivar">@scout_map</span>[<span class="ruby-identifier">row</span>,<span class="ruby-identifier">col</span>]
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- total_influence-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- total_influence-method -->
+
+      
+        <div id="try_move_ant-method" class="method-detail ">
+          <a name="method-i-try_move_ant"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">try_move_ant</span><span
+              class="method-args">(ant)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="try_move_ant-source">
+<pre>
+<span class="ruby-comment"># File Bot/Map.rb, line 162</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">try_move_ant</span> <span class="ruby-identifier">ant</span>
+        <span class="ruby-identifier">directions</span> = <span class="ruby-identifier">ant</span>.<span class="ruby-identifier">targetDirections</span>
+        <span class="ruby-comment"># Check if ant is to stay still...</span>
+        <span class="ruby-keyword">return</span> <span class="ruby-keyword">true</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">directions</span>.<span class="ruby-identifier">empty?</span>
+        
+        <span class="ruby-identifier">directions</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">dir</span><span class="ruby-operator">|</span>
+                <span class="ruby-identifier">dest</span> = <span class="ruby-identifier">neighbor</span>(<span class="ruby-identifier">ant</span>, <span class="ruby-identifier">dir</span>)
+                <span class="ruby-keyword">if</span> (<span class="ruby-operator">!</span><span class="ruby-ivar">@tile_map</span>.<span class="ruby-identifier">occupied?</span>(<span class="ruby-identifier">dest</span>[<span class="ruby-value">0</span>], <span class="ruby-identifier">dest</span>[<span class="ruby-value">1</span>]))
+                        <span class="ruby-comment"># Moves the ant to the new tile.</span>
+                        <span class="ruby-ivar">@ai</span>.<span class="ruby-identifier">order</span> <span class="ruby-identifier">ant</span>, <span class="ruby-identifier">dir</span>
+                        <span class="ruby-comment"># Remove old position from tilemap</span>
+                        <span class="ruby-ivar">@tile_map</span>.<span class="ruby-identifier">remove_ant</span>(<span class="ruby-identifier">ant</span>.<span class="ruby-identifier">row</span>, <span class="ruby-identifier">ant</span>.<span class="ruby-identifier">col</span>)
+                        <span class="ruby-comment"># Add ant at new position</span>
+                        <span class="ruby-ivar">@tile_map</span>.<span class="ruby-identifier">add_ant</span>(<span class="ruby-identifier">dest</span>[<span class="ruby-value">0</span>], <span class="ruby-identifier">dest</span>[<span class="ruby-value">1</span>],<span class="ruby-value">0</span>)
+                        <span class="ruby-identifier">ant</span>.<span class="ruby-identifier">update_location</span>(<span class="ruby-identifier">dest</span>[<span class="ruby-value">0</span>], <span class="ruby-identifier">dest</span>[<span class="ruby-value">1</span>])
+                        <span class="ruby-keyword">return</span> <span class="ruby-keyword">true</span>
+                <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- try_move_ant-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- try_move_ant-method -->
+
+      
+        <div id="update_hills-method" class="method-detail ">
+          <a name="method-i-update_hills"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">update_hills</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>Fills tiles surrounded on 3 sides, to prevent movement into them</p>
+            
+
+            
+            <div class="method-source-code" id="update_hills-source">
+<pre>
+<span class="ruby-comment"># File Bot/Map.rb, line 147</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">update_hills</span>
+        <span class="ruby-ivar">@enemy_hills</span>.<span class="ruby-identifier">each_pair</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">key</span>, <span class="ruby-identifier">val</span><span class="ruby-operator">|</span>
+                <span class="ruby-keyword">if</span> <span class="ruby-identifier">val</span>
+                        <span class="ruby-comment">#check if there is an ant (of mine) on this square</span>
+                        <span class="ruby-keyword">if</span> (<span class="ruby-ivar">@tile_map</span>.<span class="ruby-identifier">my_ant?</span>(<span class="ruby-identifier">key</span>[<span class="ruby-value">0</span>],<span class="ruby-identifier">key</span>[<span class="ruby-value">1</span>]))  <span class="ruby-comment"># my ant on hill location - destroy it</span>
+                                <span class="ruby-ivar">@enemy_hills</span>[<span class="ruby-identifier">key</span>] = <span class="ruby-keyword">false</span>
+                        <span class="ruby-keyword">else</span>
+                                 <span class="ruby-comment"># add influence to this square</span>
+                                <span class="ruby-ivar">@foodValues</span>.<span class="ruby-identifier">add_influence</span>(<span class="ruby-identifier">key</span>[<span class="ruby-value">0</span>], <span class="ruby-identifier">key</span>[<span class="ruby-value">1</span>],  <span class="ruby-ivar">@settings</span>.<span class="ruby-identifier">enemyHill_value</span>,  <span class="ruby-ivar">@settings</span>.<span class="ruby-identifier">enemyHill_range</span>)
+                        <span class="ruby-keyword">end</span>
+                <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- update_hills-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- update_hills-method -->
+
+      
+        <div id="update_view_range-method" class="method-detail ">
+          <a name="method-i-update_view_range"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">update_view_range</span><span
+              class="method-args">(row, col)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>Updates every square that the ant can see.... Sets tile.scout_value = 0</p>
+            
+
+            
+            <div class="method-source-code" id="update_view_range-source">
+<pre>
+<span class="ruby-comment"># File LiveBot/Map.rb, line 169</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">update_view_range</span>(<span class="ruby-identifier">row</span>, <span class="ruby-identifier">col</span>)
+         <span class="ruby-identifier">antRow</span> = <span class="ruby-identifier">row</span>
+         <span class="ruby-identifier">antCol</span> = <span class="ruby-identifier">col</span>
+         
+         <span class="ruby-ivar">@viewRadius</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">viewPair</span><span class="ruby-operator">|</span>
+              <span class="ruby-identifier">row</span> = <span class="ruby-identifier">viewPair</span>[<span class="ruby-value">0</span>] <span class="ruby-operator">+</span> <span class="ruby-identifier">antRow</span>
+              <span class="ruby-identifier">row</span> = <span class="ruby-identifier">row</span> <span class="ruby-operator">%</span> <span class="ruby-ivar">@rows</span> <span class="ruby-keyword">if</span> (<span class="ruby-identifier">row</span> <span class="ruby-operator">&gt;=</span> <span class="ruby-ivar">@rows</span> <span class="ruby-keyword">or</span> <span class="ruby-identifier">row</span> <span class="ruby-operator">&lt;</span><span class="ruby-value">0</span>)       <span class="ruby-comment"># normalise the y value if needed</span>
+         <span class="ruby-comment">#    row = row * @cols</span>
+              
+              <span class="ruby-identifier">startVal</span> = <span class="ruby-identifier">antCol</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">viewPair</span>[<span class="ruby-value">1</span>]     <span class="ruby-comment">#start index</span>
+              <span class="ruby-identifier">endVal</span> = <span class="ruby-identifier">antCol</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">viewPair</span>[<span class="ruby-value">1</span>]
+
+              (<span class="ruby-identifier">startVal</span><span class="ruby-operator">..</span><span class="ruby-identifier">endVal</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">col</span><span class="ruby-operator">|</span>
+                      <span class="ruby-identifier">col</span> = <span class="ruby-identifier">col</span> <span class="ruby-operator">%</span> <span class="ruby-ivar">@cols</span> <span class="ruby-keyword">if</span> (<span class="ruby-identifier">col</span> <span class="ruby-operator">&gt;=</span> <span class="ruby-ivar">@cols</span> <span class="ruby-keyword">or</span> <span class="ruby-identifier">col</span><span class="ruby-operator">&lt;</span><span class="ruby-value">0</span>)       <span class="ruby-comment"># normalise if value on edges of square</span>
+
+                      <span class="ruby-ivar">@scoutValues</span>[<span class="ruby-identifier">row</span>,<span class="ruby-identifier">col</span>] = <span class="ruby-value">0</span>
+                      <span class="ruby-comment"># Clear the food value for this square as it is visible.</span>
+              <span class="ruby-keyword">end</span>
+         <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- update_view_range-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- update_view_range-method -->
+
+      
+        <div id="vunerability-method" class="method-detail ">
+          <a name="method-i-vunerability"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">vunerability</span><span
+              class="method-args">(row,col)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="vunerability-source">
+<pre>
+<span class="ruby-comment"># File Bot/Map.rb, line 87</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">vunerability</span>(<span class="ruby-identifier">row</span>,<span class="ruby-identifier">col</span>)
+        <span class="ruby-keyword">return</span> <span class="ruby-identifier">tension</span>(<span class="ruby-identifier">row</span>,<span class="ruby-identifier">col</span>) <span class="ruby-operator">-</span> <span class="ruby-identifier">base_influence</span>(<span class="ruby-identifier">row</span>,<span class="ruby-identifier">col</span>).<span class="ruby-identifier">abs</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- vunerability-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- vunerability-method -->
+
+      
+      </div><!-- public-instance-method-details -->
+    
+    </div><!-- 5Buntitled-5D -->
+  
+
+  </div><!-- documentation -->
+
+  <div id="validator-badges">
+    <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+    <p><small>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish
+      Rdoc Generator</a> 2</small>.</p>
+  </div>
+
+</body>
+</html>
+

@@ -1,0 +1,1 @@
+python tools/playgame.py --engine_seed 42 --player_seed 42 --end_wait=0.5 --verbose --log_dir game_logs --turns 400 --map_file "Maps\cell_maze_p02_05.map" "Ruby Bot\MyBot.rb" "Ruby LiveBot\v3\MyBot3.rb"

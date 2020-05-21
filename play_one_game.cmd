@@ -1,0 +1,1 @@
+python tools/playgame.py --engine_seed 42 --player_seed 42 --end_wait=0.5 --verbose --log_dir game_logs --turns 400 --map_file "Maps\random_walk_02p_01.map" "Ruby Bot\MyBot.rb" "Ruby LiveBot\v5.1\MyBot6.rb"

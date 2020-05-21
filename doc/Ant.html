@@ -1,0 +1,769 @@
+<?xml version="1.0" encoding="CP850"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta content="text/html; charset=CP850" http-equiv="Content-Type" />
+
+  <title>Class: Ant</title>
+
+  <link rel="stylesheet" href="./rdoc.css" type="text/css" media="screen" />
+
+  <script src="./js/jquery.js" type="text/javascript" charset="utf-8"></script>
+  <script src="./js/thickbox-compressed.js" type="text/javascript" charset="utf-8"></script>
+  <script src="./js/quicksearch.js" type="text/javascript" charset="utf-8"></script>
+  <script src="./js/darkfish.js" type="text/javascript" charset="utf-8"></script>
+
+</head>
+<body id="top" class="class">
+
+  <div id="metadata">
+    <div id="home-metadata">
+      <div id="home-section" class="section">
+        <h3 class="section-header">
+          <a href="./index.html">Home</a>
+          <a href="./index.html#classes">Classes</a>
+          <a href="./index.html#methods">Methods</a>
+        </h3>
+      </div>
+    </div>
+
+    <div id="file-metadata">
+      <div id="file-list-section" class="section">
+        <h3 class="section-header">In Files</h3>
+        <div class="section-body">
+          <ul>
+          
+            <li><a href="./Bot/ants_rb.html?TB_iframe=true&amp;height=550&amp;width=785"
+              class="thickbox" title="Bot/ants.rb">Bot/ants.rb</a></li>
+          
+            <li><a href="./LiveBot/ants_rb.html?TB_iframe=true&amp;height=550&amp;width=785"
+              class="thickbox" title="LiveBot/ants.rb">LiveBot/ants.rb</a></li>
+          
+          </ul>
+        </div>
+      </div>
+
+      
+    </div>
+
+    <div id="class-metadata">
+      
+      <!-- Parent Class -->
+      <div id="parent-class-section" class="section">
+        <h3 class="section-header">Parent</h3>
+        
+        <p class="link"><a href="Object.html">Object</a></p>
+        
+      </div>
+      
+
+      
+
+      
+
+      
+      <!-- Method Quickref -->
+      <div id="method-list-section" class="section">
+        <h3 class="section-header">Methods</h3>
+        <ul class="link-list">
+          
+          <li><a href="#method-c-new">::new</a></li>
+          
+          <li><a href="#method-i-5B-5D">#[]</a></li>
+          
+          <li><a href="#method-i-alive-3F">#alive?</a></li>
+          
+          <li><a href="#method-i-col">#col</a></li>
+          
+          <li><a href="#method-i-dead-3F">#dead?</a></li>
+          
+          <li><a href="#method-i-enemy-3F">#enemy?</a></li>
+          
+          <li><a href="#method-i-eql-3F">#eql?</a></li>
+          
+          <li><a href="#method-i-get_best_moves">#get_best_moves</a></li>
+          
+          <li><a href="#method-i-location">#location</a></li>
+          
+          <li><a href="#method-i-mine-3F">#mine?</a></li>
+          
+          <li><a href="#method-i-moved-3F">#moved?</a></li>
+          
+          <li><a href="#method-i-row">#row</a></li>
+          
+          <li><a href="#method-i-to_s">#to_s</a></li>
+          
+          <li><a href="#method-i-update_location">#update_location</a></li>
+          
+        </ul>
+      </div>
+      
+
+      
+    </div>
+
+    <div id="project-metadata">
+      
+      
+      <div id="fileindex-section" class="section project-section">
+        <h3 class="section-header">Files</h3>
+        <ul>
+        
+          <li class="file"><a href="./LiveBot/log_txt.html">log.txt</a></li>
+        
+          <li class="file"><a href="./log_txt.html">log.txt</a></li>
+        
+          <li class="file"><a href="./tools/VERSION.html">VERSION</a></li>
+        
+          <li class="file"><a href="./tools/sample_bots/java/Makefile.html">Makefile</a></li>
+        
+        </ul>
+      </div>
+      
+
+      <div id="classindex-section" class="section project-section">
+        <h3 class="section-header">Class/Module Index
+          <span class="search-toggle"><img src="./images/find.png"
+            height="16" width="16" alt="[+]"
+            title="show/hide quicksearch" /></span></h3>
+        <form action="#" method="get" accept-charset="utf-8" class="initially-hidden">
+        <fieldset>
+          <legend>Quicksearch</legend>
+          <input type="text" name="quicksearch" value=""
+            class="quicksearch-field" />
+        </fieldset>
+        </form>
+
+        <ul class="link-list">
+        
+          <li><a href="./AI.html">AI</a></li>
+        
+          <li><a href="./Ant.html">Ant</a></li>
+        
+          <li><a href="./Array2D.html">Array2D</a></li>
+        
+          <li><a href="./InfluenceMap.html">InfluenceMap</a></li>
+        
+          <li><a href="./Map.html">Map</a></li>
+        
+          <li><a href="./Object.html">Object</a></li>
+        
+          <li><a href="./ScoutMap.html">ScoutMap</a></li>
+        
+          <li><a href="./Settings.html">Settings</a></li>
+        
+          <li><a href="./TileMap.html">TileMap</a></li>
+        
+          <li><a href="./Utilities.html">Utilities</a></li>
+        
+        </ul>
+        <div id="no-class-search-results" style="display: none;">No matching classes.</div>
+      </div>
+
+      
+    </div>
+  </div>
+
+  <div id="documentation">
+    <h1 class="class">Ant</h1>
+
+    <div id="description" class="description">
+      
+<p>Represents a single ant.</p>
+<hr style="height: 1px">
+
+<p>Represents a single ant.</p>
+
+    </div><!-- description -->
+
+    
+    
+    
+    <div id="5Buntitled-5D" class="documentation-section">
+      
+
+      
+
+      
+
+      
+      <!-- Attributes -->
+      <div id="attribute-method-details" class="method-section section">
+        <h3 class="section-header">Attributes</h3>
+
+        
+        <div id="alive-attribute-method" class="method-detail">
+          <a name="alive"></a>
+          
+          <a name="alive="></a>
+          
+          <div class="method-heading attribute-method-heading">
+            <span class="method-name">alive</span><span
+              class="attribute-access-type">[RW]</span>
+          </div>
+
+          <div class="method-description">
+          
+          <p>Square this ant sits on.</p>
+          
+          </div>
+        </div>
+        
+        <div id="map-attribute-method" class="method-detail">
+          <a name="map"></a>
+          
+          <a name="map="></a>
+          
+          <div class="method-heading attribute-method-heading">
+            <span class="method-name">map</span><span
+              class="attribute-access-type">[RW]</span>
+          </div>
+
+          <div class="method-description">
+          
+          <p>Square this ant sits on.</p>
+          
+          </div>
+        </div>
+        
+        <div id="moved-attribute-method" class="method-detail">
+          <a name="moved"></a>
+          
+          <a name="moved="></a>
+          
+          <div class="method-heading attribute-method-heading">
+            <span class="method-name">moved</span><span
+              class="attribute-access-type">[RW]</span>
+          </div>
+
+          <div class="method-description">
+          
+          
+          
+          </div>
+        </div>
+        
+        <div id="owner-attribute-method" class="method-detail">
+          <a name="owner"></a>
+          
+          <a name="owner="></a>
+          
+          <div class="method-heading attribute-method-heading">
+            <span class="method-name">owner</span><span
+              class="attribute-access-type">[RW]</span>
+          </div>
+
+          <div class="method-description">
+          
+          <p>Owner of this ant. If it's 0, it's your ant.</p>
+          
+          </div>
+        </div>
+        
+        <div id="targetDirections-attribute-method" class="method-detail">
+          <a name="targetDirections"></a>
+          
+          <a name="targetDirections="></a>
+          
+          <div class="method-heading attribute-method-heading">
+            <span class="method-name">targetDirections</span><span
+              class="attribute-access-type">[RW]</span>
+          </div>
+
+          <div class="method-description">
+          
+          
+          
+          </div>
+        </div>
+        
+      </div><!-- attribute-method-details -->
+      
+
+      <!-- Methods -->
+      
+      <div id="public-class-method-details" class="method-section section">
+        <h3 class="section-header">Public Class Methods</h3>
+
+      
+        <div id="new-method" class="method-detail ">
+          <a name="method-c-new"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">new</span><span
+              class="method-args">(row, col, alive, owner, map)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="new-source">
+<pre>
+<span class="ruby-comment"># File Bot/ants.rb, line 18</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span> <span class="ruby-identifier">row</span>, <span class="ruby-identifier">col</span>, <span class="ruby-identifier">alive</span>, <span class="ruby-identifier">owner</span>, <span class="ruby-identifier">map</span>
+        <span class="ruby-ivar">@alive</span>, <span class="ruby-ivar">@owner</span>, <span class="ruby-ivar">@map</span> = <span class="ruby-identifier">alive</span>, <span class="ruby-identifier">owner</span>, <span class="ruby-identifier">map</span>
+        <span class="ruby-ivar">@row</span>, <span class="ruby-ivar">@col</span> = <span class="ruby-identifier">row</span>, <span class="ruby-identifier">col</span>
+        <span class="ruby-ivar">@moved</span> = <span class="ruby-keyword">false</span>
+
+        <span class="ruby-ivar">@targetDirections</span> = []
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- new-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- new-method -->
+
+      
+      </div><!-- public-class-method-details -->
+    
+      <div id="public-instance-method-details" class="method-section section">
+        <h3 class="section-header">Public Instance Methods</h3>
+
+      
+        <div id="5B-5D-method" class="method-detail ">
+          <a name="method-i-5B-5D"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">[]</span><span
+              class="method-args">(index)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="5B-5D-source">
+<pre>
+<span class="ruby-comment"># File Bot/ants.rb, line 66</span>
+<span class="ruby-keyword">def</span><span class="ruby-operator">[]</span>(<span class="ruby-identifier">index</span>)
+        <span class="ruby-identifier">location</span>[<span class="ruby-identifier">index</span>]
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- 5B-5D-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- 5B-5D-method -->
+
+      
+        <div id="alive-3F-method" class="method-detail ">
+          <a name="method-i-alive-3F"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">alive?</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>True if ant is alive.</p>
+            
+
+            
+            <div class="method-source-code" id="alive-3F-source">
+<pre>
+<span class="ruby-comment"># File Bot/ants.rb, line 27</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">alive?</span>; <span class="ruby-ivar">@alive</span>; <span class="ruby-keyword">end</span></pre>
+            </div><!-- alive-3F-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- alive-3F-method -->
+
+      
+        <div id="col-method" class="method-detail ">
+          <a name="method-i-col"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">col</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>Returns the column of square this ant is standing at.</p>
+            
+
+            
+            <div class="method-source-code" id="col-source">
+<pre>
+<span class="ruby-comment"># File Bot/ants.rb, line 42</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">col</span>; <span class="ruby-ivar">@col</span>; <span class="ruby-keyword">end</span></pre>
+            </div><!-- col-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- col-method -->
+
+      
+        <div id="dead-3F-method" class="method-detail ">
+          <a name="method-i-dead-3F"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">dead?</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>True if ant is not alive.</p>
+            
+
+            
+            <div class="method-source-code" id="dead-3F-source">
+<pre>
+<span class="ruby-comment"># File Bot/ants.rb, line 29</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">dead?</span>; <span class="ruby-operator">!</span><span class="ruby-ivar">@alive</span>; <span class="ruby-keyword">end</span></pre>
+            </div><!-- dead-3F-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- dead-3F-method -->
+
+      
+        <div id="enemy-3F-method" class="method-detail ">
+          <a name="method-i-enemy-3F"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">enemy?</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>Equivalent to ant.owner!=0.</p>
+            
+
+            
+            <div class="method-source-code" id="enemy-3F-source">
+<pre>
+<span class="ruby-comment"># File Bot/ants.rb, line 34</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">enemy?</span>; <span class="ruby-identifier">owner!</span>=<span class="ruby-value">0</span>; <span class="ruby-keyword">end</span></pre>
+            </div><!-- enemy-3F-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- enemy-3F-method -->
+
+      
+        <div id="eql-3F-method" class="method-detail ">
+          <a name="method-i-eql-3F"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">eql?</span><span
+              class="method-args">(object)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="eql-3F-source">
+<pre>
+<span class="ruby-comment"># File Bot/ants.rb, line 49</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">eql?</span> (<span class="ruby-identifier">object</span>)
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">object</span>.<span class="ruby-identifier">equal?</span>(<span class="ruby-keyword">self</span>)
+                <span class="ruby-keyword">return</span> <span class="ruby-keyword">true</span> 
+        <span class="ruby-keyword">elsif</span> <span class="ruby-operator">!</span><span class="ruby-keyword">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">equal?</span>(<span class="ruby-identifier">object</span>.<span class="ruby-identifier">class</span>)
+                 <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span>
+        <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">return</span> <span class="ruby-ivar">@owner</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">object</span>.<span class="ruby-identifier">owner</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@alive</span> = <span class="ruby-identifier">object</span>.<span class="ruby-identifier">alive?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">row</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">object</span>.<span class="ruby-identifier">row</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">col</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">object</span>.<span class="ruby-identifier">col</span>   
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- eql-3F-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- eql-3F-method -->
+
+      
+        <div id="get_best_moves-method" class="method-detail ">
+          <a name="method-i-get_best_moves"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">get_best_moves</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="get_best_moves-source">
+<pre>
+<span class="ruby-comment"># File Bot/ants.rb, line 70</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_best_moves</span>()
+        <span class="ruby-ivar">@targetDirections</span> = <span class="ruby-ivar">@map</span>.<span class="ruby-identifier">get_best_targets</span>(<span class="ruby-keyword">self</span>,<span class="ruby-value">20</span>)
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- get_best_moves-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- get_best_moves-method -->
+
+      
+        <div id="location-method" class="method-detail ">
+          <a name="method-i-location"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">location</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="location-source">
+<pre>
+<span class="ruby-comment"># File Bot/ants.rb, line 62</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">location</span>
+        <span class="ruby-keyword">return</span> [<span class="ruby-ivar">@row</span>, <span class="ruby-ivar">@col</span>]
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- location-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- location-method -->
+
+      
+        <div id="mine-3F-method" class="method-detail ">
+          <a name="method-i-mine-3F"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">mine?</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>Equivalent to ant.owner==0.</p>
+            
+
+            
+            <div class="method-source-code" id="mine-3F-source">
+<pre>
+<span class="ruby-comment"># File Bot/ants.rb, line 32</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">mine?</span>; <span class="ruby-identifier">owner</span><span class="ruby-operator">==</span><span class="ruby-value">0</span>; <span class="ruby-keyword">end</span></pre>
+            </div><!-- mine-3F-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- mine-3F-method -->
+
+      
+        <div id="moved-3F-method" class="method-detail ">
+          <a name="method-i-moved-3F"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">moved?</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>Equivalent to !ant.moved?</p>
+            
+
+            
+            <div class="method-source-code" id="moved-3F-source">
+<pre>
+<span class="ruby-comment"># File Bot/ants.rb, line 37</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">moved?</span>; <span class="ruby-ivar">@moved</span>; <span class="ruby-keyword">end</span></pre>
+            </div><!-- moved-3F-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- moved-3F-method -->
+
+      
+        <div id="row-method" class="method-detail ">
+          <a name="method-i-row"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">row</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>Returns the row of square this ant is standing at.</p>
+            
+
+            
+            <div class="method-source-code" id="row-source">
+<pre>
+<span class="ruby-comment"># File Bot/ants.rb, line 40</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">row</span>; <span class="ruby-ivar">@row</span>; <span class="ruby-keyword">end</span></pre>
+            </div><!-- row-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- row-method -->
+
+      
+        <div id="to_s-method" class="method-detail ">
+          <a name="method-i-to_s"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">to_s</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="to_s-source">
+<pre>
+<span class="ruby-comment"># File Bot/ants.rb, line 58</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">to_s</span>
+        <span class="ruby-keyword">return</span> <span class="ruby-string">'Ant'</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">location</span>.<span class="ruby-identifier">inspect</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- to_s-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- to_s-method -->
+
+      
+        <div id="update_location-method" class="method-detail ">
+          <a name="method-i-update_location"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">update_location</span><span
+              class="method-args">(row, col)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="update_location-source">
+<pre>
+<span class="ruby-comment"># File Bot/ants.rb, line 44</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">update_location</span>(<span class="ruby-identifier">row</span>, <span class="ruby-identifier">col</span>)
+        <span class="ruby-ivar">@row</span>, <span class="ruby-ivar">@col</span> = <span class="ruby-identifier">row</span>, <span class="ruby-identifier">col</span>
+        <span class="ruby-ivar">@moved</span> = <span class="ruby-keyword">true</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- update_location-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- update_location-method -->
+
+      
+      </div><!-- public-instance-method-details -->
+    
+    </div><!-- 5Buntitled-5D -->
+  
+
+  </div><!-- documentation -->
+
+  <div id="validator-badges">
+    <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+    <p><small>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish
+      Rdoc Generator</a> 2</small>.</p>
+  </div>
+
+</body>
+</html>
+

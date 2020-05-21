@@ -1,0 +1,620 @@
+<?xml version="1.0" encoding="CP850"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta content="text/html; charset=CP850" http-equiv="Content-Type" />
+
+  <title>Class: TileMap</title>
+
+  <link rel="stylesheet" href="./rdoc.css" type="text/css" media="screen" />
+
+  <script src="./js/jquery.js" type="text/javascript" charset="utf-8"></script>
+  <script src="./js/thickbox-compressed.js" type="text/javascript" charset="utf-8"></script>
+  <script src="./js/quicksearch.js" type="text/javascript" charset="utf-8"></script>
+  <script src="./js/darkfish.js" type="text/javascript" charset="utf-8"></script>
+
+</head>
+<body id="top" class="class">
+
+  <div id="metadata">
+    <div id="home-metadata">
+      <div id="home-section" class="section">
+        <h3 class="section-header">
+          <a href="./index.html">Home</a>
+          <a href="./index.html#classes">Classes</a>
+          <a href="./index.html#methods">Methods</a>
+        </h3>
+      </div>
+    </div>
+
+    <div id="file-metadata">
+      <div id="file-list-section" class="section">
+        <h3 class="section-header">In Files</h3>
+        <div class="section-body">
+          <ul>
+          
+            <li><a href="./Bot/TileMap_rb.html?TB_iframe=true&amp;height=550&amp;width=785"
+              class="thickbox" title="Bot/TileMap.rb">Bot/TileMap.rb</a></li>
+          
+          </ul>
+        </div>
+      </div>
+
+      
+    </div>
+
+    <div id="class-metadata">
+      
+      <!-- Parent Class -->
+      <div id="parent-class-section" class="section">
+        <h3 class="section-header">Parent</h3>
+        
+        <p class="link"><a href="Array2D.html">Array2D</a></p>
+        
+      </div>
+      
+
+      
+
+      
+
+      
+      <!-- Method Quickref -->
+      <div id="method-list-section" class="section">
+        <h3 class="section-header">Methods</h3>
+        <ul class="link-list">
+          
+          <li><a href="#method-c-new">::new</a></li>
+          
+          <li><a href="#method-i-add_ant">#add_ant</a></li>
+          
+          <li><a href="#method-i-add_food">#add_food</a></li>
+          
+          <li><a href="#method-i-add_hill">#add_hill</a></li>
+          
+          <li><a href="#method-i-add_water">#add_water</a></li>
+          
+          <li><a href="#method-i-fill_holes">#fill_holes</a></li>
+          
+          <li><a href="#method-i-my_ant-3F">#my_ant?</a></li>
+          
+          <li><a href="#method-i-occupied-3F">#occupied?</a></li>
+          
+          <li><a href="#method-i-passable-3F">#passable?</a></li>
+          
+          <li><a href="#method-i-remove_ant">#remove_ant</a></li>
+          
+          <li><a href="#method-i-reset">#reset</a></li>
+          
+          <li><a href="#method-i-water-3F">#water?</a></li>
+          
+        </ul>
+      </div>
+      
+
+      
+    </div>
+
+    <div id="project-metadata">
+      
+      
+      <div id="fileindex-section" class="section project-section">
+        <h3 class="section-header">Files</h3>
+        <ul>
+        
+          <li class="file"><a href="./LiveBot/log_txt.html">log.txt</a></li>
+        
+          <li class="file"><a href="./log_txt.html">log.txt</a></li>
+        
+          <li class="file"><a href="./tools/VERSION.html">VERSION</a></li>
+        
+          <li class="file"><a href="./tools/sample_bots/java/Makefile.html">Makefile</a></li>
+        
+        </ul>
+      </div>
+      
+
+      <div id="classindex-section" class="section project-section">
+        <h3 class="section-header">Class/Module Index
+          <span class="search-toggle"><img src="./images/find.png"
+            height="16" width="16" alt="[+]"
+            title="show/hide quicksearch" /></span></h3>
+        <form action="#" method="get" accept-charset="utf-8" class="initially-hidden">
+        <fieldset>
+          <legend>Quicksearch</legend>
+          <input type="text" name="quicksearch" value=""
+            class="quicksearch-field" />
+        </fieldset>
+        </form>
+
+        <ul class="link-list">
+        
+          <li><a href="./AI.html">AI</a></li>
+        
+          <li><a href="./Ant.html">Ant</a></li>
+        
+          <li><a href="./Array2D.html">Array2D</a></li>
+        
+          <li><a href="./InfluenceMap.html">InfluenceMap</a></li>
+        
+          <li><a href="./Map.html">Map</a></li>
+        
+          <li><a href="./Object.html">Object</a></li>
+        
+          <li><a href="./ScoutMap.html">ScoutMap</a></li>
+        
+          <li><a href="./Settings.html">Settings</a></li>
+        
+          <li><a href="./TileMap.html">TileMap</a></li>
+        
+          <li><a href="./Utilities.html">Utilities</a></li>
+        
+        </ul>
+        <div id="no-class-search-results" style="display: none;">No matching classes.</div>
+      </div>
+
+      
+    </div>
+  </div>
+
+  <div id="documentation">
+    <h1 class="class">TileMap</h1>
+
+    <div id="description" class="description">
+      
+    </div><!-- description -->
+
+    
+    
+    
+    <div id="5Buntitled-5D" class="documentation-section">
+      
+
+      
+
+      
+
+      
+
+      <!-- Methods -->
+      
+      <div id="public-class-method-details" class="method-section section">
+        <h3 class="section-header">Public Class Methods</h3>
+
+      
+        <div id="new-method" class="method-detail ">
+          <a name="method-c-new"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">new</span><span
+              class="method-args">(row, cols)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>Values =  :myHill = -1 :water = 0 :land = 1 :food = 2 :my<a
+href="Ant.html">Ant</a> = 3 :enemy<a href="Ant.html">Ant</a> = 4 ignore
+enemy hills as they are passable</p>
+            
+
+            
+            <div class="method-source-code" id="new-source">
+<pre>
+<span class="ruby-comment"># File Bot/TileMap.rb, line 13</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">row</span>, <span class="ruby-identifier">cols</span>)
+        <span class="ruby-keyword">super</span>(<span class="ruby-identifier">row</span>, <span class="ruby-identifier">cols</span>, <span class="ruby-value">1</span>)
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- new-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- new-method -->
+
+      
+      </div><!-- public-class-method-details -->
+    
+      <div id="public-instance-method-details" class="method-section section">
+        <h3 class="section-header">Public Instance Methods</h3>
+
+      
+        <div id="add_ant-method" class="method-detail ">
+          <a name="method-i-add_ant"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">add_ant</span><span
+              class="method-args">(row,col, owner)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="add_ant-source">
+<pre>
+<span class="ruby-comment"># File Bot/TileMap.rb, line 49</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">add_ant</span>(<span class="ruby-identifier">row</span>,<span class="ruby-identifier">col</span>, <span class="ruby-identifier">owner</span>)
+        <span class="ruby-keyword">self</span>[<span class="ruby-identifier">row</span>,<span class="ruby-identifier">col</span>] = (<span class="ruby-identifier">owner</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span><span class="ruby-operator">?</span> <span class="ruby-value">3</span> <span class="ruby-operator">:</span> <span class="ruby-value">4</span>)
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- add_ant-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- add_ant-method -->
+
+      
+        <div id="add_food-method" class="method-detail ">
+          <a name="method-i-add_food"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">add_food</span><span
+              class="method-args">(row,col)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="add_food-source">
+<pre>
+<span class="ruby-comment"># File Bot/TileMap.rb, line 45</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">add_food</span>(<span class="ruby-identifier">row</span>,<span class="ruby-identifier">col</span>)
+        <span class="ruby-keyword">self</span>[<span class="ruby-identifier">row</span>,<span class="ruby-identifier">col</span>] = <span class="ruby-value">2</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- add_food-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- add_food-method -->
+
+      
+        <div id="add_hill-method" class="method-detail ">
+          <a name="method-i-add_hill"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">add_hill</span><span
+              class="method-args">(row,col, owner)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="add_hill-source">
+<pre>
+<span class="ruby-comment"># File Bot/TileMap.rb, line 57</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">add_hill</span>(<span class="ruby-identifier">row</span>,<span class="ruby-identifier">col</span>, <span class="ruby-identifier">owner</span>)
+        <span class="ruby-keyword">self</span>[<span class="ruby-identifier">row</span>,<span class="ruby-identifier">col</span>] = <span class="ruby-value">-1</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">owner</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- add_hill-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- add_hill-method -->
+
+      
+        <div id="add_water-method" class="method-detail ">
+          <a name="method-i-add_water"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">add_water</span><span
+              class="method-args">(row,col)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="add_water-source">
+<pre>
+<span class="ruby-comment"># File Bot/TileMap.rb, line 41</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">add_water</span>(<span class="ruby-identifier">row</span>,<span class="ruby-identifier">col</span>)
+        <span class="ruby-keyword">self</span>[<span class="ruby-identifier">row</span>,<span class="ruby-identifier">col</span>] = <span class="ruby-value">0</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- add_water-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- add_water-method -->
+
+      
+        <div id="fill_holes-method" class="method-detail ">
+          <a name="method-i-fill_holes"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">fill_holes</span><span
+              class="method-args">(scoutMap)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>Scoutmap should be a 2D array of scouting values</p>
+            
+
+            
+            <div class="method-source-code" id="fill_holes-source">
+<pre>
+<span class="ruby-comment"># File Bot/TileMap.rb, line 62</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">fill_holes</span>(<span class="ruby-identifier">scoutMap</span>)
+        (<span class="ruby-value">0</span><span class="ruby-operator">..</span><span class="ruby-ivar">@rows</span><span class="ruby-operator">-</span><span class="ruby-value">1</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">row</span><span class="ruby-operator">|</span>
+                (<span class="ruby-value">0</span><span class="ruby-operator">..</span><span class="ruby-ivar">@cols</span><span class="ruby-operator">-</span><span class="ruby-value">1</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">col</span><span class="ruby-operator">|</span>
+                        <span class="ruby-comment"># Only check visible squares</span>
+                        <span class="ruby-keyword">if</span> (<span class="ruby-identifier">scoutMap</span>[<span class="ruby-identifier">row</span>,<span class="ruby-identifier">col</span>] <span class="ruby-operator">==</span> <span class="ruby-value">0</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-operator">!</span><span class="ruby-identifier">water?</span>(<span class="ruby-identifier">row</span>,<span class="ruby-identifier">col</span>))
+                                <span class="ruby-identifier">count</span> = <span class="ruby-value">0</span>
+                                <span class="ruby-identifier">count</span> <span class="ruby-operator">+=</span><span class="ruby-value">1</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">water?</span>(<span class="ruby-identifier">row</span><span class="ruby-operator">-</span><span class="ruby-value">1</span>,<span class="ruby-identifier">col</span>)
+                                <span class="ruby-identifier">count</span> <span class="ruby-operator">+=</span><span class="ruby-value">1</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">water?</span>(<span class="ruby-identifier">row</span><span class="ruby-operator">+</span><span class="ruby-value">1</span>,<span class="ruby-identifier">col</span>)
+                                <span class="ruby-identifier">count</span> <span class="ruby-operator">+=</span><span class="ruby-value">1</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">water?</span>(<span class="ruby-identifier">row</span>,<span class="ruby-identifier">col</span> <span class="ruby-operator">-</span> <span class="ruby-value">1</span>)
+                                <span class="ruby-identifier">count</span> <span class="ruby-operator">+=</span><span class="ruby-value">1</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">water?</span>(<span class="ruby-identifier">row</span>,<span class="ruby-identifier">col</span> <span class="ruby-operator">+</span> <span class="ruby-value">1</span>)
+                                <span class="ruby-identifier">add_water</span>(<span class="ruby-identifier">row</span>, <span class="ruby-identifier">col</span>)  <span class="ruby-keyword">if</span> (<span class="ruby-identifier">count</span> <span class="ruby-operator">&gt;=</span> <span class="ruby-value">3</span>)
+                        <span class="ruby-keyword">end</span>
+                <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- fill_holes-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- fill_holes-method -->
+
+      
+        <div id="my_ant-3F-method" class="method-detail ">
+          <a name="method-i-my_ant-3F"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">my_ant?</span><span
+              class="method-args">(row,col)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="my_ant-3F-source">
+<pre>
+<span class="ruby-comment"># File Bot/TileMap.rb, line 24</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">my_ant?</span>(<span class="ruby-identifier">row</span>,<span class="ruby-identifier">col</span>)
+        <span class="ruby-keyword">self</span>[<span class="ruby-identifier">row</span>,<span class="ruby-identifier">col</span>] <span class="ruby-operator">==</span> <span class="ruby-value">3</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- my_ant-3F-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- my_ant-3F-method -->
+
+      
+        <div id="occupied-3F-method" class="method-detail ">
+          <a name="method-i-occupied-3F"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">occupied?</span><span
+              class="method-args">(row, col)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="occupied-3F-source">
+<pre>
+<span class="ruby-comment"># File Bot/TileMap.rb, line 37</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">occupied?</span>(<span class="ruby-identifier">row</span>, <span class="ruby-identifier">col</span>)
+        <span class="ruby-keyword">self</span>[<span class="ruby-identifier">row</span>,<span class="ruby-identifier">col</span>] <span class="ruby-operator">!=</span> <span class="ruby-value">1</span> 
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- occupied-3F-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- occupied-3F-method -->
+
+      
+        <div id="passable-3F-method" class="method-detail ">
+          <a name="method-i-passable-3F"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">passable?</span><span
+              class="method-args">(row,col)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="passable-3F-source">
+<pre>
+<span class="ruby-comment"># File Bot/TileMap.rb, line 32</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">passable?</span>(<span class="ruby-identifier">row</span>,<span class="ruby-identifier">col</span>)
+        <span class="ruby-keyword">return</span> <span class="ruby-keyword">self</span>[<span class="ruby-identifier">row</span>,<span class="ruby-identifier">col</span>] <span class="ruby-operator">&gt;=</span> <span class="ruby-value">1</span>
+<span class="ruby-comment">#puts &quot;#{[row, col].inspect}&quot;</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- passable-3F-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- passable-3F-method -->
+
+      
+        <div id="remove_ant-method" class="method-detail ">
+          <a name="method-i-remove_ant"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">remove_ant</span><span
+              class="method-args">(row,col)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="remove_ant-source">
+<pre>
+<span class="ruby-comment"># File Bot/TileMap.rb, line 53</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">remove_ant</span>(<span class="ruby-identifier">row</span>,<span class="ruby-identifier">col</span>)
+        <span class="ruby-keyword">self</span>[<span class="ruby-identifier">row</span>,<span class="ruby-identifier">col</span>] = <span class="ruby-value">1</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- remove_ant-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- remove_ant-method -->
+
+      
+        <div id="reset-method" class="method-detail ">
+          <a name="method-i-reset"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">reset</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="reset-source">
+<pre>
+<span class="ruby-comment"># File Bot/TileMap.rb, line 17</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">reset</span>()
+        <span class="ruby-keyword">self</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">row</span><span class="ruby-operator">|</span>
+                <span class="ruby-identifier">row</span>.<span class="ruby-identifier">map!</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">x</span><span class="ruby-operator">|</span> <span class="ruby-identifier">x</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">1</span> <span class="ruby-operator">?</span> <span class="ruby-value">1</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">x</span>}
+        <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- reset-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- reset-method -->
+
+      
+        <div id="water-3F-method" class="method-detail ">
+          <a name="method-i-water-3F"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">water?</span><span
+              class="method-args">(row, col)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="water-3F-source">
+<pre>
+<span class="ruby-comment"># File Bot/TileMap.rb, line 28</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">water?</span>(<span class="ruby-identifier">row</span>, <span class="ruby-identifier">col</span>)
+        <span class="ruby-keyword">self</span>[<span class="ruby-identifier">row</span>,<span class="ruby-identifier">col</span>] <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- water-3F-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- water-3F-method -->
+
+      
+      </div><!-- public-instance-method-details -->
+    
+    </div><!-- 5Buntitled-5D -->
+  
+
+  </div><!-- documentation -->
+
+  <div id="validator-badges">
+    <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+    <p><small>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish
+      Rdoc Generator</a> 2</small>.</p>
+  </div>
+
+</body>
+</html>
+

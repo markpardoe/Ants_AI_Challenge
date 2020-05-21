@@ -1,0 +1,1 @@
+python tools/playgame.py --player_seed 5143945240687289000 --end_wait=0.5 --verbose --log_dir game_logs --turns 1000 --map_file "Maps\cell_maze_p03_03.map" "Ruby Bot\MyBot.rb" "Ruby LiveBot\MyBot3.rb" "Ruby LiveBot\MyBot3.rb"

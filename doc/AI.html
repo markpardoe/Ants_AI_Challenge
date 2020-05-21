@@ -1,0 +1,800 @@
+<?xml version="1.0" encoding="CP850"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta content="text/html; charset=CP850" http-equiv="Content-Type" />
+
+  <title>Class: AI</title>
+
+  <link rel="stylesheet" href="./rdoc.css" type="text/css" media="screen" />
+
+  <script src="./js/jquery.js" type="text/javascript" charset="utf-8"></script>
+  <script src="./js/thickbox-compressed.js" type="text/javascript" charset="utf-8"></script>
+  <script src="./js/quicksearch.js" type="text/javascript" charset="utf-8"></script>
+  <script src="./js/darkfish.js" type="text/javascript" charset="utf-8"></script>
+
+</head>
+<body id="top" class="class">
+
+  <div id="metadata">
+    <div id="home-metadata">
+      <div id="home-section" class="section">
+        <h3 class="section-header">
+          <a href="./index.html">Home</a>
+          <a href="./index.html#classes">Classes</a>
+          <a href="./index.html#methods">Methods</a>
+        </h3>
+      </div>
+    </div>
+
+    <div id="file-metadata">
+      <div id="file-list-section" class="section">
+        <h3 class="section-header">In Files</h3>
+        <div class="section-body">
+          <ul>
+          
+            <li><a href="./Bot/AI_rb.html?TB_iframe=true&amp;height=550&amp;width=785"
+              class="thickbox" title="Bot/AI.rb">Bot/AI.rb</a></li>
+          
+            <li><a href="./LiveBot/AI_rb.html?TB_iframe=true&amp;height=550&amp;width=785"
+              class="thickbox" title="LiveBot/AI.rb">LiveBot/AI.rb</a></li>
+          
+          </ul>
+        </div>
+      </div>
+
+      
+    </div>
+
+    <div id="class-metadata">
+      
+      <!-- Parent Class -->
+      <div id="parent-class-section" class="section">
+        <h3 class="section-header">Parent</h3>
+        
+        <p class="link"><a href="Object.html">Object</a></p>
+        
+      </div>
+      
+
+      
+
+      
+
+      
+      <!-- Method Quickref -->
+      <div id="method-list-section" class="section">
+        <h3 class="section-header">Methods</h3>
+        <ul class="link-list">
+          
+          <li><a href="#method-c-new">::new</a></li>
+          
+          <li><a href="#method-i-order">#order</a></li>
+          
+          <li><a href="#method-i-read_intro">#read_intro</a></li>
+          
+          <li><a href="#method-i-read_turn">#read_turn</a></li>
+          
+          <li><a href="#method-i-run">#run</a></li>
+          
+          <li><a href="#method-i-setup">#setup</a></li>
+          
+        </ul>
+      </div>
+      
+
+      
+    </div>
+
+    <div id="project-metadata">
+      
+      
+      <div id="fileindex-section" class="section project-section">
+        <h3 class="section-header">Files</h3>
+        <ul>
+        
+          <li class="file"><a href="./LiveBot/log_txt.html">log.txt</a></li>
+        
+          <li class="file"><a href="./log_txt.html">log.txt</a></li>
+        
+          <li class="file"><a href="./tools/VERSION.html">VERSION</a></li>
+        
+          <li class="file"><a href="./tools/sample_bots/java/Makefile.html">Makefile</a></li>
+        
+        </ul>
+      </div>
+      
+
+      <div id="classindex-section" class="section project-section">
+        <h3 class="section-header">Class/Module Index
+          <span class="search-toggle"><img src="./images/find.png"
+            height="16" width="16" alt="[+]"
+            title="show/hide quicksearch" /></span></h3>
+        <form action="#" method="get" accept-charset="utf-8" class="initially-hidden">
+        <fieldset>
+          <legend>Quicksearch</legend>
+          <input type="text" name="quicksearch" value=""
+            class="quicksearch-field" />
+        </fieldset>
+        </form>
+
+        <ul class="link-list">
+        
+          <li><a href="./AI.html">AI</a></li>
+        
+          <li><a href="./Ant.html">Ant</a></li>
+        
+          <li><a href="./Array2D.html">Array2D</a></li>
+        
+          <li><a href="./InfluenceMap.html">InfluenceMap</a></li>
+        
+          <li><a href="./Map.html">Map</a></li>
+        
+          <li><a href="./Object.html">Object</a></li>
+        
+          <li><a href="./ScoutMap.html">ScoutMap</a></li>
+        
+          <li><a href="./Settings.html">Settings</a></li>
+        
+          <li><a href="./TileMap.html">TileMap</a></li>
+        
+          <li><a href="./Utilities.html">Utilities</a></li>
+        
+        </ul>
+        <div id="no-class-search-results" style="display: none;">No matching classes.</div>
+      </div>
+
+      
+    </div>
+  </div>
+
+  <div id="documentation">
+    <h1 class="class">AI</h1>
+
+    <div id="description" class="description">
+      
+<p>require 'logger'</p>
+
+    </div><!-- description -->
+
+    
+    
+    
+    <div id="5Buntitled-5D" class="documentation-section">
+      
+
+      
+
+      
+
+      
+      <!-- Attributes -->
+      <div id="attribute-method-details" class="method-section section">
+        <h3 class="section-header">Attributes</h3>
+
+        
+        <div id="attackradius-attribute-method" class="method-detail">
+          <a name="attackradius"></a>
+          
+          <a name="attackradius="></a>
+          
+          <div class="method-heading attribute-method-heading">
+            <span class="method-name">attackradius</span><span
+              class="attribute-access-type">[RW]</span>
+          </div>
+
+          <div class="method-description">
+          
+          <p>Radii, unsquared. Floats.</p>
+          
+          </div>
+        </div>
+        
+        <div id="attackradius2-attribute-method" class="method-detail">
+          <a name="attackradius2"></a>
+          
+          <a name="attackradius2="></a>
+          
+          <div class="method-heading attribute-method-heading">
+            <span class="method-name">attackradius2</span><span
+              class="attribute-access-type">[RW]</span>
+          </div>
+
+          <div class="method-description">
+          
+          <p>Game settings. Integers.</p>
+          
+          </div>
+        </div>
+        
+        <div id="cols-attribute-method" class="method-detail">
+          <a name="cols"></a>
+          
+          <a name="cols="></a>
+          
+          <div class="method-heading attribute-method-heading">
+            <span class="method-name">cols</span><span
+              class="attribute-access-type">[RW]</span>
+          </div>
+
+          <div class="method-description">
+          
+          <p>Game settings. Integers.</p>
+          
+          </div>
+        </div>
+        
+        <div id="loadtime-attribute-method" class="method-detail">
+          <a name="loadtime"></a>
+          
+          <a name="loadtime="></a>
+          
+          <div class="method-heading attribute-method-heading">
+            <span class="method-name">loadtime</span><span
+              class="attribute-access-type">[RW]</span>
+          </div>
+
+          <div class="method-description">
+          
+          <p>Game settings. Integers.</p>
+          
+          </div>
+        </div>
+        
+        <div id="map-attribute-method" class="method-detail">
+          <a name="map"></a>
+          
+          <a name="map="></a>
+          
+          <div class="method-heading attribute-method-heading">
+            <span class="method-name">map</span><span
+              class="attribute-access-type">[RW]</span>
+          </div>
+
+          <div class="method-description">
+          
+          
+          
+          </div>
+        </div>
+        
+        <div id="players-attribute-method" class="method-detail">
+          <a name="players"></a>
+          
+          <a name="players="></a>
+          
+          <div class="method-heading attribute-method-heading">
+            <span class="method-name">players</span><span
+              class="attribute-access-type">[RW]</span>
+          </div>
+
+          <div class="method-description">
+          
+          <p>Number of players. Available only after game's over.</p>
+          
+          </div>
+        </div>
+        
+        <div id="rows-attribute-method" class="method-detail">
+          <a name="rows"></a>
+          
+          <a name="rows="></a>
+          
+          <div class="method-heading attribute-method-heading">
+            <span class="method-name">rows</span><span
+              class="attribute-access-type">[RW]</span>
+          </div>
+
+          <div class="method-description">
+          
+          <p>Game settings. Integers.</p>
+          
+          </div>
+        </div>
+        
+        <div id="score-attribute-method" class="method-detail">
+          <a name="score"></a>
+          
+          <a name="score="></a>
+          
+          <div class="method-heading attribute-method-heading">
+            <span class="method-name">score</span><span
+              class="attribute-access-type">[RW]</span>
+          </div>
+
+          <div class="method-description">
+          
+          <p>Array of scores of players (you are player 0). Available only after game's
+over.</p>
+          
+          </div>
+        </div>
+        
+        <div id="seed-attribute-method" class="method-detail">
+          <a name="seed"></a>
+          
+          <a name="seed="></a>
+          
+          <div class="method-heading attribute-method-heading">
+            <span class="method-name">seed</span><span
+              class="attribute-access-type">[RW]</span>
+          </div>
+
+          <div class="method-description">
+          
+          <p>Game settings. Integers.</p>
+          
+          </div>
+        </div>
+        
+        <div id="settings-attribute-method" class="method-detail">
+          <a name="settings"></a>
+          
+          <a name="settings="></a>
+          
+          <div class="method-heading attribute-method-heading">
+            <span class="method-name">settings</span><span
+              class="attribute-access-type">[RW]</span>
+          </div>
+
+          <div class="method-description">
+          
+          
+          
+          </div>
+        </div>
+        
+        <div id="spawnradius-attribute-method" class="method-detail">
+          <a name="spawnradius"></a>
+          
+          <a name="spawnradius="></a>
+          
+          <div class="method-heading attribute-method-heading">
+            <span class="method-name">spawnradius</span><span
+              class="attribute-access-type">[RW]</span>
+          </div>
+
+          <div class="method-description">
+          
+          <p>Radii, unsquared. Floats.</p>
+          
+          </div>
+        </div>
+        
+        <div id="spawnradius2-attribute-method" class="method-detail">
+          <a name="spawnradius2"></a>
+          
+          <a name="spawnradius2="></a>
+          
+          <div class="method-heading attribute-method-heading">
+            <span class="method-name">spawnradius2</span><span
+              class="attribute-access-type">[RW]</span>
+          </div>
+
+          <div class="method-description">
+          
+          <p>Game settings. Integers.</p>
+          
+          </div>
+        </div>
+        
+        <div id="turn_number-attribute-method" class="method-detail">
+          <a name="turn_number"></a>
+          
+          <a name="turn_number="></a>
+          
+          <div class="method-heading attribute-method-heading">
+            <span class="method-name">turn_number</span><span
+              class="attribute-access-type">[RW]</span>
+          </div>
+
+          <div class="method-description">
+          
+          <p>Number of current turn. If it's 0, we're in setup turn. If it's :game_over,
+you don't need to give any orders; instead, you can find out the number of
+players and their scores in this game.</p>
+          
+          </div>
+        </div>
+        
+        <div id="turns-attribute-method" class="method-detail">
+          <a name="turns"></a>
+          
+          <a name="turns="></a>
+          
+          <div class="method-heading attribute-method-heading">
+            <span class="method-name">turns</span><span
+              class="attribute-access-type">[RW]</span>
+          </div>
+
+          <div class="method-description">
+          
+          <p>Game settings. Integers.</p>
+          
+          </div>
+        </div>
+        
+        <div id="turntime-attribute-method" class="method-detail">
+          <a name="turntime"></a>
+          
+          <a name="turntime="></a>
+          
+          <div class="method-heading attribute-method-heading">
+            <span class="method-name">turntime</span><span
+              class="attribute-access-type">[RW]</span>
+          </div>
+
+          <div class="method-description">
+          
+          <p>Game settings. Integers.</p>
+          
+          </div>
+        </div>
+        
+        <div id="viewradius-attribute-method" class="method-detail">
+          <a name="viewradius"></a>
+          
+          <a name="viewradius="></a>
+          
+          <div class="method-heading attribute-method-heading">
+            <span class="method-name">viewradius</span><span
+              class="attribute-access-type">[RW]</span>
+          </div>
+
+          <div class="method-description">
+          
+          <p>Radii, unsquared. Floats.</p>
+          
+          </div>
+        </div>
+        
+        <div id="viewradius2-attribute-method" class="method-detail">
+          <a name="viewradius2"></a>
+          
+          <a name="viewradius2="></a>
+          
+          <div class="method-heading attribute-method-heading">
+            <span class="method-name">viewradius2</span><span
+              class="attribute-access-type">[RW]</span>
+          </div>
+
+          <div class="method-description">
+          
+          <p>Game settings. Integers.</p>
+          
+          </div>
+        </div>
+        
+      </div><!-- attribute-method-details -->
+      
+
+      <!-- Methods -->
+      
+      <div id="public-class-method-details" class="method-section section">
+        <h3 class="section-header">Public Class Methods</h3>
+
+      
+        <div id="new-method" class="method-detail ">
+          <a name="method-c-new"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">new</span><span
+              class="method-args">(settingsFile, stdin=$stdin, stdout=$stdout)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>Initialize a new <a href="AI.html">AI</a> object. Arguments are streams
+this <a href="AI.html">AI</a> will read from and write to.</p>
+            
+
+            
+            <div class="method-source-code" id="new-source">
+<pre>
+<span class="ruby-comment"># File Bot/AI.rb, line 26</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span> <span class="ruby-identifier">settingsFile</span>, <span class="ruby-identifier">stdin</span>=<span class="ruby-identifier">$stdin</span>, <span class="ruby-identifier">stdout</span>=<span class="ruby-identifier">$stdout</span>
+        <span class="ruby-ivar">@stdin</span>, <span class="ruby-ivar">@stdout</span> = <span class="ruby-identifier">stdin</span>, <span class="ruby-identifier">stdout</span>
+        <span class="ruby-ivar">@turn_number</span>=<span class="ruby-value">0</span>
+        <span class="ruby-ivar">@did_setup</span>=<span class="ruby-keyword">false</span>
+        <span class="ruby-ivar">@settings</span> = <span class="ruby-identifier">settingsFile</span>
+<span class="ruby-comment">#      @log = Logger.new(&quot;log.txt&quot;) </span>
+<span class="ruby-comment">#      @log.info(&quot;&quot;)</span>
+<span class="ruby-comment">#      @log.info(&quot;NEW GAME -----------------------------------------&quot;)      </span>
+        
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- new-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- new-method -->
+
+      
+      </div><!-- public-class-method-details -->
+    
+      <div id="public-instance-method-details" class="method-section section">
+        <h3 class="section-header">Public Instance Methods</h3>
+
+      
+        <div id="order-method" class="method-detail ">
+          <a name="method-i-order"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">order</span><span
+              class="method-args">(point, direction)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>Point can be an ant, a tile or a location</p>
+            
+
+            
+            <div class="method-source-code" id="order-source">
+<pre>
+<span class="ruby-comment"># File Bot/AI.rb, line 170</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">order</span> <span class="ruby-identifier">point</span>, <span class="ruby-identifier">direction</span>
+        <span class="ruby-comment"># Write to standard out</span>
+
+        <span class="ruby-ivar">@stdout</span>.<span class="ruby-identifier">puts</span> <span class="ruby-node">&quot;o #{point[0]} #{point[1]} #{direction.to_s.upcase}&quot;</span>
+<span class="ruby-comment">#      puts &quot;Moving Ant: #{point.location.inspect} -&gt; #{direction}&quot;</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- order-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- order-method -->
+
+      
+        <div id="read_intro-method" class="method-detail ">
+          <a name="method-i-read_intro"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">read_intro</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>Internal; reads zero-turn input (game settings).</p>
+            
+
+            
+            <div class="method-source-code" id="read_intro-source">
+<pre>
+<span class="ruby-comment"># File Bot/AI.rb, line 84</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">read_intro</span>
+        <span class="ruby-identifier">rd</span>=<span class="ruby-ivar">@stdin</span>.<span class="ruby-identifier">gets</span>.<span class="ruby-identifier">strip</span>
+        <span class="ruby-identifier">warn</span> <span class="ruby-node">&quot;unexpected: #{rd}&quot;</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">rd</span><span class="ruby-operator">==</span><span class="ruby-string">'turn 0'</span>
+        <span class="ruby-comment">#@log.info(&quot;#{rd}&quot;)</span>
+        <span class="ruby-keyword">until</span>((<span class="ruby-identifier">rd</span>=<span class="ruby-ivar">@stdin</span>.<span class="ruby-identifier">gets</span>.<span class="ruby-identifier">strip</span>)<span class="ruby-operator">==</span><span class="ruby-string">'ready'</span>)
+                <span class="ruby-identifier">_</span>, <span class="ruby-identifier">name</span>, <span class="ruby-identifier">value</span> = *<span class="ruby-identifier">rd</span>.<span class="ruby-identifier">match</span>(<span class="ruby-regexp">/\A([a-z0-9]+) (\d+)\Z/</span>)
+        <span class="ruby-comment">#     @log.info(&quot;#{rd}&quot;)</span>
+                <span class="ruby-keyword">case</span> <span class="ruby-identifier">name</span>
+                <span class="ruby-keyword">when</span> <span class="ruby-string">'loadtime'</span>; <span class="ruby-ivar">@loadtime</span>=<span class="ruby-identifier">value</span>.<span class="ruby-identifier">to_i</span>
+                <span class="ruby-keyword">when</span> <span class="ruby-string">'turntime'</span>; <span class="ruby-ivar">@turntime</span>=<span class="ruby-identifier">value</span>.<span class="ruby-identifier">to_i</span>
+                <span class="ruby-keyword">when</span> <span class="ruby-string">'rows'</span>; <span class="ruby-ivar">@rows</span>=<span class="ruby-identifier">value</span>.<span class="ruby-identifier">to_i</span>
+                <span class="ruby-keyword">when</span> <span class="ruby-string">'cols'</span>; <span class="ruby-ivar">@cols</span>=<span class="ruby-identifier">value</span>.<span class="ruby-identifier">to_i</span>
+                <span class="ruby-keyword">when</span> <span class="ruby-string">'turns'</span>; <span class="ruby-ivar">@turns</span>=<span class="ruby-identifier">value</span>.<span class="ruby-identifier">to_i</span>
+                <span class="ruby-keyword">when</span> <span class="ruby-string">'viewradius2'</span>; <span class="ruby-ivar">@viewradius2</span>=<span class="ruby-identifier">value</span>.<span class="ruby-identifier">to_i</span>
+                <span class="ruby-keyword">when</span> <span class="ruby-string">'attackradius2'</span>; <span class="ruby-ivar">@attackradius2</span>=<span class="ruby-identifier">value</span>.<span class="ruby-identifier">to_i</span>
+                <span class="ruby-keyword">when</span> <span class="ruby-string">'spawnradius2'</span>; <span class="ruby-ivar">@spawnradius2</span>=<span class="ruby-identifier">value</span>.<span class="ruby-identifier">to_i</span>
+                <span class="ruby-keyword">when</span> <span class="ruby-string">'seed'</span>; <span class="ruby-ivar">@seed</span>=<span class="ruby-identifier">value</span>.<span class="ruby-identifier">to_i</span>
+                <span class="ruby-keyword">else</span>
+                        <span class="ruby-identifier">warn</span> <span class="ruby-node">&quot;unexpected: #{rd}&quot;</span>
+                <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">end</span>
+<span class="ruby-comment">#      @log.info(&quot;#{rd}&quot;)</span>
+        <span class="ruby-ivar">@viewradius</span>=<span class="ruby-constant">Math</span>.<span class="ruby-identifier">sqrt</span> <span class="ruby-ivar">@viewradius2</span>
+        <span class="ruby-ivar">@attackradius</span>=<span class="ruby-constant">Math</span>.<span class="ruby-identifier">sqrt</span> <span class="ruby-ivar">@attackradius2</span>
+        <span class="ruby-ivar">@spawnradius</span>=<span class="ruby-constant">Math</span>.<span class="ruby-identifier">sqrt</span> <span class="ruby-ivar">@spawnradius2</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- read_intro-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- read_intro-method -->
+
+      
+        <div id="read_turn-method" class="method-detail ">
+          <a name="method-i-read_turn"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">read_turn</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>Internal; reads turn input (map state).</p>
+            
+
+            
+            <div class="method-source-code" id="read_turn-source">
+<pre>
+<span class="ruby-comment"># File Bot/AI.rb, line 113</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">read_turn</span>
+        <span class="ruby-identifier">ret</span>=<span class="ruby-keyword">false</span>
+        <span class="ruby-identifier">rd</span>=<span class="ruby-ivar">@stdin</span>.<span class="ruby-identifier">gets</span>.<span class="ruby-identifier">strip</span>
+<span class="ruby-comment">#      @log.info(&quot;#{rd}&quot;)</span>
+        
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">rd</span><span class="ruby-operator">==</span><span class="ruby-string">'end'</span>
+                <span class="ruby-ivar">@turn_number</span>=<span class="ruby-value">:game_over</span>
+        <span class="ruby-comment">#     @log.info(&quot;GAMEOVER&quot;)</span>
+                <span class="ruby-identifier">rd</span>=<span class="ruby-ivar">@stdin</span>.<span class="ruby-identifier">gets</span>.<span class="ruby-identifier">strip</span>
+        <span class="ruby-comment">#     @log.info(&quot;#{rd}&quot;)</span>
+                <span class="ruby-identifier">_</span>, <span class="ruby-identifier">players</span> = *<span class="ruby-identifier">rd</span>.<span class="ruby-identifier">match</span>(<span class="ruby-regexp">/\Aplayers (\d+)\Z/</span>)
+                <span class="ruby-ivar">@players</span> = <span class="ruby-identifier">players</span>.<span class="ruby-identifier">to_i</span>
+                
+                <span class="ruby-identifier">rd</span>=<span class="ruby-ivar">@stdin</span>.<span class="ruby-identifier">gets</span>.<span class="ruby-identifier">strip</span>
+        <span class="ruby-comment">#     @log.info(&quot;#{rd}&quot;)</span>
+                <span class="ruby-identifier">_</span>, <span class="ruby-identifier">score</span> = *<span class="ruby-identifier">rd</span>.<span class="ruby-identifier">match</span>(<span class="ruby-regexp">/\Ascore (.*) (.*)\Z/</span>)
+                <span class="ruby-ivar">@score</span> = <span class="ruby-identifier">score</span>.<span class="ruby-identifier">split</span>(<span class="ruby-string">' '</span>).<span class="ruby-identifier">map</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">s</span><span class="ruby-operator">|</span> <span class="ruby-identifier">s</span>.<span class="ruby-identifier">to_i</span>}
+                <span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;------------&quot;</span>
+                <span class="ruby-identifier">puts</span> <span class="ruby-node">&quot;Score = #{@score}&quot;</span>
+                <span class="ruby-ivar">@stdout</span>.<span class="ruby-identifier">flush</span>
+                <span class="ruby-identifier">ret</span>=<span class="ruby-keyword">true</span>
+        <span class="ruby-keyword">else</span>
+                <span class="ruby-identifier">_</span>, <span class="ruby-identifier">num</span> = *<span class="ruby-identifier">rd</span>.<span class="ruby-identifier">match</span>(<span class="ruby-regexp">/\Aturn (\d+)\Z/</span>)
+                <span class="ruby-ivar">@turn_number</span>=<span class="ruby-identifier">num</span>.<span class="ruby-identifier">to_i</span>
+        <span class="ruby-keyword">end</span>
+
+        <span class="ruby-ivar">@map</span>.<span class="ruby-identifier">reset</span>
+        
+        
+        <span class="ruby-keyword">until</span>((<span class="ruby-identifier">rd</span>=<span class="ruby-ivar">@stdin</span>.<span class="ruby-identifier">gets</span>.<span class="ruby-identifier">strip</span>)<span class="ruby-operator">==</span><span class="ruby-string">'go'</span>)
+        <span class="ruby-comment">#     @log.info(&quot;#{rd}&quot;)</span>
+                <span class="ruby-identifier">_</span>, <span class="ruby-identifier">type</span>, <span class="ruby-identifier">row</span>, <span class="ruby-identifier">col</span>, <span class="ruby-identifier">owner</span> = *<span class="ruby-identifier">rd</span>.<span class="ruby-identifier">match</span>(<span class="ruby-regexp">/(w|f|h|a|d) (\d+) (\d+)(?: (\d+)|)/</span>)
+                <span class="ruby-identifier">row</span>, <span class="ruby-identifier">col</span> = <span class="ruby-identifier">row</span>.<span class="ruby-identifier">to_i</span>, <span class="ruby-identifier">col</span>.<span class="ruby-identifier">to_i</span>
+                <span class="ruby-identifier">owner</span> = <span class="ruby-identifier">owner</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">owner</span>
+                                                                                        
+                <span class="ruby-keyword">case</span> <span class="ruby-identifier">type</span>
+                        <span class="ruby-keyword">when</span> <span class="ruby-string">'w'</span>
+                                <span class="ruby-ivar">@map</span>.<span class="ruby-identifier">addPoint</span> <span class="ruby-identifier">row</span>, <span class="ruby-identifier">col</span>, <span class="ruby-value">:water</span>
+                        <span class="ruby-keyword">when</span> <span class="ruby-string">'f'</span>
+                                <span class="ruby-ivar">@map</span>.<span class="ruby-identifier">addPoint</span> <span class="ruby-identifier">row</span>, <span class="ruby-identifier">col</span>, <span class="ruby-value">:food</span>
+                        <span class="ruby-keyword">when</span> <span class="ruby-string">'h'</span>
+                                <span class="ruby-ivar">@map</span>.<span class="ruby-identifier">addPoint</span> <span class="ruby-identifier">row</span>, <span class="ruby-identifier">col</span>, <span class="ruby-value">:hill</span>, <span class="ruby-identifier">owner</span>
+                        <span class="ruby-keyword">when</span> <span class="ruby-string">'a'</span>
+                                <span class="ruby-ivar">@map</span>.<span class="ruby-identifier">addPoint</span> <span class="ruby-identifier">row</span>, <span class="ruby-identifier">col</span>, <span class="ruby-value">:ant</span>,  <span class="ruby-identifier">owner</span>
+                        <span class="ruby-keyword">when</span> <span class="ruby-string">'d'</span>    <span class="ruby-comment"># Ignore dead ants for now</span>
+                                <span class="ruby-comment"># do nothing</span>
+                        <span class="ruby-keyword">when</span> <span class="ruby-string">'r'</span>
+                                <span class="ruby-comment"># pass</span>
+                        <span class="ruby-keyword">else</span>
+                                <span class="ruby-identifier">warn</span> <span class="ruby-node">&quot;unexpected: #{rd}&quot;</span>
+                <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">end</span>
+<span class="ruby-comment">#      @log.info(&quot;#{rd}&quot;)</span>
+        <span class="ruby-keyword">return</span> <span class="ruby-identifier">ret</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- read_turn-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- read_turn-method -->
+
+      
+        <div id="run-method" class="method-detail ">
+          <a name="method-i-run"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">run</span><span
+              class="method-args">(&b)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>Turn logic. If setup wasn't yet called, it will call it (and yield the
+block in it once).</p>
+            
+
+            
+            <div class="method-source-code" id="run-source">
+<pre>
+<span class="ruby-comment"># File Bot/AI.rb, line 69</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">run</span> &amp;<span class="ruby-identifier">b</span> <span class="ruby-comment"># :yields: self</span>
+        <span class="ruby-identifier">setup</span> &amp;<span class="ruby-identifier">b</span> <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-ivar">@did_setup</span>
+        
+        <span class="ruby-identifier">over</span>=<span class="ruby-keyword">false</span>
+        <span class="ruby-keyword">until</span> <span class="ruby-identifier">over</span>
+                <span class="ruby-identifier">over</span> = <span class="ruby-identifier">read_turn</span>
+                <span class="ruby-keyword">yield</span> <span class="ruby-keyword">self</span>
+                
+                <span class="ruby-ivar">@stdout</span>.<span class="ruby-identifier">puts</span> <span class="ruby-string">'go'</span>
+                <span class="ruby-ivar">@stdout</span>.<span class="ruby-identifier">flush</span>
+        <span class="ruby-keyword">end</span>
+        
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- run-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- run-method -->
+
+      
+        <div id="setup-method" class="method-detail ">
+          <a name="method-i-setup"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">setup</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>Zero-turn logic.</p>
+            
+
+            
+            <div class="method-source-code" id="setup-source">
+<pre>
+<span class="ruby-comment"># File Bot/AI.rb, line 58</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">setup</span> <span class="ruby-comment"># :yields: self</span>
+        <span class="ruby-identifier">read_intro</span>
+        <span class="ruby-keyword">yield</span> <span class="ruby-keyword">self</span>
+        
+        <span class="ruby-ivar">@stdout</span>.<span class="ruby-identifier">puts</span> <span class="ruby-string">'go'</span>
+        <span class="ruby-ivar">@stdout</span>.<span class="ruby-identifier">flush</span>
+        <span class="ruby-ivar">@map</span> = <span class="ruby-constant">Map</span>.<span class="ruby-identifier">new</span>(<span class="ruby-ivar">@rows</span>, <span class="ruby-ivar">@cols</span>, <span class="ruby-keyword">self</span>)
+        <span class="ruby-ivar">@did_setup</span>=<span class="ruby-keyword">true</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- setup-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- setup-method -->
+
+      
+      </div><!-- public-instance-method-details -->
+    
+    </div><!-- 5Buntitled-5D -->
+  
+
+  </div><!-- documentation -->
+
+  <div id="validator-badges">
+    <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+    <p><small>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish
+      Rdoc Generator</a> 2</small>.</p>
+  </div>
+
+</body>
+</html>
+
